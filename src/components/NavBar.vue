@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Chillax Corner</a>
             <button
@@ -25,6 +25,13 @@
                         >
                             Connect
                         </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <router-link class="drowdown-item" to="/connect/society">
+                                    Community
+                                </router-link>
+                            </li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a href="#" role="button" class="nav-link">Reflect</a>
