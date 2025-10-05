@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar container-fluid navbar-expand-lg mt-lg-0 bg-primary">
+    <nav class="navbar container-fluid navbar-expand-lg mt-lg-0 ps-4 d-flex flex-row bg-primary">
         <div>
             <router-link to="/" class="navbar-brand ms-lg-2" href="#">Chillax Corner</router-link>
             <button class="navbar-toggler" type="button" @click="toggleNav">

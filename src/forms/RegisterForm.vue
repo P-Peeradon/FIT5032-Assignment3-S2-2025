@@ -1,7 +1,7 @@
 <template>
-    <form class="container-fluid my-4" @submit.prevent="">
+    <form class="container-fluid my-4 py-3 px-lg-5" @submit.prevent="">
         <h2>Registration Form</h2>
-        <div class="row">
+        <div class="row mt-1">
             <div class="col-12 col-lg-6">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" v-model="email" required />
@@ -12,7 +12,7 @@
                 <input type="text" class="form-control" id="username" v-model="username" />
             </div>
         </div>
-        <div class="row">
+        <div class="row mt-1">
             <div class="col-12 col-lg-6">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" v-model="password" />
@@ -28,7 +28,9 @@
                 />
             </div>
         </div>
-        <button class="btn btn-primary mt-2 d-flex flex-row" type="submit">Register</button>
+        <div class="my-3 d-flex flex-row justify-content-center">
+            <button class="btn btn-primary" type="submit">Register</button>
+        </div>
     </form>
 </template>
 
@@ -54,7 +56,7 @@ const register = () => {
 
 <style scoped>
 .container-fluid {
-    width: 70%;
+    width: 65%;
     background-color: beige;
 }
 </style>
