@@ -2,18 +2,10 @@
     <nav class="navbar navbar-expand-lg bg-primary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Chillax Corner</a>
-            <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navigation"
-                aria-controls="navigation"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-            >
+            <button class="navbar-toggler" type="button" @click="toggleNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navigation">
+            <div v-show="navShow" class="navbar-collapse" id="navigation">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
                         <a
@@ -45,6 +37,13 @@
     </nav>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from 'vue'
+
+const navShow = ref(false)
+const toggleNav = () => {
+    navShow.value = !navShow.value
+}
+</script>
 
 <style></style>
