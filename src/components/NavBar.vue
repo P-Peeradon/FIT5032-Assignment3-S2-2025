@@ -1,7 +1,7 @@
 <template>
-    <nav class="navbar navbar-expand-lg bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Chillax Corner</a>
+    <nav class="navbar container-fluid navbar-expand-lg mt-lg-0 bg-primary">
+        <div>
+            <router-link to="/" class="navbar-brand ms-lg-2" href="#">Chillax Corner</router-link>
             <button class="navbar-toggler" type="button" @click="toggleNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -17,7 +17,7 @@
                         >
                         <ul v-show="connectPillar" class="dropdown-menu">
                             <li>
-                                <router-link class="drowdown-item" to="/connect/society">
+                                <router-link class="dropdown-item" to="/connect/society">
                                     Community
                                 </router-link>
                             </li>
