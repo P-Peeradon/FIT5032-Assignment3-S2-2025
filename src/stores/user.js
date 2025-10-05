@@ -1,14 +1,42 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import { auth } from '../firebase/init';
-import onAuthStateChanged from 'firebase/auth';
+import {
+    onAuthStateChanged,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+} from 'firebase/auth';
 
-export const userStore = defineStore('user', () => {
+const authStore = defineStore('auth', () => {
     const currentUser = ref(null);
-    const userID = ref(null);
+    const authLoad = ref(false);
+    const userID = computed(() => {
+        return currentUser.value ? currentUser.value.uid : null;
+    });
     const isAuthenticated = computed(() => {
-        currentUser.value ? true : false;
+        return currentUser.value ? true : false;
     });
 
-    onAuthStateChanged(auth);
+    const createUser = async (email, password) => {
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+        } catch (error) {
+            console.error(`Error in creating new user: ${error}`);
+        }
+    };
+
+    onAuthStateChanged(auth, async (user) => {
+        authLoad.value = true;
+        if (user) {
+            currentUser.value = await { uid: auth.currentUser.uid, email: auth.currentUser.email };
+        } else {
+            currentUser.value = null;
+        }
+        authLoad.value = false;
+    });
 });
+
+const userStore = defineStore('user', () => {});
+
+export { authStore, userStore };
