@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-    <main>
+    <main class="container-fluid">
         <p>Website Home Page</p>
     </main>
 </template>
