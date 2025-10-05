@@ -4,20 +4,19 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: process.env.API_KEY,
-    authDomain: 'fit5032-peeradon-assignment3.firebaseapp.com',
+    apiKey: import.meta.env.VITE_API_KEY,
+    authDomain: import.meta.env.VITE_AUTH_DOMAIN,
     projectId: 'fit5032-peeradon-assignment3',
     storageBucket: 'fit5032-peeradon-assignment3.firebasestorage.app',
     messagingSenderId: '212250197257',
-    appId: process.env.APP_ID,
-    measurementId: process.env.MESSENGER_ID,
+    appId: import.meta.env.VITE_APP_ID,
+    measurementId: import.meta.env.VITE_MESSENGER_ID,
 };
 
 // Initialize Firebase
-const firebaseUtil = initializeApp(firebaseConfig);
-const auth = getAuth(firebaseUtil);
-const db = getFirestore(firebaseUtil);
+initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore();
 
 export { auth, db };

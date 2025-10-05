@@ -27,6 +27,7 @@
                 />
             </div>
         </div>
+        <button class="btn btn-primary">Register</button>
     </form>
 </template>
 
