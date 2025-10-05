@@ -28,8 +28,7 @@ coverage
 *.sw?
 .editorconfig
 package.json
-.prettierrc.json
-eslint.config.js
-package-lock.json
+*.env
+vite.config.js
 
 *.tsbuildinfo
