@@ -1,54 +1,42 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import WebHeader from './components/WebHeader.vue'
+import { RouterLink, RouterView } from 'vue-router';
+import WebHeader from './components/WebHeader.vue';
+import WebFooter from './components/WebFooter.vue';
 </script>
 
 <template>
-    <header>
-        <WebHeader />
-    </header>
+    <div style="background-color: bisque">
+        <header>
+            <WebHeader />
+        </header>
 
-    <main>
-        <RouterView />
-    </main>
+        <main>
+            <RouterView />
+        </main>
 
-    <footer></footer>
+        <footer>
+            <WebFooter />
+        </footer>
+    </div>
 </template>
 
-<style scoped>
+<style>
 header {
     line-height: 1.5;
     max-height: 100vh;
 }
 
-.logo {
-    display: block;
-    margin: 0 auto 2rem;
-}
-
-nav {
-    width: 100%;
-    font-size: 12px;
+h1 {
+    color: blueviolet;
+    font-size: 30px;
+    font-weight: 600;
     text-align: center;
-    margin-top: 2rem;
 }
 
-nav a.router-link-exact-active {
-    color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-    background-color: transparent;
-}
-
-nav a {
-    display: inline-block;
-    padding: 0 1rem;
-    border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-    border: 0;
+h2 {
+    color: blue;
+    font-size: 24px;
+    text-align: center;
 }
 
 @media (min-width: 1024px) {
@@ -66,15 +54,6 @@ nav a:first-of-type {
         display: flex;
         place-items: flex-start;
         flex-wrap: wrap;
-    }
-
-    nav {
-        text-align: left;
-        margin-left: -1rem;
-        font-size: 1rem;
-
-        padding: 1rem 0;
-        margin-top: 1rem;
     }
 }
 </style>

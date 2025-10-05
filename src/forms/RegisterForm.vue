@@ -1,24 +1,25 @@
 <template>
-    <form class="container-md" @submit.prevent="">
-        <div class="row-lg">
+    <form class="container-fluid my-4" @submit.prevent="">
+        <h2>Registration Form</h2>
+        <div class="row">
             <div class="col-12 col-lg-6">
-                <label for="email" class="form-label"></label>
+                <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" v-model="email" required />
             </div>
 
             <div class="col-12 col-lg-6">
-                <label for="username" class="form-label"></label>
+                <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" v-model="username" />
             </div>
         </div>
-        <div class="row-lg">
+        <div class="row">
             <div class="col-12 col-lg-6">
-                <label for="password" class="form-label"></label>
+                <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" v-model="password" />
             </div>
 
             <div class="col-12 col-lg-6">
-                <label for="confirmPassword" class="form-label"></label>
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
                 <input
                     type="password"
                     class="form-control"
@@ -27,7 +28,7 @@
                 />
             </div>
         </div>
-        <button class="btn btn-primary">Register</button>
+        <button class="btn btn-primary mt-2 d-flex flex-row" type="submit">Register</button>
     </form>
 </template>
 
@@ -51,4 +52,9 @@ const register = () => {
 };
 </script>
 
-<style></style>
+<style scoped>
+.container-fluid {
+    width: 70%;
+    background-color: beige;
+}
+</style>

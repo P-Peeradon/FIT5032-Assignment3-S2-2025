@@ -15,7 +15,7 @@ const authStore = defineStore('auth', () => {
         return currentUser.value ? currentUser.value.uid : null;
     });
     const isAuthenticated = computed(() => {
-        return currentUser.value ? true : false;
+        return currentUser.value.isnull() ? true : false;
     });
 
     const createUser = async (email, password) => {

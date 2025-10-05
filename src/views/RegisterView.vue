@@ -1,5 +1,6 @@
 <template>
     <div class="container-fluid">
+        <h1 class="mt-2">Register to Chillax Corner</h1>
         <RegisterForm @register="handleCreateUser(email, password)" />
     </div>
 </template>
@@ -14,4 +15,4 @@ const handleCreateUser = async (email, password) => {
 };
 </script>
 
-<style></style>
+<style scoped></style>
