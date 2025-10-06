@@ -29,9 +29,17 @@
             </div>
         </div>
         <div class="row mt-1">
-            <div class="col-12 form-check d-flex flex-row" v-model="role">
+            <label for="role" class="form-label">Role</label>
+            <div class="col-12 form-check ms-3" id="role">
                 <div>
-                    <input type="radio" class="form-check-input" id="user" value="user" checked />
+                    <input
+                        type="radio"
+                        class="form-check-input"
+                        id="user"
+                        v-model="role"
+                        value="user"
+                        checked
+                    />
                     <label for="user" class="form-check-label">User</label>
                 </div>
                 <div>
@@ -39,6 +47,7 @@
                         type="radio"
                         class="form-check-input"
                         id="practitioner"
+                        v-model="role"
                         value="practitioner"
                     />
                     <label for="practitioner" class="form-check-label">Practitioner</label>
@@ -48,6 +57,7 @@
                         type="radio"
                         class="form-check-input"
                         id="social-worker"
+                        v-model="role"
                         value="social worker"
                     />
                     <label for="social-worker" class="form-check-label">Social Worker</label>

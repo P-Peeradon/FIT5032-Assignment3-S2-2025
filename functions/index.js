@@ -11,8 +11,9 @@ const { setGlobalOptions } = require('firebase-functions');
 const { onRequest } = require('firebase-functions/https');
 const admin = require('firebase-admin');
 const { createUserWithEmailAndPassword } = require('firebase/auth');
-const { auth } = require('../firebase/init');
+const { auth } = require('../src/firebase/init');
 const cors = require('cors')({ origin: true });
+require('dotenv').config();
 
 admin.initializeApp();
 
@@ -36,8 +37,14 @@ exports.createUser = onRequest((req, res) => {
             res.status(405).send('Allow only POST method.');
         }
 
+        const data = { ...req.body };
+
+        if (!data.email || !data.password) {
+            res.status(400).send('Please include your email and password in request data.');
+        }
+
         try {
-            await createUserWithEmailAndPassword(auth);
+            await createUserWithEmailAndPassword(auth, data.email, data.password);
 
             res.status(201).send({ msg: 'Successfully created user successful.' });
         } catch (error) {

@@ -1,12 +1,7 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import { auth } from '../firebase/init';
-import {
-    onAuthStateChanged,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-} from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const authStore = defineStore('auth', () => {
     const currentUser = ref(null);

@@ -8,6 +8,9 @@
 <script setup>
 import axios from 'axios';
 import RegisterForm from '../forms/RegisterForm.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const handleCreateUser = async (email, password) => {
     try {
