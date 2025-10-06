@@ -12,9 +12,10 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-const handleCreateUser = async (email, password) => {
+const handleCreateUser = async (payload) => {
     try {
-        const res = await axios.post();
+        await axios.post(, payload); // To firebase auth
+        await axios.post(, payload); // To firebase Firestore
     } catch (error) {
         console.error(`Error in request for creating new user: ${error}`);
     }

@@ -1,18 +1,17 @@
 <template>
     <div class="container-fluid">
         <h1>Login to Chillax Corner</h1>
-        <LoginForm @login="authorise(email, password)" />
+        <LoginForm @login="authorise" />
     </div>
 </template>
 
 <script setup>
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import LoginForm from '../forms/LoginForm.vue';
-import { auth } from '../firebase/init';
+import axios from 'axios';
 
-const authorise = async (email, password) => {
+const authorise = async (payload) => {
     try {
-        await signInWithEmailAndPassword(auth, email, password); // Danger!
+        await axios.post(, payload); // Sign in using cloud function
     } catch (error) {
         console.error(`Error in signing in: ${error}`);
     }

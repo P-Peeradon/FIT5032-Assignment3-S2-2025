@@ -81,3 +81,27 @@ exports.recordUser = onRequest((req, res) => {
         }
     });
 });
+
+// Login the user
+// method: POST
+exports.loginUser = onRequest((req, res) => {
+    cors(req, res, async () => {
+        if (req.method !== 'POST') {
+            res.status(405).send('Allow only POST method.');
+        }
+
+        try {
+            const data = { ...req.body };
+            if (!data.email || !data.password) {
+                res.status(400).send(
+                    'Invalid login credential. Please include your email and password',
+                );
+            }
+
+            res.status(200).send({ msg: 'Log in successfully.' });
+        } catch (error) {
+            console.error(`Log in error: ${error}`);
+            res.status(500).send('Error in logging in.');
+        }
+    });
+});
