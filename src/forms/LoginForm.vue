@@ -10,7 +10,7 @@
         <div class="row mt-2">
             <div class="col-12">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" />
+                <input type="password" class="form-control" id="password" v-model="password" />
             </div>
         </div>
         <div class="my-3 mt-3 d-flex flex-row justify-content-center gap-3">
@@ -27,6 +27,13 @@ const emit = defineEmits(['login']);
 
 const email = ref('');
 const password = ref('');
+
+const login = () => {
+    emit('login', {
+        email: email.value,
+        password: password.value,
+    });
+};
 </script>
 
 <style scoped>

@@ -18,14 +18,6 @@ const authStore = defineStore('auth', () => {
         return currentUser.value.isnull() ? true : false;
     });
 
-    const createUser = async (email, password) => {
-        try {
-            await createUserWithEmailAndPassword(auth, email, password);
-        } catch (error) {
-            console.error(`Error in creating new user: ${error}`);
-        }
-    };
-
     onAuthStateChanged(auth, async (user) => {
         authLoad.value = true;
         if (user) {

@@ -28,6 +28,32 @@
                 />
             </div>
         </div>
+        <div class="row mt-1">
+            <div class="col-12 form-check d-flex flex-row" v-model="role">
+                <div>
+                    <input type="radio" class="form-check-input" id="user" value="user" checked />
+                    <label for="user" class="form-check-label">User</label>
+                </div>
+                <div>
+                    <input
+                        type="radio"
+                        class="form-check-input"
+                        id="practitioner"
+                        value="practitioner"
+                    />
+                    <label for="practitioner" class="form-check-label">Practitioner</label>
+                </div>
+                <div>
+                    <input
+                        type="radio"
+                        class="form-check-input"
+                        id="social-worker"
+                        value="social worker"
+                    />
+                    <label for="social-worker" class="form-check-label">Social Worker</label>
+                </div>
+            </div>
+        </div>
         <div class="my-3 d-flex flex-row justify-content-center">
             <button class="btn btn-primary" type="submit">Register</button>
         </div>
@@ -43,6 +69,7 @@ const email = ref('');
 const username = ref('');
 const password = ref('');
 const confirmPassword = ref('');
+const role = ref('user');
 
 const register = () => {
     emit('register', {
@@ -50,6 +77,7 @@ const register = () => {
         username: username.value,
         password: password.value,
         confirmPassword: confirmPassword.value,
+        role: role.value,
     });
 };
 </script>
