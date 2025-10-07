@@ -7,6 +7,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import { auth } from '../firebase/init';
 import LoginForm from '../forms/LoginForm.vue';
 import axios from 'axios';
 
@@ -20,7 +21,8 @@ const authorise = async (payload) => {
         console.error(`Error in signing in: ${error}`);
     }
 
-    router.push('/')
+    router.push('/');
+    console.log(auth.currentUser);
 };
 </script>
 

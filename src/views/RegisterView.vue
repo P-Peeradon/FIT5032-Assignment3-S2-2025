@@ -13,6 +13,13 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const handleCreateUser = async (payload) => {
+    // Validate user.
+    try {
+        await axios.get('/register/validate', payload);
+    } catch (error) {
+        console.error(error)
+    }
+
     try {
         await axios.post(, payload); // To firebase auth
         await axios.post(, payload); // To firebase Firestore

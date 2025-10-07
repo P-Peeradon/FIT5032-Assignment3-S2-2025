@@ -1,5 +1,5 @@
 <template>
-    <form class="container-fluid my-4 py-3 px-lg-5" @submit.prevent="">
+    <form class="container-fluid my-4 py-3 px-lg-5" @submit.prevent="register">
         <h2>Registration Form</h2>
         <div class="row mt-1">
             <div class="col-12 col-lg-6">
