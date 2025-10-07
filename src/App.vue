@@ -39,6 +39,16 @@ h2 {
     text-align: center;
 }
 
+q {
+    color: #707070;
+    font-size: 18px;
+    text-align: center;
+}
+
+q span {
+    color: aqua;
+}
+
 @media (min-width: 1024px) {
     header {
         display: flex;
