@@ -70,7 +70,7 @@ exports.recordUser = onRequest((req, res) => {
                 return;
             }
 
-            const userDocRef = await usersCollection.add({
+            const userDocRef = await usersCollection.doc(auth.currentUser.uid).set({
                 username: data.username,
                 email: data.email,
                 role: data.role,
