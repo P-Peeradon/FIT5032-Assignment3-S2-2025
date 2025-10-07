@@ -19,6 +19,8 @@ const handleCreateUser = async (payload) => {
     } catch (error) {
         console.error(`Error in request for creating new user: ${error}`);
     }
+
+    router.push('/login')
 };
 </script>
 

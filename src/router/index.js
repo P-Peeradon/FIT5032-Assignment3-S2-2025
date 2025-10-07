@@ -21,6 +21,10 @@ const router = createRouter({
             name: 'login',
             component: LoginView,
         },
+        {
+            path: '/connect',
+            name: 'connect',
+        },
     ],
 });
 
