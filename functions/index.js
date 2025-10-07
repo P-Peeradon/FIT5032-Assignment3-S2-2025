@@ -59,6 +59,7 @@ exports.recordUser = onRequest((req, res) => {
     cors(req, res, async () => {
         if (req.method !== 'POST') {
             res.status(405).send('Allow only POST method.');
+            return;
         }
 
         try {
@@ -66,6 +67,7 @@ exports.recordUser = onRequest((req, res) => {
             const data = { ...req.body };
             if (!data.username || !data.email || !data.role) {
                 res.status(400).send('Please include your username, email and role in your data.');
+                return;
             }
 
             const userDocRef = await usersCollection.add({
@@ -88,6 +90,7 @@ exports.loginUser = onRequest((req, res) => {
     cors(req, res, async () => {
         if (req.method !== 'POST') {
             res.status(405).send('Allow only POST method.');
+            return;
         }
 
         try {
@@ -102,6 +105,34 @@ exports.loginUser = onRequest((req, res) => {
         } catch (error) {
             console.error(`Log in error: ${error}`);
             res.status(500).send('Error in logging in.');
+        }
+    });
+});
+
+// Fetch all features from database.
+// Method: GET
+exports.getAllFeatures = onRequest((req, res) => {
+    cors(req, res, async () => {
+        if (req.method !== 'GET') {
+            res.status(405).send('GET Method only.');
+            return;
+        }
+
+        try {
+            const featuresCollection = admin.firestore().collection('features');
+            const snapshot = await featuresCollection.get();
+            const features = [];
+
+            snapshot.forEach((doc) => {
+                features.push({
+                    ...doc.data(),
+                });
+            });
+
+            res.status(200).json(features);
+        } catch (error) {
+            console.error(`Error fetching function: ${error.message}`);
+            res.status(500).send('Error counting books.');
         }
     });
 });
