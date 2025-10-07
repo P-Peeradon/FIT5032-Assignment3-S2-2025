@@ -1,7 +1,7 @@
 <template>
     <div class="card" id="feature">
-        <router-link to="/">
-            <img :src="{}" alt="" class="card-img-top" />
+        <router-link to="">
+            <img :src="path" alt="" class="card-img-top" />
             <div class="card-body">
                 <h4 class="card-title">{{ feature.title }}</h4>
                 <p class="card-text">{{ feature.description }}</p>
@@ -21,6 +21,7 @@ const prop = defineProps({
 });
 
 const feature = prop.feature;
+const path = `/connect/${feature.title}`;
 </script>
 
 <style scoped>

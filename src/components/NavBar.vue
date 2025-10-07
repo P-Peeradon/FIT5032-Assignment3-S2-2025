@@ -17,7 +17,7 @@
                         >
                         <ul v-show="connectPillar" class="dropdown-menu">
                             <li>
-                                <router-link class="dropdown-item" to="/connect/society">
+                                <router-link class="dropdown-item" to="/connect/community">
                                     Community
                                 </router-link>
                             </li>
