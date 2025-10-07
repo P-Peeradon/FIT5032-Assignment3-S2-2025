@@ -10,7 +10,7 @@
 const { setGlobalOptions } = require('firebase-functions');
 const { onRequest } = require('firebase-functions/https');
 const admin = require('firebase-admin');
-const { createUserWithEmailAndPassword } = require('firebase/auth');
+const { createUserWithEmailAndPassword, signInWithEmailAndPassword } = require('firebase/auth');
 const { auth } = require('../src/firebase/init');
 const cors = require('cors')({ origin: true });
 require('dotenv').config();
@@ -48,7 +48,7 @@ exports.createUser = onRequest((req, res) => {
 
             res.status(201).send({ msg: 'Successfully created user successful.' });
         } catch (error) {
-            res.status(500).send('Error in registering user.');
+            res.status(500).send(`Error in registering user: ${error}`);
         }
     });
 });
@@ -78,8 +78,7 @@ exports.recordUser = onRequest((req, res) => {
 
             res.status(201).send({ id: userDocRef.id, msg: 'Record new user successfully.' });
         } catch (error) {
-            console.error(`Error recording new user: ${error}`);
-            res.status(500).send('Error in recording user to database.');
+            res.status(500).send(`Error recording new user: ${error.message}`);
         }
     });
 });
@@ -101,10 +100,11 @@ exports.loginUser = onRequest((req, res) => {
                 );
             }
 
+            await signInWithEmailAndPassword(auth, data.email, data.password);
+
             res.status(200).send({ msg: 'Log in successfully.' });
         } catch (error) {
-            console.error(`Log in error: ${error}`);
-            res.status(500).send('Error in logging in.');
+            res.status(500).send(`Log in error: ${error.message}`);
         }
     });
 });
@@ -129,10 +129,83 @@ exports.getAllFeatures = onRequest((req, res) => {
                 });
             });
 
-            res.status(200).json(features);
+            res.status(200).send(features);
         } catch (error) {
-            console.error(`Error fetching function: ${error.message}`);
-            res.status(500).send('Error counting books.');
+            res.status(500).send(`Error fetching function: ${error.message}`);
+        }
+    });
+});
+
+// Get the user data with the request id
+// method: GET
+exports.fetchUserState = onRequest((req, res) => {
+    cors(req, res, async () => {
+        if (req.method !== 'GET') {
+            res.status(405).send('GET Method only.');
+            return;
+        }
+
+        const data = { ...req.body };
+
+        if (data.userId !== auth.currentUser.uid) {
+            res.status(401).send('You are unauthorised to access user data.');
+            return;
+        }
+
+        try {
+            const usersCollection = admin.firestore().collection('users');
+            const docRef = usersCollection.doc(data.userId);
+            const doc = await docRef.get();
+
+            if (!doc.exists) {
+                res.status(404).send('Document does not exists.');
+                return;
+            }
+
+            res.status(200).json({ ...doc.data() });
+        } catch (error) {
+            res.status(500).send(`Error in getting user state: ${error.message}`);
+        }
+    });
+});
+
+// Fetch User Journal
+// Method: GET
+exports.fetchUserJournal = onRequest((req, res) => {
+    cors(req, res, async () => {
+        if (req.method !== 'GET') {
+            res.status(405).send('GET Method only.');
+            return;
+        }
+
+        const data = { ...req.body };
+
+        if (data.userId !== auth.currentUser.uid) {
+            res.status(401).send('You are unauthorised to access user data.');
+            return;
+        }
+
+        // In case of your are practitioner, you can ask for consent to access journal.
+        // If the user get to critic level, practitioner can alert and contact the user.
+        if (data.role === 'practitioner') {
+            // Wait
+        }
+
+        try {
+            const userRef = await admin.firestore().collection('users').doc(data.userId);
+            const journalSnapshop = await userRef.collection('journals').get();
+
+            const journals = [];
+
+            journalSnapshop.forEach((doc) => {
+                journals.push({
+                    ...doc.data(),
+                });
+            });
+
+            res.status(200).send(journals);
+        } catch (error) {
+            res.status(500).send(`Error in getting user journals: ${error.message}`);
         }
     });
 });
