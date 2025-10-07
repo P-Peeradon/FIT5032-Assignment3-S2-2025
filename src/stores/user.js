@@ -13,15 +13,20 @@ const authStore = defineStore('auth', () => {
         return currentUser.value.isnull() ? true : false;
     });
 
-    onAuthStateChanged(auth, async (user) => {
-        authLoad.value = true;
-        if (user) {
-            currentUser.value = await { uid: auth.currentUser.uid, email: auth.currentUser.email };
-        } else {
-            currentUser.value = null;
-        }
-        authLoad.value = false;
-    });
+    const initAuth = () => {
+        onAuthStateChanged(auth, async (user) => {
+            authLoad.value = true;
+            if (user) {
+                currentUser.value = await {
+                    uid: auth.currentUser.uid,
+                    email: auth.currentUser.email,
+                };
+            } else {
+                currentUser.value = null;
+            }
+            authLoad.value = false;
+        });
+    };
 });
 
 const userStore = defineStore('user', () => {});
