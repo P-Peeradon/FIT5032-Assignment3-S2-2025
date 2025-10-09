@@ -13,6 +13,10 @@ dist
 dist-ssr
 coverage
 *.local
+*.json
+*.env
+*.config.js
+*.md
 
 /cypress/videos/
 /cypress/screenshots/
@@ -27,8 +31,6 @@ coverage
 *.sln
 *.sw?
 .editorconfig
-*.json
-*.env
-*.config.js
+
 
 *.tsbuildinfo
