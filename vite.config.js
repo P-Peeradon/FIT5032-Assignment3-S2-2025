@@ -10,6 +10,12 @@ export default defineConfig({
     vue(),
     vueDevTools(),
   ],
+  define: {
+    // Map process.env to import.meta.env
+    'process.env': import.meta.env
+    // You can also use: 'process.env': 'import.meta.env'
+    // or set specific keys like: 'process.env.VITE_API_KEY': JSON.stringify(process.env.VITE_API_KEY)
+  }
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
