@@ -15,7 +15,7 @@ const router = useRouter();
 
 const authorise = async (payload) => {
     try {
-        await axios.post('', payload); // Sign in using cloud function
+        await axios.post('http://localhost:3000/login', payload); // Sign in using cloud function
     } catch (error) {
         console.error(`Error in signing in: ${error}`);
     }

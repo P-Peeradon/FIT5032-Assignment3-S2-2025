@@ -13,21 +13,14 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const handleCreateUser = async (payload) => {
-    // Validate user.
     try {
-        await axios.get('/register/validate', payload);
-    } catch (error) {
-        console.error(error)
-    }
-
-    try {
-        await axios.post(, payload); // To firebase auth
-        await axios.post(, payload); // To firebase Firestore
+        await axios.post('http://localhost:3000/register/auth', payload); // To firebase auth
+        await axios.post('http://localhost:3000/register/firestore', payload); // To firebase Firestore
     } catch (error) {
         console.error(`Error in request for creating new user: ${error}`);
     }
 
-    router.push('/login')
+    router.push('/login');
 };
 </script>
 
