@@ -192,7 +192,7 @@ exports.fetchUserJournal = onRequest((req, res) => {
         }
 
         try {
-            const userRef = await admin.firestore().collection('users').doc(data.userId);
+            const userRef = admin.firestore().collection('users').doc(data.userId);
             const journalSnapshop = await userRef.collection('journals').get();
 
             const journals = [];
@@ -206,6 +206,33 @@ exports.fetchUserJournal = onRequest((req, res) => {
             res.status(200).send(journals);
         } catch (error) {
             res.status(500).send(`Error in getting user journals: ${error.message}`);
+        }
+    });
+});
+
+// Fetch all communities stored in the system.
+// Method: GET
+exports.fetchAllCommunities = onRequest((req, res) => {
+    cors(req, res, async () => {
+        if (req.method !== 'GET') {
+            res.status(405).send('GET Method only.');
+            return;
+        }
+
+        try {
+            const communitiesCollection = admin.firestore().collection('communities');
+            const snapshot = await communitiesCollection.get();
+            const communities = [];
+
+            snapshot.forEach((doc) => {
+                communities.push({
+                    ...doc.data(),
+                });
+            });
+
+            res.status(200).send(communities);
+        } catch (error) {
+            res.status(500).send(`Error in fetching communities: ${error.message}`);
         }
     });
 });
