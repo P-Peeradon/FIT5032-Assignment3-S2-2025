@@ -7,13 +7,12 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
-const { setGlobalOptions } = require('firebase-functions');
-const { onRequest } = require('firebase-functions/https');
-const admin = require('firebase-admin');
-const { createUserWithEmailAndPassword, signInWithEmailAndPassword } = require('firebase/auth');
-const { auth } = require('../src/firebase/init');
-const cors = require('cors')({ origin: true });
-require('dotenv').config();
+import { setGlobalOptions } from 'firebase-functions';
+import { onRequest } from 'firebase-functions/https';
+import admin from 'firebase-admin';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../src/firebase/init.js';
+import cors from 'cors';
 
 admin.initializeApp();
 
@@ -29,54 +28,36 @@ admin.initializeApp();
 // this will be the maximum concurrent request count.
 setGlobalOptions({ maxInstances: 10 });
 
+// Cloud function will handle only auth and firestore service connection.
+// The code will not located in server.js;
+
 // Create new user in Firebase auth.
 // Method: POST
-exports.createUser = onRequest((req, res) => {
+export const createUser = onRequest((req, res) => {
     cors(req, res, async () => {
-        if (req.method !== 'POST') {
-            res.status(405).send('Allow only POST method.');
-        }
-
-        const data = { ...req.body };
-
-        if (!data.email || !data.password) {
-            res.status(400).send('Please include your email and password in request data.');
-        }
-
+        const frame = { ...req.body };
         try {
-            await createUserWithEmailAndPassword(auth, data.email, data.password);
-
-            res.status(201).send({ msg: 'Successfully created user successful.' });
+            await createUserWithEmailAndPassword(auth, frame.email, frame.password);
         } catch (error) {
-            res.status(500).send(`Error in registering user: ${error}`);
+            res.status(500).send(`Error in registering user: ${error.message}`);
         }
     });
 });
 
 // Record user in Firestore.
 // Method: POST
-exports.recordUser = onRequest((req, res) => {
+export const recordUser = onRequest((req, res) => {
     cors(req, res, async () => {
-        if (req.method !== 'POST') {
-            res.status(405).send('Allow only POST method.');
-            return;
-        }
+        const frame = { ...req.body };
 
         try {
             const usersCollection = admin.firestore().collection('users');
-            const data = { ...req.body };
-            if (!data.username || !data.email || !data.role) {
-                res.status(400).send('Please include your username, email and role in your data.');
-                return;
-            }
 
             const userDocRef = await usersCollection.doc(auth.currentUser.uid).set({
-                username: data.username,
-                email: data.email,
-                role: data.role,
+                username: frame.username,
+                email: frame.email,
+                role: frame.role,
             });
-
-            res.status(201).send({ id: userDocRef.id, msg: 'Record new user successfully.' });
         } catch (error) {
             res.status(500).send(`Error recording new user: ${error.message}`);
         }
@@ -85,24 +66,12 @@ exports.recordUser = onRequest((req, res) => {
 
 // Login the user
 // method: POST
-exports.loginUser = onRequest((req, res) => {
+export const loginUser = onRequest((req, res) => {
     cors(req, res, async () => {
-        if (req.method !== 'POST') {
-            res.status(405).send('Allow only POST method.');
-            return;
-        }
+        const frame = { ...req.body };
 
         try {
-            const data = { ...req.body };
-            if (!data.email || !data.password) {
-                res.status(400).send(
-                    'Invalid login credential. Please include your email and password',
-                );
-            }
-
-            await signInWithEmailAndPassword(auth, data.email, data.password);
-
-            res.status(200).send({ msg: 'Log in successfully.' });
+            await signInWithEmailAndPassword(auth, frame.email, frame.password);
         } catch (error) {
             res.status(500).send(`Log in error: ${error.message}`);
         }
@@ -111,13 +80,8 @@ exports.loginUser = onRequest((req, res) => {
 
 // Fetch all features from database.
 // Method: GET
-exports.getAllFeatures = onRequest((req, res) => {
+export const getAllFeatures = onRequest((req, res) => {
     cors(req, res, async () => {
-        if (req.method !== 'GET') {
-            res.status(405).send('GET Method only.');
-            return;
-        }
-
         try {
             const featuresCollection = admin.firestore().collection('features');
             const snapshot = await featuresCollection.get();
@@ -138,23 +102,18 @@ exports.getAllFeatures = onRequest((req, res) => {
 
 // Get the user data with the request id
 // method: GET
-exports.fetchUserState = onRequest((req, res) => {
+export const fetchUserState = onRequest((req, res) => {
     cors(req, res, async () => {
-        if (req.method !== 'GET') {
-            res.status(405).send('GET Method only.');
-            return;
-        }
+        const frame = { ...req.body };
 
-        const data = { ...req.body };
-
-        if (data.userId !== auth.currentUser.uid) {
+        if (frame.userId !== auth.currentUser.uid) {
             res.status(401).send('You are unauthorised to access user data.');
             return;
         }
 
         try {
             const usersCollection = admin.firestore().collection('users');
-            const docRef = usersCollection.doc(data.userId);
+            const docRef = usersCollection.doc(frame.userId);
             const doc = await docRef.get();
 
             if (!doc.exists) {
@@ -162,63 +121,17 @@ exports.fetchUserState = onRequest((req, res) => {
                 return;
             }
 
-            res.status(200).json({ ...doc.data() });
+            res.status(200).send({ ...doc.data() });
         } catch (error) {
             res.status(500).send(`Error in getting user state: ${error.message}`);
         }
     });
 });
 
-// Fetch User Journal
-// Method: GET
-exports.fetchUserJournal = onRequest((req, res) => {
-    cors(req, res, async () => {
-        if (req.method !== 'GET') {
-            res.status(405).send('GET Method only.');
-            return;
-        }
-
-        const data = { ...req.body };
-
-        if (data.userId !== auth.currentUser.uid) {
-            res.status(401).send('You are unauthorised to access user data.');
-            return;
-        }
-
-        // In case of your are practitioner, you can ask for consent to access journal.
-        // If the user get to critic level, practitioner can alert and contact the user.
-        if (data.role === 'practitioner') {
-            // Wait
-        }
-
-        try {
-            const userRef = admin.firestore().collection('users').doc(data.userId);
-            const journalSnapshop = await userRef.collection('journals').get();
-
-            const journals = [];
-
-            journalSnapshop.forEach((doc) => {
-                journals.push({
-                    ...doc.data(),
-                });
-            });
-
-            res.status(200).send(journals);
-        } catch (error) {
-            res.status(500).send(`Error in getting user journals: ${error.message}`);
-        }
-    });
-});
-
 // Fetch all communities stored in the system.
 // Method: GET
-exports.fetchAllCommunities = onRequest((req, res) => {
+export const fetchAllCommunities = onRequest((req, res) => {
     cors(req, res, async () => {
-        if (req.method !== 'GET') {
-            res.status(405).send('GET Method only.');
-            return;
-        }
-
         try {
             const communitiesCollection = admin.firestore().collection('communities');
             const snapshot = await communitiesCollection.get();

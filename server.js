@@ -1,6 +1,7 @@
 import { auth, db } from './src/firebase/init.js';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
+import axios from 'axios';
 
 import express from 'express';
 import { body, validationResult } from 'express-validator';
@@ -98,15 +99,17 @@ app.post('/register/auth', async (req, res) => {
 
     if (!data.email || !data.password) {
         res.status(400).send('Please include your email and password in request data.');
+        return;
     }
 
     try {
-        await createUserWithEmailAndPassword(auth, data.email, data.password);
-
-        res.status(201).send({ msg: 'Successfully created user successful.' });
+        await axios.post('', data); //To cloud
     } catch (error) {
-        res.status(500).send(`Error in registering user: ${error}`);
+        res.status(500).send(`Error in registering user: ${error.message}`);
+        return;
     }
+
+    res.status(201).send({ message: 'Successfully created user successful.' });
 });
 
 // Record new user by contacting firestore.
@@ -116,25 +119,19 @@ app.post('/register/firestore', async (req, res) => {
         return;
     }
 
+    const data = { ...req.body };
+    if (!data.username || !data.email || !data.role) {
+        res.status(400).send({ msg: 'Please include your username, email and role in your data.' });
+        return;
+    }
+
     try {
-        const data = { ...req.body };
-        if (!data.username || !data.email || !data.role) {
-            res.status(400).send('Please include your username, email and role in your data.');
-            return;
-        }
-
-        const docRef = doc(db, 'users', auth.currentUser.uid);
-
-        const userDocRef = await setDoc(docRef, {
-            username: data.username,
-            email: data.email,
-            role: data.role,
-        }); // If no document with the specific id exists, setDoc() creates new doc with that docID in that collection.
-
-        res.status(201).send({ id: userDocRef.id, msg: 'Record new user successfully.' });
+        await axios.post('', data);
     } catch (error) {
         res.status(500).send(`Error recording new user: ${error.message}`);
     }
+
+    res.status(201).send({ id: auth.currentUser.uid, msg: 'Record new user successfully.' });
 });
 
 app.post('/login', async (req, res) => {
@@ -142,16 +139,15 @@ app.post('/login', async (req, res) => {
         res.status(405).send('Allow only POST method.');
         return;
     }
+    const data = { ...req.body };
+    if (!data.email || !data.password) {
+        res.status(400).send({
+            message: 'Invalid login credential. Please include your email and password',
+        });
+    }
 
     try {
-        const data = { ...req.body };
-        if (!data.email || !data.password) {
-            res.status(400).send(
-                'Invalid login credential. Please include your email and password',
-            );
-        }
-
-        await signInWithEmailAndPassword(auth, data.email, data.password);
+        await axios.post('', data);
 
         res.status(200).send({ msg: 'Log in successfully.' });
     } catch (error) {

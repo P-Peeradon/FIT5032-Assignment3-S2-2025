@@ -2,6 +2,7 @@ import { db } from './src/firebase/init.js';
 import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
 
 import express from 'express';
+import { Community } from './src/assets/community.js';
 const router = express.Router();
 
 router.get('/connect/community', async (req, res) => {
@@ -11,16 +12,9 @@ router.get('/connect/community', async (req, res) => {
     }
 
     try {
-        const communitiesCollection = collection(db, 'communities');
-        const snapshot = await communitiesCollection.getDocs();
-        const communities = [];
-
-        snapshot.forEach((doc) => {
-            communities.push({
-                id: doc.id,
-                ...doc.data(),
-            });
-        });
+        const response = await axios.get('');
+        const data = await response.json();
+        const communities = data.map((obj) => new Community(obj));
 
         res.status(200).send(communities);
     } catch (error) {
