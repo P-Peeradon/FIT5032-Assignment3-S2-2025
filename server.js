@@ -2,17 +2,17 @@ import { auth, db } from './src/firebase/init.js';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
 
-const express = require('express');
-const { body, validationResult } = require('express-validator');
+import express from 'express';
+import { body, validationResult } from 'express-validator';
+
+import adminRoutes from './server/admin.js';
+import connectRoutes from './server/connect.js';
+import growRoutes from './server/grow.js';
+import reflectRoutes from './server/reflect.js';
 
 const app = express();
 app.use(express.json()); //Allow parsing request body as JSON
 const port = 3000;
-
-const adminRoutes = require('./server/admin.js');
-const connectRoutes = require('./server/connect.js');
-const growRoutes = require('./server/grow.js');
-const reflectRoutes = require('./server/reflect.js');
 
 app.use('/admin', adminRoutes);
 app.use('/connect', connectRoutes);

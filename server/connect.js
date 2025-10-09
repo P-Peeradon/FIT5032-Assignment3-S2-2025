@@ -1,7 +1,7 @@
 import { db } from './src/firebase/init.js';
 import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
 
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
 router.get('/connect/community', async (req, res) => {
@@ -28,4 +28,4 @@ router.get('/connect/community', async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

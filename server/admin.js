@@ -1,8 +1,8 @@
 import { auth, db } from './src/firebase/init.js';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
 
-const express = require('express');
+import express from 'express';
+
 const router = express.Router();
 
 router.get('/admin/features', async (req, res) => {
@@ -56,4 +56,4 @@ router.get('/admin/user', async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;
