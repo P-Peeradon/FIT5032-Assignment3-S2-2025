@@ -1,10 +1,12 @@
 export class Community {
-    constructor(name, abbrev, description, location, contact) {
+    constructor(name, abbrev, owner, description, location, contact) {
         this.name = name;
         this.abbrev = abbrev;
+        this.owner = owner;
         this.description = description;
         this.location = location;
         this.contact = contact;
+        this.organisation = '';
         this.address = {};
     }
 
@@ -28,6 +30,14 @@ export class Community {
 
     getContact() {
         return this.contact;
+    }
+
+    getOrganisation() {
+        return this.organisation;
+    }
+
+    getAddress() {
+        return this.address;
     }
 }
 
