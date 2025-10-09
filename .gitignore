@@ -27,8 +27,8 @@ coverage
 *.sln
 *.sw?
 .editorconfig
-package.json
+*.json
 *.env
-vite.config.js
+*.config.js
 
 *.tsbuildinfo
