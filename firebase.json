@@ -12,7 +12,10 @@
     "ui": {
       "enabled": true
     },
-    "singleProjectMode": true
+    "singleProjectMode": true,
+    "functions": {
+      "port": 5001
+    }
   },
   "firestore": {
     "database": "(default)",
@@ -22,9 +25,9 @@
   },
   "functions": [
     {
-      "source": "functions",
       "codebase": "default",
-      "ignore": ["node_modules", ".git", "firebase-debug.log", "firebase-debug.*.log", "*.local"]
+      "ignore": ["node_modules", ".git", "firebase-debug.log", "firebase-debug.*.log", "*.local"],
+      "source": "functions"
     }
   ]
 }
