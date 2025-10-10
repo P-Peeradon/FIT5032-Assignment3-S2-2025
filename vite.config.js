@@ -6,7 +6,7 @@ import vueDevTools from 'vite-plugin-vue-devtools';
 
 // https://vite.dev/config/
 export default defineConfig({
-    plugins: [vue(), vueDevTools()],
+    plugins: [vue()],
     define: {
         // Map process.env to import.meta.env
         'process.env': JSON.stringify({}),

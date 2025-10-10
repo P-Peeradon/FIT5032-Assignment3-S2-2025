@@ -71,7 +71,7 @@ onMounted(() => {
 });
 
 watch((query, location), () => {
-    displayedCommunity.value = [...new Set(locationResult).intersect([...new Set(queryResult)])];
+    displayedCommunity.value = [...new Set(locationResult).intersect(...new Set(queryResult))];
 });
 </script>
 
