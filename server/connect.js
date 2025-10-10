@@ -1,24 +1,24 @@
-import { db } from './src/firebase/init.js';
-import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
-
 import express from 'express';
-import { Community } from './src/assets/community.js';
+import { db } from '../src/firebase/init.js';
+import { collection, getDocs } from 'firebase/firestore';
+
 const router = express.Router();
 
-router.get('/connect/community', async (req, res) => {
-    if (req.method !== 'GET') {
-        res.status(405).send('GET Method only.');
-        return;
-    }
-
+router.get('/community', async (req, res) => {
     try {
-        const response = await axios.get('');
-        const data = await response.json();
-        const communities = data.map((obj) => new Community(obj));
+        const communityRef = collection(db, 'communities');
+        const snapshot = await getDocs(communityRef);
 
-        res.status(200).send(communities);
+        const communities = [];
+
+        snapshot.forEach((d) => {
+            communities.push({ id: d.id, ...d.data() });
+        });
+
+        res.status(200).json(communities);
     } catch (error) {
-        res.status(500).send(`Error in fetching communities: ${error.message}`);
+        console.error(`Failed to fetch communities: ${error}`);
+        res.status(500).send('Failed to fetch communities');
     }
 });
 

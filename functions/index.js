@@ -7,12 +7,13 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
-import { setGlobalOptions } from 'firebase-functions';
+import { setGlobalOptions } from 'firebase-functions/v2';
 import { onRequest } from 'firebase-functions/https';
 import admin from 'firebase-admin';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../src/firebase/init.js';
 import cors from 'cors';
+import { doc } from 'firebase/firestore';
 
 admin.initializeApp();
 
@@ -26,7 +27,7 @@ admin.initializeApp();
 // functions should each use functions.runWith({ maxInstances: 10 }) instead.
 // In the v1 API, each function can only serve one request per container, so
 // this will be the maximum concurrent request count.
-setGlobalOptions({ maxInstances: 10 });
+setGlobalOptions({ region: 'us-central1', maxInstances: 10 });
 
 // Cloud function will handle only auth and firestore service connection.
 // The code will not located in server.js;
@@ -146,6 +147,24 @@ export const fetchAllCommunities = onRequest((req, res) => {
             res.status(200).send(communities);
         } catch (error) {
             res.status(500).send(`Error in fetching communities: ${error.message}`);
+        }
+    });
+});
+
+export const fetchAllAvatar = onRequest((req, res) => {
+    cors(req, res, async () => {
+        try {
+            const avatarsCollection = admin.firestore().collection('avatars');
+            const snapshot = await avatarsCollection.get();
+            const avatars = [];
+
+            snapshot.forEach((doc) => {
+                avatars.push({ id: doc.id, ...doc.data() });
+            });
+
+            res.status(200).send(avatars);
+        } catch (error) {
+            res.status(500).send(`Error in fetching avatars: ${error.message}`);
         }
     });
 });

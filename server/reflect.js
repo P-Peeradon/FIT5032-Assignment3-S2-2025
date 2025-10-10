@@ -1,4 +1,4 @@
-import { auth, db } from './src/firebase/init.js';
+import { auth, db } from '../src/firebase/init.js';
 import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
 
 const express = require('express');

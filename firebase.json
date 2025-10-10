@@ -10,11 +10,15 @@
       "port": 9499
     },
     "ui": {
-      "enabled": true
+      "enabled": true,
+      "port": 4000
     },
     "singleProjectMode": true,
     "functions": {
       "port": 5001
+    },
+    "database": {
+      "port": 8000
     }
   },
   "firestore": {
