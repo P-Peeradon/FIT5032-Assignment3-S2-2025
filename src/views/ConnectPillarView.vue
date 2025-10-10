@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { Feature } from '@/assets/feature';
+import { Feature } from '../assets/feature.js';
 import axios from 'axios';
 import { onMounted, ref, computed } from 'vue';
 import FeatureShowcase from '../components/FeatureShowcase.vue';

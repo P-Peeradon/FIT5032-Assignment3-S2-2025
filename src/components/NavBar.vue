@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar container-fluid navbar-expand-lg mt-lg-0 ps-4 d-flex flex-row bg-primary">
         <div>
-            <router-link to="/" class="navbar-brand ms-lg-2" href="#">Chillax Corner</router-link>
+            <RouterLink to="/" class="navbar-brand ms-lg-2" href="#">Chillax Corner</RouterLink>
             <button class="navbar-toggler" type="button" @click="toggleNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -17,9 +17,9 @@
                         >
                         <ul v-show="connectPillar" class="dropdown-menu">
                             <li>
-                                <router-link class="dropdown-item" to="/connect/community">
+                                <RouterLink class="dropdown-item" to="/connect/community">
                                     Community
-                                </router-link>
+                                </RouterLink>
                             </li>
                         </ul>
                     </li>
@@ -33,9 +33,9 @@
                         >
                         <ul v-show="reflectPillar" class="dropdown-menu">
                             <li>
-                                <router-link class="dropdown-item" to="/reflect/journal">
+                                <RouterLink class="dropdown-item" to="/reflect/journal">
                                     Journal
-                                </router-link>
+                                </RouterLink>
                             </li>
                         </ul>
                     </li>
@@ -49,9 +49,9 @@
                         >
                         <ul v-show="growPillar" class="dropdown-menu">
                             <li>
-                                <router-link class="drowdown-item" to="/grow/education">
+                                <RouterLink class="drowdown-item" to="/grow/education">
                                     Mental Education
-                                </router-link>
+                                </RouterLink>
                             </li>
                         </ul>
                     </li>
@@ -63,6 +63,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { RouterLink } from 'vue-router';
 
 const navShow = ref(false);
 const connectPillar = ref(false);

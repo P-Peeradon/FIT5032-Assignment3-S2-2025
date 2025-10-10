@@ -1,69 +1,33 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router';
 import WebHeader from './components/WebHeader.vue';
 import WebFooter from './components/WebFooter.vue';
+import { onAuthStateChanged } from 'firebase/auth';
+import { RouterLink, RouterView } from 'vue-router';
+import { authStore } from './stores/user';
+
+const authState = authStore;
+
+onAuthStateChanged(() => {
+    authState.initAuth();
+});
 </script>
 
 <template>
-    <div style="background-color: bisque">
-        <header>
-            <WebHeader />
-        </header>
-
-        <main>
-            <RouterView />
-        </main>
-
-        <footer>
-            <WebFooter />
-        </footer>
-    </div>
+    <header></header>
+    <main><RouterView /></main>
 </template>
 
-<style>
-header {
-    line-height: 1.5;
-    max-height: 100vh;
+<style scoped>
+.logo {
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter;
+    transition: filter 300ms;
 }
-
-h1 {
-    color: blueviolet;
-    font-size: 30px;
-    font-weight: 600;
-    text-align: center;
+.logo:hover {
+    filter: drop-shadow(0 0 2em #646cffaa);
 }
-
-h2 {
-    color: blue;
-    font-size: 24px;
-    text-align: center;
-}
-
-q {
-    color: #707070;
-    font-size: 18px;
-    text-align: center;
-}
-
-q span {
-    color: aqua;
-}
-
-@media (min-width: 1024px) {
-    header {
-        display: flex;
-        place-items: center;
-        padding-right: calc(var(--section-gap) / 2);
-    }
-
-    .logo {
-        margin: 0 2rem 0 0;
-    }
-
-    header .wrapper {
-        display: flex;
-        place-items: flex-start;
-        flex-wrap: wrap;
-    }
+.logo.vue:hover {
+    filter: drop-shadow(0 0 2em #42b883aa);
 }
 </style>

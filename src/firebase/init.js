@@ -2,7 +2,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-
+import { getFunctions } from 'firebase/functions'; // For Cloud Functions
 import 'dotenv/config';
 
 // Your web app's Firebase configuration
@@ -20,5 +20,6 @@ const firebaseConfig = {
 const fireApp = initializeApp(firebaseConfig);
 const auth = getAuth(fireApp);
 const db = getFirestore(fireApp);
+const functions = getFunctions(fireApp);
 
-export { auth, db };
+export { auth, db, functions };

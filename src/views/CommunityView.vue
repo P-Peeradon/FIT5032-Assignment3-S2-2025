@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-import { communityStore } from '@/stores/connect';
+import { communityStore } from '../stores/connect';
 import { authStore } from '../stores/user';
 import { onMounted, ref, watch, computed } from 'vue';
 

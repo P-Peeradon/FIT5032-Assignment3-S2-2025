@@ -1,19 +1,19 @@
 import { auth, db } from './src/firebase/init.js';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import 'dotenv/config.js';
-
+import 'dotenv/config';
+import cors from 'cors';
 import express from 'express';
 
 import validationRoutes from './server/validation.js';
 import adminRoutes from './server/admin.js';
 import connectRoutes from './server/connect.js';
-
 //import growRoutes from './server/grow.js';
 //import reflectRoutes from './server/reflect.js';
 
 const app = express();
 app.use(express.json()); //Allow parsing request body as JSON
+app.use(cors({ origin: true }));
 const port = process.env.PORT || 3000;
 
 app.use('/validate', validationRoutes);

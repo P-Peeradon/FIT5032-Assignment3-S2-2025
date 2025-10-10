@@ -14,6 +14,7 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'fire
 import { auth } from '../src/firebase/init.js';
 import cors from 'cors';
 import { doc } from 'firebase/firestore';
+import 'dotenv/config';
 
 admin.initializeApp();
 
