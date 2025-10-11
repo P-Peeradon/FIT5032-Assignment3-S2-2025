@@ -11,7 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
-.env
+/.env
 package.json
 
 # Editor directories and files
@@ -25,3 +25,5 @@ package.json
 *.sln
 *.sw?
 
+.firebaserc
+.env

@@ -7,29 +7,16 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
-import { setGlobalOptions } from 'firebase-functions/v2';
-import { onRequest } from 'firebase-functions/https';
-import admin from 'firebase-admin';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../src/firebase/init.js';
-import cors from 'cors';
-import 'dotenv/config';
-import { getFirestore } from 'firebase/firestore';
+const { setGlobalOptions } = require('firebase-functions');
+const { onRequest } = require('firebase-functions/v2/https');
+const logger = require('firebase-functions/logger');
+const admin = require('firebase-admin');
+const cors = require('cors')({ origin: true });
 
-let isInitialised = false;
-let authClient;
-let firestoreClient;
+admin.initializeApp();
 
-const initializeAllClients = () => {
-    if (isInitialized) return; // Prevent re-initialization if called multiple times
-
-    console.log('Initializing shared clients...');
-    admin.initializeApp();
-
-    authClient = getAuth();
-    firestoreClient = getFirestore();
-    isInitialised = true;
-};
+const authClient = admin.auth();
+const firestoreClient = admin.firestore();
 
 // For cost control, you can set the maximum number of containers that can be
 // running at the same time. This helps mitigate the impact of unexpected
@@ -41,14 +28,14 @@ const initializeAllClients = () => {
 // functions should each use functions.runWith({ maxInstances: 10 }) instead.
 // In the v1 API, each function can only serve one request per container, so
 // this will be the maximum concurrent request count.
-setGlobalOptions({ region: 'us-central1', maxInstances: 10 });
+setGlobalOptions({ maxInstances: 10 });
 
-// Cloud function will handle only auth and firestore service connection.
-// The code will not located in server.js;
+// Create and deploy your first functions
+// https://firebase.google.com/docs/functions/get-started
 
-// Create new user in Firebase auth.
+// Record user in Firebase auth.
 // Method: POST
-export const createUser = onRequest((req, res) => {
+exports.createUser = onRequest((req, res) => {
     cors(req, res, async () => {
         if (!authClient || !firestoreClient) {
             res.status(500).send('Services not ready.');
@@ -62,11 +49,11 @@ export const createUser = onRequest((req, res) => {
             res.status(500).send(`Error in registering user: ${error.message}`);
         }
     });
-}).onInit(initializeAllClients);
+});
 
 // Record user in Firestore.
 // Method: POST
-export const recordUser = onRequest((req, res) => {
+exports.recordUser = onRequest((req, res) => {
     cors(req, res, async () => {
         if (!authClient || !firestoreClient) {
             res.status(500).send('Services not ready.');
@@ -92,11 +79,11 @@ export const recordUser = onRequest((req, res) => {
             res.status(500).send(`Error recording new user: ${error.message}`);
         }
     });
-}).onInit(initializeAllClients);
+});
 
 // Login the user
 // method: POST
-export const loginUser = onRequest((req, res) => {
+exports.loginUser = onRequest((req, res) => {
     cors(req, res, async () => {
         if (!authClient || !firestoreClient) {
             res.status(500).send('Services not ready.');
@@ -119,11 +106,11 @@ export const loginUser = onRequest((req, res) => {
             }
         }
     });
-}).onInit(initializeAllClients);
+});
 
 // Fetch all features from database.
 // Method: GET
-export const getAllFeatures = onRequest((req, res) => {
+exports.getAllFeatures = onRequest((req, res) => {
     cors(req, res, async () => {
         if (!firestoreClient) {
             res.status(500).send('Services not ready.');
@@ -146,11 +133,11 @@ export const getAllFeatures = onRequest((req, res) => {
             res.status(500).send(`Error fetching function: ${error.message}`);
         }
     });
-}).onInit(initializeAllClients);
+});
 
 // Get the user data with the request id
 // method: GET
-export const fetchUserState = onRequest((req, res) => {
+exports.fetchUserState = onRequest((req, res) => {
     cors(req, res, async () => {
         if (!authClient || !firestoreClient) {
             res.status(500).send('Services not ready.');
@@ -190,11 +177,11 @@ export const fetchUserState = onRequest((req, res) => {
             res.status(500).send(`Error in getting user state: ${error.message}`);
         }
     });
-}).onInit(initializeAllClients);
+});
 
 // Fetch all communities stored in the system.
 // Method: GET
-export const fetchAllCommunities = onRequest((req, res) => {
+exports.fetchAllCommunities = onRequest((req, res) => {
     cors(req, res, async () => {
         if (!firestoreClient) {
             res.status(500).send('Services not ready.');
@@ -217,9 +204,9 @@ export const fetchAllCommunities = onRequest((req, res) => {
             res.status(500).send(`Error in fetching communities: ${error.message}`);
         }
     });
-}).onInit(initializeAllClients);
+});
 
-export const fetchAllAvatar = onRequest((req, res) => {
+exports.fetchAllAvatar = onRequest((req, res) => {
     cors(req, res, async () => {
         if (!firestoreClient) {
             res.status(500).send('Services not ready.');
@@ -240,4 +227,4 @@ export const fetchAllAvatar = onRequest((req, res) => {
             res.status(500).send(`Error in fetching avatars: ${error.message}`);
         }
     });
-}).onInit(initializeAllClients);
+});
