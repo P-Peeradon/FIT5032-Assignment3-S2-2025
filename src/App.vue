@@ -2,7 +2,7 @@
 import WebHeader from './components/WebHeader.vue';
 import WebFooter from './components/WebFooter.vue';
 import { onAuthStateChanged } from 'firebase/auth';
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterView } from 'vue-router';
 import { authStore } from './stores/user';
 
 const authState = authStore;
@@ -13,8 +13,11 @@ onAuthStateChanged(() => {
 </script>
 
 <template>
-    <header></header>
+    <header>
+        <WebHeader />
+    </header>
     <main><RouterView /></main>
+    <footer><WebFooter /></footer>
 </template>
 
 <style scoped>

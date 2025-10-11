@@ -10,13 +10,26 @@
 import { setGlobalOptions } from 'firebase-functions/v2';
 import { onRequest } from 'firebase-functions/https';
 import admin from 'firebase-admin';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../src/firebase/init.js';
 import cors from 'cors';
-import { doc } from 'firebase/firestore';
 import 'dotenv/config';
+import { getFirestore } from 'firebase/firestore';
 
-admin.initializeApp();
+let isInitialised = false;
+let authClient;
+let firestoreClient;
+
+const initializeAllClients = () => {
+    if (isInitialized) return; // Prevent re-initialization if called multiple times
+
+    console.log('Initializing shared clients...');
+    admin.initializeApp();
+
+    authClient = getAuth();
+    firestoreClient = getFirestore();
+    isInitialised = true;
+};
 
 // For cost control, you can set the maximum number of containers that can be
 // running at the same time. This helps mitigate the impact of unexpected
@@ -37,25 +50,40 @@ setGlobalOptions({ region: 'us-central1', maxInstances: 10 });
 // Method: POST
 export const createUser = onRequest((req, res) => {
     cors(req, res, async () => {
+        if (!authClient || !firestoreClient) {
+            res.status(500).send('Services not ready.');
+            return;
+        }
+
         const frame = { ...req.body };
         try {
-            await createUserWithEmailAndPassword(auth, frame.email, frame.password);
+            await authClient.createUser({ email: frame.email, password: frame.password });
         } catch (error) {
             res.status(500).send(`Error in registering user: ${error.message}`);
         }
     });
-});
+}).onInit(initializeAllClients);
 
 // Record user in Firestore.
 // Method: POST
 export const recordUser = onRequest((req, res) => {
     cors(req, res, async () => {
+        if (!authClient || !firestoreClient) {
+            res.status(500).send('Services not ready.');
+            return;
+        }
+
         const frame = { ...req.body };
 
-        try {
-            const usersCollection = admin.firestore().collection('users');
+        if (!frame.uid) {
+            res.status(401).send('User ID missing or unauthorized.');
+            return;
+        }
 
-            const userDocRef = await usersCollection.doc(auth.currentUser.uid).set({
+        try {
+            const usersCollection = firestoreClient.collection('users');
+
+            await usersCollection.doc(frame.uid).set({
                 username: frame.username,
                 email: frame.email,
                 role: frame.role,
@@ -64,28 +92,46 @@ export const recordUser = onRequest((req, res) => {
             res.status(500).send(`Error recording new user: ${error.message}`);
         }
     });
-});
+}).onInit(initializeAllClients);
 
 // Login the user
 // method: POST
 export const loginUser = onRequest((req, res) => {
     cors(req, res, async () => {
+        if (!authClient || !firestoreClient) {
+            res.status(500).send('Services not ready.');
+            return;
+        }
+
         const frame = { ...req.body };
 
         try {
-            await signInWithEmailAndPassword(auth, frame.email, frame.password);
+            const userRecord = await authClient.getUserByEmail(frame.email);
+            const uid = userRecord.uid;
+            const customToken = await authClient.createCustomToken(uid);
+
+            res.status(200).json({ customToken: customToken });
         } catch (error) {
-            res.status(500).send(`Log in error: ${error.message}`);
+            if (error.code === 'auth/user-not-found') {
+                res.status(401).send('Invalid credentials.');
+            } else {
+                res.status(500).send(`Log in error: ${error.message}`);
+            }
         }
     });
-});
+}).onInit(initializeAllClients);
 
 // Fetch all features from database.
 // Method: GET
 export const getAllFeatures = onRequest((req, res) => {
     cors(req, res, async () => {
+        if (!firestoreClient) {
+            res.status(500).send('Services not ready.');
+            return;
+        }
+
         try {
-            const featuresCollection = admin.firestore().collection('features');
+            const featuresCollection = firestoreClient.collection('features');
             const snapshot = await featuresCollection.get();
             const features = [];
 
@@ -100,22 +146,38 @@ export const getAllFeatures = onRequest((req, res) => {
             res.status(500).send(`Error fetching function: ${error.message}`);
         }
     });
-});
+}).onInit(initializeAllClients);
 
 // Get the user data with the request id
 // method: GET
 export const fetchUserState = onRequest((req, res) => {
     cors(req, res, async () => {
-        const frame = { ...req.body };
-
-        if (frame.userId !== auth.currentUser.uid) {
-            res.status(401).send('You are unauthorised to access user data.');
+        if (!authClient || !firestoreClient) {
+            res.status(500).send('Services not ready.');
             return;
         }
 
+        const authHeader = req.headers.authorization;
+
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).send('No Authorization header provided.');
+        } // It returns authentication state in the header.
+
+        const idToken = authHeader.split('Bearer ')[1];
+        let userId;
+
         try {
-            const usersCollection = admin.firestore().collection('users');
-            const docRef = usersCollection.doc(frame.userId);
+            // Verify the token using the Admin SDK
+            const decodedToken = await authClient.verifyIdToken(idToken);
+            userId = decodedToken.uid; // Securely get the user's UID
+        } catch (error) {
+            // Token is invalid, expired, or malformed
+            return res.status(401).send('You are unauthorised to access user data.');
+        }
+
+        try {
+            const usersCollection = firestoreClient.collection('users');
+            const docRef = usersCollection.doc(userId);
             const doc = await docRef.get();
 
             if (!doc.exists) {
@@ -128,14 +190,19 @@ export const fetchUserState = onRequest((req, res) => {
             res.status(500).send(`Error in getting user state: ${error.message}`);
         }
     });
-});
+}).onInit(initializeAllClients);
 
 // Fetch all communities stored in the system.
 // Method: GET
 export const fetchAllCommunities = onRequest((req, res) => {
     cors(req, res, async () => {
+        if (!firestoreClient) {
+            res.status(500).send('Services not ready.');
+            return;
+        }
+
         try {
-            const communitiesCollection = admin.firestore().collection('communities');
+            const communitiesCollection = firestoreClient.collection('communities');
             const snapshot = await communitiesCollection.get();
             const communities = [];
 
@@ -150,10 +217,15 @@ export const fetchAllCommunities = onRequest((req, res) => {
             res.status(500).send(`Error in fetching communities: ${error.message}`);
         }
     });
-});
+}).onInit(initializeAllClients);
 
 export const fetchAllAvatar = onRequest((req, res) => {
     cors(req, res, async () => {
+        if (!firestoreClient) {
+            res.status(500).send('Services not ready.');
+            return;
+        }
+
         try {
             const avatarsCollection = admin.firestore().collection('avatars');
             const snapshot = await avatarsCollection.get();
@@ -168,4 +240,4 @@ export const fetchAllAvatar = onRequest((req, res) => {
             res.status(500).send(`Error in fetching avatars: ${error.message}`);
         }
     });
-});
+}).onInit(initializeAllClients);
