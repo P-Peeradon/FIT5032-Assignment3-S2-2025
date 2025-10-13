@@ -65,7 +65,7 @@
 
         <div class="row">
             <div class="btn-group d-flex flex-row justify-content-end">
-                <button class="btn btn-secondary">Clear</button>
+                <button class="btn btn-secondary" @click="clearForm">Clear</button>
                 <button type="submit" class="btn btn-primary">Write</button>
             </div>
         </div>
@@ -74,8 +74,7 @@
 
 <script setup>
 import { authStore } from '../stores/user';
-import { ref } from 'process';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const emit = defineEmits(['jot-down', 'clear']);
 
@@ -88,6 +87,13 @@ const content = ref('');
 
 const writeJournal = () => {
     emit('jot-down', {});
+};
+
+const clearForm = () => {
+    topic.value = '';
+    location.value = '';
+    moods.value = [];
+    content.value = '';
 };
 
 onMounted(() => {
