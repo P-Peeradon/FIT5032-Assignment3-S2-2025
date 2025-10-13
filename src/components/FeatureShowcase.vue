@@ -21,7 +21,7 @@ const prop = defineProps({
 });
 
 const feature = prop.feature;
-const path = `/connect/${feature.getTitle()}`;
+const path = `/${feature.getPillar().toLowerCase()}/${feature.getTitle()}`;
 const imgURL = `/src/assets/${encodeURIComponent(
     feature.getPillar().toLowerCase()
 )}/${encodeURIComponent(feature.getTitle().toLowerCase())}.jpg`;
