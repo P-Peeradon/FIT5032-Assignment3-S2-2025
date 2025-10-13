@@ -6,7 +6,7 @@
             they can be key agents for development and peace. If, however, they are left on
             society's margins, all of us will be impoverished<span>Kofi Annan (1938-2018)</span></q
         >
-        <hr />
+        <hr class="border border-primary border-2" />
 
         <!-- All features contain in this application. -->
         <h2 class="my-3">Features for CONNECT</h2>

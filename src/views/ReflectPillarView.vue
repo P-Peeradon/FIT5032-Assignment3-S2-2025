@@ -8,7 +8,7 @@
         >
         <br />
         <span>Margaret Thatcher (1925-2013)</span>
-        <hr />
+        <hr class="border border-primary border-2" />
 
         <!-- All features contain in this application. -->
         <h2>Features for REFLECT</h2>
