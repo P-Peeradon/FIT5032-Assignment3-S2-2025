@@ -3,9 +3,9 @@ import { doc, getDocs, collection, getDoc } from 'firebase/firestore';
 
 import express from 'express';
 import { validationResult } from 'express-validator';
+import { firebaseAuthValidation, decodeToken } from './validation.js';
 
 const router = express.Router();
-const { firebaseAuthValidation, decodeToken } = require('./validation.js');
 
 router.get('/features', firebaseAuthValidation, async (req, res) => {
     const errors = validationResult(req);
@@ -83,4 +83,4 @@ router.get('/avatar', firebaseAuthValidation, async (req, res) => {
     }
 });
 
-exports.module = router;
+export default router;

@@ -1,11 +1,11 @@
 <template>
     <div class="container-fluid">
-        <div class="row">
+        <div class="row py-4 px-2">
             <div class="col-4">
                 <img
                     src="../assets/WebLogo.png"
                     alt="Chillax Corner"
-                    class="image-fluid mx-auto my-auto"
+                    class="image-fluid mx-auto my-auto align-self-center"
                 />
             </div>
             <div class="col-8 d-flex flex-column">

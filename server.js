@@ -1,24 +1,32 @@
-require('dotenv').config();
-const cors = require('cors');
-const express = require('express');
-const axios = require('axios');
+import cors from 'cors';
+import express from 'express';
 
 import validationRoutes from './server/validation.js';
 import adminRoutes from './server/admin.js';
 import connectRoutes from './server/connect.js';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import admin from 'firebase-admin';
+
+import { auth, db } from './src/firebase/init.js';
+import { addDoc, collection } from 'firebase/firestore';
 //import growRoutes from './server/grow.js';
 //import reflectRoutes from './server/reflect.js';
 
+admin.initializeApp({});
+
 const app = express();
-app.use(express.json()); //Allow parsing request body as JSON
+
 app.use(cors({ origin: true }));
-const port = process.env.PORT || 3000;
+app.use(express.json()); //Allow parsing request body as JSON
+app.use(express.urlencoded({ extended: true }));
 
 app.use('/validate', validationRoutes);
 app.use('/admin', adminRoutes);
 app.use('/connect', connectRoutes);
 //app.use('/grow', growRoutes);
 //app.use('/reflect', reflectRoutes);
+
+const port = process.env.PORT || 3000;
 
 // Creating new user by contacting auth.
 app.post('/register/auth', async (req, res) => {
@@ -30,29 +38,13 @@ app.post('/register/auth', async (req, res) => {
     }
 
     try {
-        await axios.post('https://createuser-qbseni5s5q-uc.a.run.app', data);
+        await admin.auth().createUser({ email: data.email, password: data.password });
 
         res.status(201).send({ message: 'Successfully created user.' });
     } catch (error) {
         console.error(`Error in registering new user: ${error}`);
 
-        if (error.response) {
-            // Log the external error response details (optional, but helpful)
-            console.error(`External Service Status: ${error.response.status}`);
-
-            // Forward the external status code and data to the client
-            // This is the cleanest way to handle business logic errors from the microservice.
-            // Using 'return' ensures we exit immediately.
-            return res.status(error.response.status).json(
-                error.response.data || {
-                    error: `Registration failed with status: ${error.response.status}`,
-                    details: 'See logs for external service error.',
-                }
-            );
-        }
-
         res.status(500).send('Error in registering user');
-        return;
     }
 });
 
@@ -65,12 +57,16 @@ app.post('/register/firestore', async (req, res) => {
     }
 
     try {
-        await axios.post('https://recorduser-qbseni5s5q-uc.a.run.app', data);
+        const newUserRef = await addDoc(collection(db, 'users'), {
+            username: data.username,
+            email: data.email,
+            role: data.role,
+        });
+
+        return res.status(201).send({ id: newUserRef.id, msg: 'Record new user successfully.' });
     } catch (error) {
         console.error(`Error in recording new user: ${error}`);
     }
-
-    res.status(201).send({ id: auth.currentUser.uid, msg: 'Record new user successfully.' });
 });
 
 app.post('/login', async (req, res) => {
@@ -82,7 +78,7 @@ app.post('/login', async (req, res) => {
     }
 
     try {
-        await axios.post('https://loginuser-qbseni5s5q-uc.a.run.app', data);
+        await signInWithEmailAndPassword(auth, data.email, data.password);
 
         res.status(200).send({ msg: 'Log in successfully.' });
     } catch (error) {

@@ -1,11 +1,10 @@
 import { body, header, validationResult } from 'express-validator';
-
-const admin = require('firebase-admin');
-const express = require('express');
+import admin from 'firebase-admin';
+import express from 'express';
 const router = express.Router();
 
 // We want to check that client is authorised by Firebase system, as malicious users can send any fake id or any user id by using body.
-exports.firebaseAuthValidation = () => {
+export const firebaseAuthValidation = () => {
     header('Authorization')
         .exists()
         .withMessage('You are unauthorised to access Chillax Corner.')
@@ -26,7 +25,7 @@ exports.firebaseAuthValidation = () => {
         });
 };
 
-exports.decodeToken = async () => {
+export const decodeToken = async () => {
     const idToken = req.headers.authorization?.split('Bearer ')[1];
     if (!idToken) {
         return res.status(401).send('No ID token provided.');
@@ -131,6 +130,13 @@ router.post(
     }
 );
 
-router.post('/journal');
+router.post('/journal', [validateUsername, validateMoods, validateContent], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(400).json({ errors: errors.array() });
+    }
 
-exports.module = router;
+    res.status(204); // Not complete as there is step to perform with firebase auth and firestore.
+});
+
+export default router;

@@ -10,31 +10,31 @@ const authStore = defineStore('auth', () => {
         return currentUser.value ? currentUser.value.uid : null;
     });
     const isAuthenticated = computed(() => {
-        return currentUser.value.isnull() ? true : false;
+        return currentUser.value ? true : false;
     });
 
-    const initAuth = () => {
-        onAuthStateChanged(auth, async (user) => {
+    function initAuth() {
+        onAuthStateChanged(auth, (user) => {
             authLoad.value = true;
             if (user) {
-                currentUser.value = await {
-                    uid: auth.currentUser.uid,
-                    email: auth.currentUser.email,
-                };
+                currentUser.value = user;
             } else {
                 currentUser.value = null;
             }
             authLoad.value = false;
         });
-    };
+    }
+
+    return { currentUser, userID, isAuthenticated, initAuth };
 });
 
 const userStore = defineStore('user', () => {
-    const uid = authStore.userID;
+    const uid = authStore().userID;
     const email = ref('');
     const role = ref('');
     const username = ref('');
     const journals = ref([]);
+    const bookmarks = ref([]);
     const communities = ref([]);
 
     const fetchUserData = async () => {
@@ -68,6 +68,8 @@ const userStore = defineStore('user', () => {
             console.error(error);
         }
     };
+
+    return { uid, email, role, username, journals, communities, fetchUserData };
 });
 
 export { authStore, userStore };

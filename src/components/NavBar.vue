@@ -8,13 +8,17 @@
             <div v-show="navShow" class="navbar-collapse" id="navigation">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
-                        <a
-                            href="#"
-                            @click="toggleConnect"
-                            role="button"
-                            class="nav-link dropdown-toggle"
-                            >Connect</a
-                        >
+                        <RouterLink to="/connect">
+                            <a
+                                href="#"
+                                @mouseover="toggleConnect"
+                                @mouseleave="toggleConnect"
+                                role="button"
+                                class="nav-link dropdown-toggle"
+                                >Connect</a
+                            >
+                        </RouterLink>
+
                         <ul v-show="connectPillar" class="dropdown-menu">
                             <li>
                                 <RouterLink class="dropdown-item" to="/connect/community">
