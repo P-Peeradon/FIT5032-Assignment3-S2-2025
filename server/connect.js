@@ -15,10 +15,10 @@ router.get('/community', async (req, res) => {
             communities.push({ id: d.id, ...d.data() });
         });
 
-        res.status(200).json(communities);
+        return res.status(200).send(communities);
     } catch (error) {
         console.error(`Failed to fetch communities: ${error}`);
-        res.status(500).send('Failed to fetch communities');
+        return res.status(500).send('Failed to fetch communities');
     }
 });
 

@@ -1,9 +1,7 @@
-import { auth, db } from './src/firebase/init.js';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
-import 'dotenv/config';
-import cors from 'cors';
-import express from 'express';
+require('dotenv').config();
+const cors = require('cors');
+const express = require('express');
+const axios = require('axios');
 
 import validationRoutes from './server/validation.js';
 import adminRoutes from './server/admin.js';
@@ -32,30 +30,42 @@ app.post('/register/auth', async (req, res) => {
     }
 
     try {
-        await createUserWithEmailAndPassword(auth, data.email, data.password); //To cloud
+        await axios.post('https://createuser-qbseni5s5q-uc.a.run.app', data);
+
+        res.status(201).send({ message: 'Successfully created user.' });
     } catch (error) {
         console.error(`Error in registering new user: ${error}`);
-        res.status(500).send('Error in registering user');
-    }
 
-    res.status(201).send({ message: 'Successfully created user successful.' });
+        if (error.response) {
+            // Log the external error response details (optional, but helpful)
+            console.error(`External Service Status: ${error.response.status}`);
+
+            // Forward the external status code and data to the client
+            // This is the cleanest way to handle business logic errors from the microservice.
+            // Using 'return' ensures we exit immediately.
+            return res.status(error.response.status).json(
+                error.response.data || {
+                    error: `Registration failed with status: ${error.response.status}`,
+                    details: 'See logs for external service error.',
+                }
+            );
+        }
+
+        res.status(500).send('Error in registering user');
+        return;
+    }
 });
 
 // Record new user by contacting firestore.
 app.post('/register/firestore', async (req, res) => {
     const data = req.body;
-    if (!data.uid || !data.username || !data.email || !data.role) {
+    if (!data.username || !data.email || !data.role) {
         res.status(400).send({ msg: 'Please include your username, email and role in your data.' });
         return;
     }
 
     try {
-        const docRef = doc(db, 'users', data.uid);
-        await setDoc(docRef, {
-            username: data.username,
-            email: data.email,
-            role: data.role,
-        });
+        await axios.post('https://recorduser-qbseni5s5q-uc.a.run.app', data);
     } catch (error) {
         console.error(`Error in recording new user: ${error}`);
     }
@@ -72,7 +82,7 @@ app.post('/login', async (req, res) => {
     }
 
     try {
-        await signInWithEmailAndPassword(auth, data.email, data.password);
+        await axios.post('https://loginuser-qbseni5s5q-uc.a.run.app', data);
 
         res.status(200).send({ msg: 'Log in successfully.' });
     } catch (error) {

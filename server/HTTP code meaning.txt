@@ -1,12 +1,11 @@
 200 OK: For every HTTP success except stated in other 2xx code.
 201 Created: For creating new data.
-202 Accepted: For success but not completed yet (i.e. after pass the validation)
+202 Accepted: For success but not completed yet. (Must have data sent to the res body.)
+204 No Content: For succeeded process that do not need return data (i.e. completed validation)
 
 400 Bad Request: Error in req.body
 401 Unauthorised: If unauthorised users would like to access contents which need authorisation.
 403 Forbidden: If the contents is not for that user, i.e. accessing community discussion forum if you are not in that club or barred by the social worker.
 404 Not Found: In case a user request for data which is not found in database.
-405 Method Not Allowed: If the request method is incorrect
 
-
-500 internal error: In case of any error related to Baas, like Firebase.
+500 internal error: In case of any error related to BaaS, like Firebase.

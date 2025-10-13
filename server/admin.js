@@ -1,26 +1,18 @@
-import { auth, db } from '../src/firebase/init.js';
+import { db } from '../src/firebase/init.js';
 import { doc, getDocs, collection, getDoc } from 'firebase/firestore';
 
 import express from 'express';
+import { validationResult } from 'express-validator';
 
 const router = express.Router();
+const { firebaseAuthValidation, decodeToken } = require('./validation.js');
 
-const isAuthenticated = (req, res, next) => {
-    // **AUTHENTICATION MIDDLEWARE GOES HERE**
-    const authHeader = req.headers.authorization;
-    // 1. Check for ID Token in headers
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-        const idToken = authHeader.split(' ')[1];
-        req.user = idToken;
-        next();
-    } else {
-        res.status(401).send('Unauthorised access.');
+router.get('/features', firebaseAuthValidation, async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(401).send({ errors: errors.array() });
     }
 
-    next();
-};
-
-router.get('/features', isAuthenticated, async (req, res) => {
     try {
         const featuresCollection = collection(db, 'features');
         const snapshot = await getDocs(featuresCollection);
@@ -39,26 +31,42 @@ router.get('/features', isAuthenticated, async (req, res) => {
     }
 });
 
-router.get('/user/:uid', isAuthenticated, async (req, res) => {
-    const userID = req.params.uid;
+router.get('/user/:uid', firebaseAuthValidation, async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(401).send({ errors: errors.array() });
+    }
+
+    const userID = req.params.uid; //Get from params, but malicious users can send any fake userID.
+
+    if (decodeToken().uid !== userID) {
+        return res
+            .status(403)
+            .send({ message: 'Your are forbidden from requesting other users data.' });
+    }
 
     try {
         const usersDocRef = doc(db, 'users', userID);
         const snapshot = await getDoc(usersDocRef);
 
         if (!snapshot.exists) {
-            res.status(404).send('Document does not exists.');
+            res.status(404).send({ message: `User data for ${userID} does not exists.` });
             return;
         }
 
-        res.status(200).json({ id: snapshot.id, ...snapshot.data() });
+        res.status(200).send({ id: snapshot.id, ...snapshot.data() });
     } catch (error) {
-        res.status(500).send(`Error in getting user state: ${error.message}`);
+        res.status(500).send({ message: `Error in getting user state: ${error.message}` });
     }
 });
 
 // Method to get all avatar images from.
-router.get('/avatar', isAuthenticated, async (req, res) => {
+router.get('/avatar', firebaseAuthValidation, async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(401).send({ errors: errors.array() });
+    }
+
     try {
         const avatarRef = collection(db, 'avatar');
         const snapshot = await getDocs(avatarRef);
@@ -75,4 +83,4 @@ router.get('/avatar', isAuthenticated, async (req, res) => {
     }
 });
 
-export default router;
+exports.module = router;

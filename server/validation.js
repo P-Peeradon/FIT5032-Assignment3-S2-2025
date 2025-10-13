@@ -1,10 +1,50 @@
-import express from 'express';
-import { body, validationResult } from 'express-validator';
+import { body, header, validationResult } from 'express-validator';
 
+const admin = require('firebase-admin');
+const express = require('express');
 const router = express.Router();
 
-// Function for validating fields in forms will be declared here to ensure the conformity of data in this application.
+// We want to check that client is authorised by Firebase system, as malicious users can send any fake id or any user id by using body.
+exports.firebaseAuthValidation = () => {
+    header('Authorization')
+        .exists()
+        .withMessage('You are unauthorised to access Chillax Corner.')
+        .bail()
+        .matches(/^Bearer\s.+$/)
+        .withMessage('Authorization header must be in Bearer token format.')
+        .bail()
+        .custom(async (token, { req }) => {
+            const idToken = token.split(' ')[1]; // Extract the token part
+            try {
+                const decodedToken = await admin.auth().verifyIdToken(idToken);
+                req.user = decodedToken; // Attach decoded token to request for later use
+                return true;
+            } catch (error) {
+                console.error(`Error in decoding token: ${error.message}`);
+                res.status(400).send('Invalid or expired Firebase ID token');
+            }
+        });
+};
 
+exports.decodeToken = async () => {
+    const idToken = req.headers.authorization?.split('Bearer ')[1];
+    if (!idToken) {
+        return res.status(401).send('No ID token provided.');
+    }
+    try {
+        const decodedToken = await admin.auth().verifyIdToken(idToken);
+        const uid = decodedToken.uid;
+        const email = decodedToken.email; // The email will be present if the user signed in with email/password or a provider that provides an email.
+
+        next();
+        return { uid: uid, email: email };
+    } catch (error) {
+        console.error(`Error in verifying token: ${error.message}`);
+        return res.status(403).send('Unauthorized.');
+    }
+};
+
+// Function for validating fields in forms will be declared here to ensure the conformity of data in this application.
 // Validate Username
 const validateUsername = () => {
     return body('username')
@@ -35,7 +75,7 @@ const validatePassword = () => {
                 );
             })
             .withMessage(
-                'Password must contain at least one uppercase, one lowercase, one digit and one special character.',
+                'Password must contain at least one uppercase, one lowercase, one digit and one special character.'
             )
     );
 };
@@ -48,7 +88,32 @@ const validateConfirmPassword = () => {
 
 // Validate role, as we define only three roles in our website.
 const validateRole = () => {
-    return body('role').isIn(['user', 'practitioner', 'social worker']);
+    return body('role')
+        .isIn(['user', 'practitioner', 'social worker'])
+        .withMessage('Role must be one of the predefined role.');
+};
+
+const validateMoods = () => {
+    return (
+        body('moods').isArray({ min: 1 }).withMessage('Please specify your mood.') &&
+        body('moods.*')
+            .isIn([
+                'Anger',
+                'Happy',
+                'Joy',
+                'Cheerful',
+                'Fear',
+                'Surprise',
+                'Sad',
+                'Disgust',
+                'Bitter',
+            ])
+            .withMessage('Moods must be in the listed')
+    ); // Validate type to prevent any unwanted type.
+};
+
+const validateContent = () => {
+    return body('norndeud');
 };
 
 // Validate registration form.
@@ -63,7 +128,9 @@ router.post(
         }
 
         res.status(204); // Not complete as there is step to perform with firebase auth and firestore.
-    },
+    }
 );
 
-export default router;
+router.post('/journal');
+
+exports.module = router;

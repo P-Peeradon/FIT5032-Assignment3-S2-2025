@@ -30,8 +30,10 @@
 
         <div class="row">
             <main class="d-grid col-12 col-xl-8 g-col-6 g-col-md-4 g-col-xl-3 gap-2">
-                <div v-for="community in displayedCommunity" :key="community">
-                    <!--Card component-->
+                <div class="row-cols-2 row-cols-md-3 row-cols-xl-4 g-3">
+                    <div v-for="community in displayedCommunity" :key="community">
+                        <!--Card component-->
+                    </div>
                 </div>
             </main>
             <aside class="col-12 col-xl-4">

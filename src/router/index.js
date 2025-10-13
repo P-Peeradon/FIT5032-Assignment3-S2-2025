@@ -4,6 +4,7 @@ import RegisterView from '../views/RegisterView.vue';
 import LoginView from '../views/LoginView.vue';
 import ConnectPillarView from '../views/ConnectPillarView.vue';
 import CommunityView from '../views/CommunityView.vue';
+import JournalView from '../views/JournalView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
             path: '/connect/community',
             name: 'community',
             component: CommunityView,
+        },
+        {
+            path: '/reflect/journal',
+            name: 'journal',
+            component: JournalView,
         },
     ],
 });

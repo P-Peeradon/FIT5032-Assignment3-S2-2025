@@ -13,7 +13,7 @@ dist-ssr
 *.local
 package.json
 .firebaserc
-
+src/firebase/
 
 # Editor directories and files
 .vscode/*
@@ -25,5 +25,4 @@ package.json
 *.njsproj
 *.sln
 *.sw?
-.env
-package.json
+
