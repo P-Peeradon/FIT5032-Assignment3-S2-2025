@@ -1,45 +1,61 @@
 <template>
     <div class="container-fluid">
-        <h1 class="mt-2">Community</h1>
-        <q class="my-3"
-            >The future belongs to our youth... younger people must take over. They must seek and
-            cherish the most basic condition for peace, namely unity in our diversity, and find
-            lasting ways to that goal<span>Nelson Mandela (1918-2013)</span></q
-        >
-        <div class="row g-2">
-            <div class="col-6 col-lg-4 form-floating">
-                <label for="nameSearch">Search club by name</label>
-                <input type="text" id="nameSearch" class="search-item" v-model="query" />
+        <h1 class="mt-2 text-align-center">Community</h1>
+        <main class="col-9 col-xl-8">
+            <div class="row">
+                <p>
+                    <q
+                        >The future belongs to our youth... younger people must take over. They must
+                        seek and cherish the most basic condition for peace, namely unity in our
+                        diversity, and find lasting ways to that goal.</q
+                    >
+                    <br />
+                    <cite><span>Nelson Mandela (1918-2013)</span></cite>
+                </p>
             </div>
-            <div class="col-6 col-lg-8 form-floating">
-                <select v-model="location" class="dropdown">
-                    <option value="" default></option>
-                    <option value="Melbourne">Melbourne</option>
-                    <option value="Sydney">Sydney</option>
-                    <option value="Adelaide">Adelaide</option>
-                    <option value="Auckland">Auckland</option>
-                    <option value="Singapore">Singapore</option>
-                </select>
-            </div>
-        </div>
-        <h3>Which community you looking for</h3>
-        <p>
-            You can select the city you prefer, or type in your interests, separated ny commas, to
-            filter out the club that might fit with your passion.
-        </p>
+            <hr />
 
-        <div class="row">
-            <main class="d-grid col-12 col-xl-8 g-col-6 g-col-md-4 g-col-xl-3 gap-2">
-                <div class="row-cols-2 row-cols-md-3 row-cols-xl-4 g-3">
-                    <div v-for="community in displayedCommunity" :key="community">
-                        <!--Card component-->
-                    </div>
+            <div class="row g-2 mt-2">
+                <div class="col-6 col-lg-4 form-floating">
+                    <input
+                        type="text"
+                        id="nameSearch"
+                        placeholder="Search club by name"
+                        class="form-control"
+                        v-model="query"
+                    />
                 </div>
-            </main>
-            <aside class="col-12 col-xl-4">
-                <!--Side menu (Coming soon)-->
-            </aside>
-        </div>
+                <div class="col-6 col-lg-8 form-floating">
+                    <select
+                        id="location"
+                        placeholder="Location"
+                        v-model="location"
+                        class="form-select"
+                    >
+                        <option value="" default></option>
+                        <option value="Melbourne">Melbourne</option>
+                        <option value="Sydney">Sydney</option>
+                        <option value="Adelaide">Adelaide</option>
+                        <option value="Auckland">Auckland</option>
+                        <option value="Singapore">Singapore</option>
+                    </select>
+                </div>
+            </div>
+            <h3 class="mt-3">Which community you looking for?</h3>
+            <p>
+                You can select the city you prefer, or type in your interests, separated ny commas,
+                to filter out the club that might fit with your passion.
+            </p>
+            <div class="row-cols-2 row-cols-md-3 row-cols-xl-4 g-3">
+                <div v-for="community in displayedCommunity" :key="community">
+                    <!--Card component-->
+                </div>
+            </div>
+        </main>
+
+        <aside class="col-3 col-xl-4">
+            <!--Side menu (Coming soon)-->
+        </aside>
     </div>
 </template>
 
