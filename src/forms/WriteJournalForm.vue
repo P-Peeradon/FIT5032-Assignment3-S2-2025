@@ -1,6 +1,6 @@
 <template setup>
-    <form @submit.prevent="writeJournal">
-        <h2>what's on your mind</h2>
+    <form class="container-md my-3 py-3" @submit.prevent="writeJournal">
+        <h2>What's on your mind</h2>
         <div class="row mt-2">
             <label for="topic" class="form-label">Topic</label>
             <input type="text" class="form-control" id="topic" v-model="topic" />
@@ -12,6 +12,7 @@
         </div>
 
         <div class="mt-2 row-cols-3 g-3">
+            <label>Moods</label>
             <div class="col">
                 <input type="checkbox" value="Anger" v-model="moods" />
                 <label class="form-check-label" for="Anger">Anger</label>
@@ -43,7 +44,7 @@
             </div>
 
             <div>
-                <input type="checkbox" value="Sad" v-model="journalForm.moods" />
+                <input type="checkbox" value="Sad" v-model="moods" />
                 <label class="form-check-label" for="Sad">Sad</label>
             </div>
 
@@ -60,11 +61,17 @@
 
         <div class="row">
             <label for="content" class="form-label"></label>
-            <textarea name="content" id="content" rows="4" v-model="content"></textarea>
+            <textarea
+                name="content"
+                id="content"
+                class="form-control"
+                rows="4"
+                v-model="content"
+            ></textarea>
         </div>
 
         <div class="row">
-            <div class="btn-group d-flex flex-row justify-content-end">
+            <div class="btn-group d-flex flex-row justify-content-end mt-3">
                 <button class="btn btn-secondary" @click="clearForm">Clear</button>
                 <button type="submit" class="btn btn-primary">Write</button>
             </div>

@@ -28,13 +28,17 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a
-                            href="#"
-                            @click="toggleReflect"
-                            role="button"
-                            class="nav-link dropdown-toggle"
-                            >Reflect</a
-                        >
+                        <RouterLink to="/reflect">
+                            <a
+                                href="#"
+                                @mouseover="toggleConnect"
+                                @mouseleave="toggleConnect"
+                                role="button"
+                                class="nav-link dropdown-toggle"
+                                >Reflect</a
+                            >
+                        </RouterLink>
+
                         <ul v-show="reflectPillar" class="dropdown-menu">
                             <li>
                                 <RouterLink class="dropdown-item" to="/reflect/journal">
@@ -44,13 +48,16 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a
-                            href="#"
-                            @click="toggleGrow"
-                            role="button"
-                            class="nav-link dropdown-toggle"
-                            >Grow</a
-                        >
+                        <RouterLink to="/grow">
+                            <a
+                                href="#"
+                                @click="toggleGrow"
+                                role="button"
+                                class="nav-link dropdown-toggle"
+                                >Grow</a
+                            >
+                        </RouterLink>
+
                         <ul v-show="growPillar" class="dropdown-menu">
                             <li>
                                 <RouterLink class="drowdown-item" to="/grow/education">
