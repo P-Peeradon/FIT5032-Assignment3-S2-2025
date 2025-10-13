@@ -16,18 +16,19 @@ const handleCreateUser = async (payload) => {
     try {
         await axios.post('http://localhost:3000/validate/register', payload);
     } catch (error) {
-        alert(`${error.code}: Validation Error: ${error.message}`);
+        console.error(`${error.code}: Validation Error: ${error.message}`);
         return;
     }
 
     try {
-        await axios.post('http://localhost:3000/register/auth', payload); // To firebase auth
-        await axios.post('http://localhost:3000/register/firestore', payload); // To firebase Firestore
-    } catch (error) {
-        alert(`${error.code}: Error in creating new user: ${error.message}`);
-    }
+        await createUserWithEmailAndPassword(auth, payload.email, payload.password);
 
-    router.push('/login');
+        await axios.post('http://localhost:3000/register/firestore', payload);
+
+        router.push('/login');
+    } catch (error) {
+        console.error(`${error.code}: Error in creating new user: ${error.message}`);
+    }
 };
 </script>
 

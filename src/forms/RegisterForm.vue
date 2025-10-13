@@ -89,6 +89,7 @@ const register = () => {
         confirmPassword: confirmPassword.value,
         role: role.value,
     });
+    console.log('Fire register emit.');
 };
 </script>
 
