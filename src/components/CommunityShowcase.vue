@@ -9,7 +9,7 @@
 
 <style scoped>
 .card {
-    width: 12px;
-    height: 9px;
+    width: 24px;
+    height: 18px;
 }
 </style>

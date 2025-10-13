@@ -1,7 +1,7 @@
 <template>
     <div class="card" id="feature">
-        <router-link to="">
-            <img :src="path" alt="" class="card-img-top" />
+        <router-link :to="path" style="text-decoration: none; color: black">
+            <img :src="imgURL" :alt="feature.title" class="card-img-top" />
             <div class="card-body">
                 <h4 class="card-title">{{ feature.title }}</h4>
                 <p class="card-text">{{ feature.description }}</p>
@@ -21,12 +21,19 @@ const prop = defineProps({
 });
 
 const feature = prop.feature;
-const path = `/connect/${feature.title}`;
+const path = `/connect/${feature.getTitle()}`;
+const imgURL = `/src/assets/${encodeURIComponent(
+    feature.getPillar().toLowerCase()
+)}/${encodeURIComponent(feature.getTitle().toLowerCase())}.jpg`;
 </script>
 
 <style scoped>
 #feature {
-    width: 16rem;
-    height: 12rem;
+    width: 64rem;
+    height: 48rem;
+}
+img {
+    width: 64rem;
+    height: auto;
 }
 </style>
