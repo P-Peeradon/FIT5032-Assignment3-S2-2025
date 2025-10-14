@@ -8,6 +8,7 @@ import JournalView from '../views/JournalView.vue';
 import EducationView from '../views/EducationView.vue';
 import ReflectPillarView from '../views/ReflectPillarView.vue';
 import GrowPillarView from '../views/GrowPillarView.vue';
+import ArticleView from '../views/ArticleView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -57,6 +58,12 @@ const router = createRouter({
             path: '/grow/education',
             name: 'education',
             component: EducationView,
+        },
+        {
+            path: '/grow/article/:code',
+            name: 'article',
+            component: ArticleView,
+            params: true,
         },
     ],
 });

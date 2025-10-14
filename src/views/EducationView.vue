@@ -74,6 +74,7 @@
 
                 <div class="row">
                     <DataTable
+                        v-if="fetchedArticles"
                         :value="fetchedArticles"
                         paginator
                         :rows="5"
@@ -83,7 +84,16 @@
                         <Column class="col-3" field="topic" header="Topic"></Column>
                         <Column class="col-3" field="author" header="Author"></Column>
                         <Column class="col-4" field="institute" header="Institute"></Column>
-                        <Column class="col-2"><button class="btn btn-primary">Read</button></Column>
+                        <Column class="col-2" field="code" header="Read">
+                            <template #body="slotProps">
+                                <button
+                                    class="btn btn-primary"
+                                    @click="readArticle(slotProps.data.code)"
+                                >
+                                    Read
+                                </button>
+                            </template>
+                        </Column>
                     </DataTable>
                 </div>
             </main>
@@ -93,29 +103,56 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
 import { authStore } from '../stores/user';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../firebase/init';
+import { auth, db } from '../firebase/init';
 import { articleStore } from '../stores/grow';
+import { collection, getDocs } from 'firebase/firestore';
+import { Section, Article } from '../assets/article';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const authState = authStore();
 const articleState = articleStore();
 
-const fetchedArticles = ref(articleState.articles);
+const fetchedArticles = ref([]);
 
 const sortByTitle = () => {
     fetchedArticles.value.sort((a, b) => a.title.localeCompare(b.title));
 };
 
-onMounted(() => {
-    onAuthStateChanged(auth, (user) => {
-        authState.initAuth();
+const fetchAllArticles = async () => {
+    const articlesRef = collection(db, 'articles');
+    const snapshot = await getDocs(articlesRef);
+    const articles = [];
+
+    snapshot.forEach((d) => {
+        let data = d.data();
+
+        articles.push(
+            new Article({
+                sections: new Section(data.sections),
+                ...data,
+            })
+        );
     });
-    articleState.fetchedArticles();
+
+    fetchedArticles.value = articles;
+};
+
+const readArticle = (articleCode) => {
+    router.push({ name: 'article', params: { code: articleCode } });
+};
+
+onMounted(async () => {
+    onAuthStateChanged(auth, async (user) => {
+        await authState.initAuth();
+    });
+    await fetchAllArticles();
 });
 </script>
 
