@@ -1,13 +1,21 @@
 <template>
     <div class="container-fluid">
-        <h1 class="mt-2">GROW Pillar</h1>
-        <q class="mt-3"
-            >In a world filled with hate, we must still dare to hope. In a world filled with anger,
-            we must still dare to comfort. In a world filled with despair, we must still dare to
-            dream. And in a world filled with distrust, we must still dare to believe.</q
-        >
-        <br />
-        <span>Michael Jackson (1958-2009)</span>
+        <h1 class="mt-2 h1 text-center">GROW Pillar</h1>
+
+        <figure class="text-center">
+            <blockquote class="blockquote mx-4 px-4">
+                <q class="mt-3"
+                    >In a world filled with hate, we must still dare to hope. In a world filled with
+                    anger, we must still dare to comfort. In a world filled with despair, we must
+                    still dare to dream. And in a world filled with distrust, we must still dare to
+                    believe.</q
+                >
+            </blockquote>
+
+            <figcaption class="blockquote-footer">
+                <span>Michael Jackson (1958-2009)</span>
+            </figcaption>
+        </figure>
         <hr class="border border-primary border-2" />
 
         <!-- All features contain in this application. -->

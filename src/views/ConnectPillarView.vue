@@ -1,15 +1,24 @@
 <template>
     <div class="container-fluid">
-        <h1 class="mt-2">CONNECT Pillar</h1>
-        <q class="mt-3"
-            >Young people should be at the forefront of global change and innovation. Empowered,
-            they can be key agents for development and peace. If, however, they are left on
-            society's margins, all of us will be impoverished<span>Kofi Annan (1938-2018)</span></q
-        >
+        <h1 class="mt-2 py-2 h1 text-center">CONNECT Pillar</h1>
+        <figure class="text-center">
+            <blockquote class="blockquote">
+                <q class="mt-3 mx-4 px-4"
+                    >Young people should be at the forefront of global change and innovation.
+                    Empowered, they can be key agents for development and peace. If, however, they
+                    are left on society's margins, all of us will be impoverished</q
+                >
+            </blockquote>
+
+            <figcaption class="blockquote-footer">
+                <span>Kofi Annan (1938-2018)</span>
+            </figcaption>
+        </figure>
+
         <hr class="border border-primary border-2" />
 
         <!-- All features contain in this application. -->
-        <h2 class="my-3">Features for CONNECT</h2>
+        <h2 class="my-3 h2">Features for CONNECT</h2>
         <div v-if="connectFeatures" class="d-flex flex-column flex-lg-row">
             <div v-for="feature in connectFeatures" :key="feature.title">
                 <FeatureShowcase :feature="feature" />

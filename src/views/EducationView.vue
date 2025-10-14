@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <h1 class="py-2">Education</h1>
+        <h1 class="py-2 display-1 text-heading-primary">Education</h1>
         <div class="row">
             <main class="col-9 col-lg-8">
                 <p>Why do youths need to learn mental health education?</p>
@@ -51,18 +51,27 @@
                         </p>
                     </li>
                 </ol>
-                <p>
+
+                <div class="row">
                     <span class="">Cite:</span>
-                    <cite>
-                        reasons, F. (2025). Five reasons why it’s a great time to study youth mental
-                        health. Orygen.
-                        [https://www.orygen.org.au/About/News-And-Events/2025/Five-reasons-why-it-s-a-great-time-to-study-youth]
-                    </cite>
-                    <cite
-                        >Black Dog Institute. (2020). Youth mental health. Black Dog Institute.
-                        [https://www.blackdoginstitute.org.au/research-areas/youth-mental-health/]</cite
-                    >
-                </p>
+                    <ul class="list">
+                        <li class="list-item">
+                            <cite>
+                                reasons, F. (2025). Five reasons why it’s a great time to study
+                                youth mental health. Orygen.
+                                [https://www.orygen.org.au/About/News-And-Events/2025/Five-reasons-why-it-s-a-great-time-to-study-youth]
+                            </cite>
+                        </li>
+                        <li class="list-item">
+                            <cite
+                                >Black Dog Institute. (2020). Youth mental health. Black Dog
+                                Institute.
+                                [https://www.blackdoginstitute.org.au/research-areas/youth-mental-health/]</cite
+                            >
+                        </li>
+                    </ul>
+                </div>
+
                 <div class="row">
                     <DataTable
                         :value="articles"
@@ -84,11 +93,28 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
+import { authStore } from '../stores/user';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebase/init';
+
+const authState = authStore();
+const fetchedArticles = ref([]);
+
+const sortByTitle = () => {
+    fetchedArticles.value.sort((a, b) => a.title.localeCompare(b.title));
+};
+
 const articles = ref([]);
+
+onMounted(() => {
+    onAuthStateChanged(auth, (user) => {
+        authState.initAuth();
+    });
+});
 </script>
 
 <style></style>

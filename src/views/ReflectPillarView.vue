@@ -1,13 +1,20 @@
 <template>
     <div class="container-fluid">
-        <h1 class="mt-2">REFLECT Pillar</h1>
-        <q class="mt-3"
-            >Watch your thoughts, for they will become actions. Watch your actions, for they'll
-            become habits. Watch your habits for they will forge your character. Watch your
-            character, for it will make your destiny</q
-        >
-        <br />
-        <span>Margaret Thatcher (1925-2013)</span>
+        <h1 class="mt-2 h1 text-center">REFLECT Pillar</h1>
+
+        <figure class="text-center">
+            <blockquote class="blockquote mx-4 px-4">
+                <q class="mt-3"
+                    >Watch your thoughts, for they will become actions. Watch your actions, for
+                    they'll become habits. Watch your habits for they will forge your character.
+                    Watch your character, for it will make your destiny</q
+                >
+            </blockquote>
+
+            <figcaption class="blockquote-footer">
+                <span>Margaret Thatcher (1925-2013)</span>
+            </figcaption>
+        </figure>
         <hr class="border border-primary border-2" />
 
         <!-- All features contain in this application. -->
