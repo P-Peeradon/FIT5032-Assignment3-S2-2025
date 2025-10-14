@@ -8,7 +8,7 @@
                 <section>
                     <h3 class="mt-3 h3 text-info">{{ section.subtitle }}</h3>
                     <div v-for="paragraph in section.paragraphs" :key="paragraph">
-                        <p class="fs-5">{{ paragraph }}</p>
+                        <p class="fs-5 indent">{{ paragraph }}</p>
                     </div>
                 </section>
             </div>
@@ -49,4 +49,8 @@ onMounted(async () => {
 });
 </script>
 
-<style></style>
+<style scope>
+.indent {
+    text-indent: 3rem; /* Indent the first line by 2em */
+}
+</style>
