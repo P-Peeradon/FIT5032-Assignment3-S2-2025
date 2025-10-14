@@ -18,7 +18,6 @@ import { onMounted } from 'vue';
 import { auth } from '../firebase/init';
 
 const authState = authStore();
-const userState = userStore();
 
 const logout = async () => {
     try {
@@ -29,8 +28,8 @@ const logout = async () => {
 };
 
 onMounted(() => {
-    onAuthStateChanged(auth, (user) => {
-        authState.initAuth();
+    onAuthStateChanged(auth, async (user) => {
+        await authState.initAuth();
     });
 });
 </script>

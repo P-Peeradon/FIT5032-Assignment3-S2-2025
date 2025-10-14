@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <h1 class="mt-2 h1 text-center text-primary">REFLECT Pillar</h1>
+        <h1 class="mt-2 py-3 h1 text-center text-primary">REFLECT Pillar</h1>
 
         <figure class="text-center">
             <blockquote class="blockquote mx-4 px-4">
@@ -20,8 +20,11 @@
         <!-- All features contain in this application. -->
         <h2 class="my-3 h2 text-secondary">Features for REFLECT</h2>
 
-        <div v-if="reflectFeatures" class="d-flex flex-column flex-lg-row justify-content-center">
-            <div v-for="feature in reflectFeatures" :key="feature.title">
+        <div
+            v-if="featureState.reflectFeatures"
+            class="d-flex flex-column flex-lg-row justify-content-center"
+        >
+            <div v-for="feature in featureState.reflectFeatures" :key="feature.title">
                 <FeatureShowcase :feature="feature" />
             </div>
         </div>
@@ -30,40 +33,22 @@
 </template>
 
 <script setup>
-import { Feature } from '../assets/feature.js';
-
-import { onMounted, ref, computed } from 'vue';
 import FeatureShowcase from '../components/FeatureShowcase.vue';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebase/init.js';
 
-const fetchedFeatures = ref([]);
-const reflectFeatures = computed(() => {
-    return fetchedFeatures.value.filter((feature) => feature.pillar === 'REFLECT');
-});
+import { onMounted } from 'vue';
+
+import { onAuthStateChanged } from 'firebase/auth';
+import { authStore, featureStore } from '../stores/user.js';
+import { auth } from '../firebase/init.js';
+
+const authState = authStore();
+const featureState = featureStore();
 
 onMounted(async () => {
-    try {
-        const featuresRef = collection(db, 'features');
-        const snap = await getDocs(featuresRef);
-        const features = [];
-
-        snap.forEach((d) => {
-            let data = d.data();
-
-            features.push(
-                new Feature({
-                    title: data.title,
-                    pillar: data.pillar,
-                    description: data.description,
-                })
-            );
-        });
-
-        fetchedFeatures.value = features;
-    } catch (error) {
-        console.error('Error in fetching web features.', error);
-    }
+    onAuthStateChanged(auth, async (user) => {
+        await authState.initAuth();
+    });
+    await featureState.fetchFeatures();
 });
 </script>
 

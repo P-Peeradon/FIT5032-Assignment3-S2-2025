@@ -60,37 +60,24 @@
 </template>
 
 <script setup>
-import { communityStore } from '../stores/connect';
+import { Community } from '../assets/community';
 import { authStore } from '../stores/user';
-import { onMounted, ref, watch, computed } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
 const authState = authStore();
 const query = ref('');
 const location = ref('');
-const communityState = communityStore();
-const displayedCommunity = ref(communityState.communities);
+const communities = ref([]);
 
-const locationResult = computed(() => {
-    return communityState.communities.filter((community) => {
-        if (location.value !== '') return community.location === location.value;
-        else return community;
+onMounted(async () => {
+    onAuthStateChanged(auth, async (user) => {
+        await authState.initAuth();
     });
+    const response = await axios.get('http://localhost:3000/connect/community');
+    communities.value = response.data.map((community) => new Community(community));
 });
 
-const queryResult = computed(() => {
-    return communityState.communities.filter((community) => {
-        if (query.value !== '') return community.name.includes(query.value);
-        else return community;
-    });
-});
-
-onMounted(() => {
-    authState.initAuth();
-});
-
-watch((query, location), () => {
-    displayedCommunity.value = [...new Set(locationResult).intersect(...new Set(queryResult))];
-});
+watch((query, location), () => {});
 </script>
 
 <style scoped></style>

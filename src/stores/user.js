@@ -1,6 +1,8 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import { auth } from '../firebase/init';
+import { Feature } from '../assets/feature';
+import axios from 'axios';
 
 const authStore = defineStore('auth', () => {
     const currentUser = ref(null);
@@ -26,8 +28,31 @@ const authStore = defineStore('auth', () => {
     return { currentUser, userID, isAuthenticated, initAuth };
 });
 
+const featureStore = defineStore('feature', () => {
+    const features = ref([]);
+    const connectFeatures = computed(() => {
+        return features.value.filter((feature) => feature.pillar === 'CONNECT');
+    });
+    const reflectFeatures = computed(() => {
+        return features.value.filter((feature) => feature.pillar === 'REFLECT');
+    });
+    const growFeatures = computed(() => {
+        return features.value.filter((feature) => feature.pillar === 'GROW');
+    });
+
+    const fetchFeatures = async () => {
+        try {
+            const response = await axios.get('https://getallfeatures-qbseni5s5q-uc.a.run.app');
+            features.value = response.data.map((feature) => new Feature(feature));
+        } catch (error) {
+            console.error(`${error.code}: Error in fetching features: ${error.message}`);
+        }
+    };
+
+    return { connectFeatures, reflectFeatures, growFeatures, fetchFeatures };
+});
+
 const userStore = defineStore('user', () => {
-    const uid = authStore().userID;
     const email = ref('');
     const role = ref('');
     const username = ref('');
@@ -37,7 +62,7 @@ const userStore = defineStore('user', () => {
 
     const fetchUserData = async () => {
         try {
-            const userState = await axios.get('', { userId: uid });
+            const userState = await axios.get('');
 
             email.value = userState.email;
             role.value = userState.role;
@@ -72,7 +97,7 @@ const userStore = defineStore('user', () => {
         }
     };
 
-    return { uid, email, role, username, journals, communities, fetchUserData };
+    return { email, role, username, journals, communities, fetchUserData };
 });
 
-export { authStore, userStore };
+export { authStore, userStore, featureStore };

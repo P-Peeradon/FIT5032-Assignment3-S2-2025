@@ -17,6 +17,7 @@ admin.initializeApp();
 
 const authClient = admin.auth();
 const firestoreClient = admin.firestore();
+const storageClient = admin.storage();
 
 // For cost control, you can set the maximum number of containers that can be
 // running at the same time. This helps mitigate the impact of unexpected
@@ -206,6 +207,29 @@ exports.fetchAllCommunities = onRequest((req, res) => {
     });
 });
 
+exports.fetchAllArticles = onRequest((req, res) => {
+    cors(req, res, async () => {
+        if (!firestoreClient) {
+            res.status(500).send('Services not ready.');
+            return;
+        }
+
+        try {
+            const articlesCollection = admin.firestore().collection('articles');
+            const snapshot = await articlesCollection.get();
+            const articles = [];
+
+            snapshot.forEach((doc) => {
+                articles.push({ id: doc.id, ...doc.data() });
+            });
+
+            return res.status(200).send(articles);
+        } catch (error) {
+            return res.status(500).send(`Error in fetching avatars: ${error.message}`);
+        }
+    });
+});
+
 exports.fetchAllAvatar = onRequest((req, res) => {
     cors(req, res, async () => {
         if (!firestoreClient) {
@@ -225,6 +249,36 @@ exports.fetchAllAvatar = onRequest((req, res) => {
             res.status(200).send(avatars);
         } catch (error) {
             res.status(500).send(`Error in fetching avatars: ${error.message}`);
+        }
+    });
+});
+
+exports.uploadCommunityThumbnail = onRequest((req, res) => {
+    cors(req, res, async () => {
+        if (req.method !== 'POST' || req.method !== 'PATCH') {
+            return res.status(404).send('Allow only POST and PATCH method.');
+        }
+
+        if (!storageClient) {
+            return res.status(500).send('Storage client does not ready');
+        }
+
+        const frame = req.body;
+        if (!frame.file || !frame.filename || !frame.mimetype) {
+            return res.status(400).send('Please include your image');
+        }
+        if (!frame.cid) {
+            res.status(400).send('Please include your community id.');
+        }
+
+        const bucket = storageClient.bucket(); // Use default bucket in storage
+        const buffer = Buffer.from(file, 'base64'); // Buffer file from express.js in base64
+
+        const fileRef = bucket.file(`communities/${cid}/${frame.filename}`); // Filepath in Firebase Storage
+        try {
+            await fileRef.save(buffer, { contentType: frame.mimetype });
+        } catch (error) {
+            res.status(500).send('Error in uploading to Firebase Storage.');
         }
     });
 });

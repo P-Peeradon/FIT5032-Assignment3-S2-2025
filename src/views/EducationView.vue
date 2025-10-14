@@ -86,9 +86,18 @@
             <aside class="col-3 col-lg-4"></aside>
             <hr class="border border-primary border-2" />
             <div class="row">
+                <form class="">
+                    <label for="title">Search by Topic</label>
+                    <input id="title" class="form-control" type="text" v-model="topic" />
+                    <label for="institute">Search by Institute</label>
+                    <input id="institute" class="form-control" type="text" v-model="institute" />
+                </form>
+            </div>
+
+            <div class="row">
                 <DataTable
                     v-if="fetchedArticles"
-                    :value="fetchedArticles"
+                    :value="displayedArticles"
                     paginator
                     :rows="5"
                     :rowsPerPageOptions="[5, 8, 10, 20]"
@@ -114,43 +123,54 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import { Section, Article } from '../assets/article';
 
 import { authStore } from '../stores/user';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth, db } from '../firebase/init';
-import { collection, getDocs } from 'firebase/firestore';
-import { Section, Article } from '../assets/article';
+import { auth } from '../firebase/init';
+import axios from 'axios';
+
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const authState = authStore();
 
 const fetchedArticles = ref([]);
+const topic = ref('');
+const institute = ref('');
+
+const displayedArticles = computed(() => {
+    return fetchedArticles.value.filter((article) => {
+        let passesFilter = true; // Start by assuming the article passes
+
+        // 1. Topic Filter (if active)
+        if (topic.value !== '') {
+            const topicMatch = article.topic.toLowerCase().includes(topic.value.toLowerCase());
+            if (!topicMatch) {
+                passesFilter = false;
+            }
+        }
+
+        // 2. Institute Filter (if active)
+        if (institute.value !== '') {
+            const instituteMatch = article.institute
+                .toLowerCase()
+                .includes(institute.value.toLowerCase());
+            if (!instituteMatch) {
+                passesFilter = false;
+            }
+        }
+
+        // The article is only included if it passed all checks
+        return passesFilter;
+    });
+});
 
 const sortByTitle = () => {
     fetchedArticles.value.sort((a, b) => a.title.localeCompare(b.title));
-};
-
-const fetchAllArticles = async () => {
-    const articlesRef = collection(db, 'articles');
-    const snapshot = await getDocs(articlesRef);
-    const articles = [];
-
-    snapshot.forEach((d) => {
-        let data = d.data();
-
-        articles.push(
-            new Article({
-                sections: new Section(data.sections),
-                ...data,
-            })
-        );
-    });
-
-    fetchedArticles.value = articles;
 };
 
 const readArticle = (articleCode) => {
@@ -161,7 +181,11 @@ onMounted(async () => {
     onAuthStateChanged(auth, async (user) => {
         await authState.initAuth();
     });
-    await fetchAllArticles();
+
+    const response = await axios.get('https://fetchallarticles-qbseni5s5q-uc.a.run.app');
+    fetchedArticles.value = response.data.map(
+        (article) => new Article({ sections: new Section(article.sections), ...article })
+    );
 });
 </script>
 

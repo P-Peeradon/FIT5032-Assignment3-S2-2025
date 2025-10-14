@@ -19,8 +19,11 @@
 
         <!-- All features contain in this application. -->
         <h2 class="my-3 h2 text-secondary">Features for CONNECT</h2>
-        <div v-if="connectFeatures" class="d-flex flex-column flex-lg-row justify-content-center">
-            <div v-for="feature in connectFeatures" :key="feature.title">
+        <div
+            v-if="featureState.connectFeatures"
+            class="d-flex flex-column flex-lg-row justify-content-center"
+        >
+            <div v-for="feature in featureState.connectFeatures" :key="feature.title">
                 <FeatureShowcase :feature="feature" />
             </div>
         </div>
@@ -29,40 +32,21 @@
 </template>
 
 <script setup>
-import { Feature } from '../assets/feature.js';
-
-import { onMounted, ref, computed } from 'vue';
 import FeatureShowcase from '../components/FeatureShowcase.vue';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebase/init.js';
+import { onMounted } from 'vue';
 
-const fetchedFeatures = ref([]);
-const connectFeatures = computed(() => {
-    return fetchedFeatures.value.filter((feature) => feature.pillar === 'CONNECT');
-});
+import { onAuthStateChanged } from 'firebase/auth';
+import { authStore, featureStore } from '../stores/user.js';
+import { auth } from '../firebase/init.js';
+
+const authState = authStore();
+const featureState = featureStore();
 
 onMounted(async () => {
-    try {
-        const featuresRef = collection(db, 'features');
-        const snap = await getDocs(featuresRef);
-        const features = [];
-
-        snap.forEach((d) => {
-            let data = d.data();
-
-            features.push(
-                new Feature({
-                    title: data.title,
-                    pillar: data.pillar,
-                    description: data.description,
-                })
-            );
-        });
-
-        fetchedFeatures.value = features;
-    } catch (error) {
-        console.error('Error in fetching web features.', error);
-    }
+    onAuthStateChanged(auth, async (user) => {
+        await authState.initAuth();
+    });
+    await featureState.fetchFeatures();
 });
 </script>
 

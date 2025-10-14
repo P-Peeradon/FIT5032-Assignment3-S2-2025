@@ -1,10 +1,13 @@
 import cors from 'cors';
 import express from 'express';
 import axios from 'axios';
+import multer from 'multer';
 
 import validationRoutes from './server/validation.js';
 import adminRoutes from './server/admin.js';
 import connectRoutes from './server/connect.js';
+import reflectRoutes from './server/reflect.js';
+import growRoutes from './server/grow.js';
 
 import { decodeToken } from './server/validation.js';
 
@@ -13,12 +16,13 @@ const app = express();
 app.use(cors({ origin: true }));
 app.use(express.json()); //Allow parsing request body as JSON
 app.use(express.urlencoded({ extended: true }));
+const upload = multer({ storage: multer.memoryStorage() });
 
 app.use('/validate', validationRoutes);
 app.use('/admin', adminRoutes);
 app.use('/connect', connectRoutes);
-//app.use('/grow', growRoutes);
-//app.use('/reflect', reflectRoutes);
+app.use('/grow', growRoutes);
+app.use('/reflect', reflectRoutes);
 
 const port = process.env.PORT || 3000;
 
