@@ -1,14 +1,19 @@
 <template>
     <div class="container-fluid">
-        <h1 class="py-2 h1 text-heading-primary">Education</h1>
+        <h1 class="mt-2 h1 text-center text-primary">Education</h1>
         <div class="row">
             <main class="col-9 col-lg-8">
-                <p>Why do youths need to learn mental health education?</p>
+                <img src="../assets/grow/education.jpg" alt="education" />
+                <h2 class="h2 text-secondary">
+                    Why do youths need to learn mental health education?
+                </h2>
 
                 <ol>
                     <li>
-                        <span class="">Builds a foundation for lifelong health and resilience</span>
-                        <p>
+                        <span class="fw-bolder text-success"
+                            >Builds a foundation for lifelong health and resilience</span
+                        >
+                        <p class="fs-5">
                             Youth mental health foundation consists of healthy development,
                             emotional regulation and long-term issues prevention. Mental health
                             education makes youths express their own feelings appropriately and
@@ -17,8 +22,10 @@
                         </p>
                     </li>
                     <li>
-                        <span class="">Improves academic and social outcomes </span>
-                        <p>
+                        <span class="fw-bolder text-success"
+                            >Improves academic and social outcomes
+                        </span>
+                        <p class="fs-5">
                             Two main concerns of youths are academic and social aspects. Under good
                             mental health condition, they are more likely to have satisfying
                             academic result and healthy friend connections. Those contribute to
@@ -26,24 +33,28 @@
                         </p>
                     </li>
                     <li>
-                        <span class="">Prevents severe mental health disorders </span>
-                        <p>
+                        <span class="fw-bolder text-success"
+                            >Prevents severe mental health disorders
+                        </span>
+                        <p class="fs-5">
                             Proactively monitoring mental health before age of 25 can prevent mental
                             health disorders to be emerges as crisis. Some youth health issues can
                             cause disability in the future, irreversable.
                         </p>
                     </li>
                     <li>
-                        <span class="">Impacts future generations</span>
-                        <p>
+                        <span class="fw-bolder text-success">Impacts future generations</span>
+                        <p class="fs-5">
                             Healthy mental health in youth can contribute to the development of
                             family members in their later life. Moreover, the good mental health
                             trends can inherit to the next generation.
                         </p>
                     </li>
                     <li>
-                        <span class="">Addresses a critical and growing global issue </span>
-                        <p>
+                        <span class="fw-bolder text-success"
+                            >Addresses a critical and growing global issue
+                        </span>
+                        <p class="fs-5">
                             As youths are the main demographic of many developed countries in the
                             world, including Singapore, Australia and New Zealand, improving their
                             mental health foster the country's economy, workforce and sociography.
