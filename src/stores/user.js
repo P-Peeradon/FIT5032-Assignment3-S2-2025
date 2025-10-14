@@ -14,15 +14,14 @@ const authStore = defineStore('auth', () => {
     });
 
     function initAuth() {
-        onAuthStateChanged(auth, (user) => {
-            authLoad.value = true;
-            if (user) {
-                currentUser.value = user;
-            } else {
-                currentUser.value = null;
-            }
-            authLoad.value = false;
-        });
+        authLoad.value = true;
+        let user = auth.currentUser;
+        if (user) {
+            currentUser.value = user;
+        } else {
+            currentUser.value = null;
+        }
+        authLoad.value = false;
     }
 
     return { currentUser, userID, isAuthenticated, initAuth };
@@ -47,6 +46,11 @@ const userStore = defineStore('user', () => {
         } catch (error) {
             console.error(error);
         }
+    };
+
+    const saveArticle = async (article) => {
+        //Add to user state first
+        bookmarks.value.push(article);
     };
 
     const fetchUserJournal = async () => {

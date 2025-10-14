@@ -14,10 +14,11 @@
 <script setup>
 import { onAuthStateChanged } from 'firebase/auth';
 import { userStore } from '../stores/user.js';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { auth } from '../firebase/init';
 
 const isAuthenticated = ref(false);
+const userState = userStore();
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
