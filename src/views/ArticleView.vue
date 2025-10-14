@@ -9,7 +9,6 @@ import { Article, Section } from '../assets/article';
 import { ref, onMounted, computed } from 'vue';
 
 import { authStore } from '../stores/user';
-import { articleStore } from '../stores/grow';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from 'firebase-admin';
 import { useRoute } from 'vue-router';
@@ -20,7 +19,6 @@ const code = route.params.code;
 const articles = ref([]);
 
 const authState = authStore();
-const articleState = articleStore();
 
 const displayArticle = computed(() => {
     return articles.value.find((article) => article.code === code);
