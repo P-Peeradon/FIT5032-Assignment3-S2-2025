@@ -1,53 +1,42 @@
 <template>
-    <div class="container-fluid">
-        <h1>{{ displayArticle.topic }}</h1>
+    <h1 class="mt-2 h1 text-center text-primary">Article</h1>
+    <div v-if="articleState.isLoaded" class="container-fluid">
+        <article>
+            <h2>{{ articleState.article.topic }}</h2>
+            <p>{{ articleState.article.purpose }}</p>
+            <div v-for="section in articleState.article.sections" :key="section">
+                <section>
+                    <h3 class="mt-3 h3">{{ section.subtitle }}</h3>
+                    <div v-for="paragraph in section.paragraphs" :key="paragraph">
+                        <p>{{ paragraph }}</p>
+                    </div>
+                </section>
+            </div>
+        </article>
     </div>
+    <div v-else>Currently loading article...</div>
 </template>
 
 <script setup>
-import { Article, Section } from '../assets/article';
-import { ref, onMounted, computed } from 'vue';
+import { onMounted } from 'vue';
 
 import { authStore } from '../stores/user';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from 'firebase-admin';
+import { auth } from '../firebase/init';
 import { useRoute } from 'vue-router';
+import { articleStore } from '../stores/grow';
 
 const route = useRoute();
 const code = route.params.code;
 
-const articles = ref([]);
-
 const authState = authStore();
-
-const displayArticle = computed(() => {
-    return articles.value.find((article) => article.code === code);
-});
-
-const fetchAllArticles = async () => {
-    const articlesRef = collection(db, 'articles');
-    const snapshot = await getDocs(articlesRef);
-    const articles = [];
-
-    snapshot.forEach((d) => {
-        let data = d.data();
-
-        articles.push(
-            new Article({
-                sections: new Section(data.sections),
-                ...data,
-            })
-        );
-    });
-
-    fetchedArticles.value = articles;
-};
+const articleState = articleStore();
 
 onMounted(async () => {
     onAuthStateChanged(auth, async (user) => {
-        authState.initAuth();
+        await authState.initAuth();
     });
-    await fetchAllArticles();
+    await articleState.loadArticle(code);
 });
 </script>
 

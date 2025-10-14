@@ -7,9 +7,9 @@ export class Article {
         author,
         institute,
     }) {
-        this._code = code;
-        this._topic = topic;
-        this._purpose = purpose;
+        this._code = code || 'XXX00000';
+        this._topic = topic || '';
+        this._purpose = purpose || '';
         this._sections = sections || [new Section()];
         this._author = author || 'Anonymous';
         this._institute = institute || '';
@@ -50,11 +50,11 @@ export class Section {
         this._paragraphs = paragraphs || [''];
     }
 
-    getSubtitle() {
+    get subtitle() {
         return this._subtitle;
     }
 
-    getParagraphs() {
+    get paragraphs() {
         return this._paragraphs;
     }
 }

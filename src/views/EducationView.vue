@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <h1 class="py-2 display-1 text-heading-primary">Education</h1>
+        <h1 class="py-2 h1 text-heading-primary">Education</h1>
         <div class="row">
             <main class="col-9 col-lg-8">
                 <p>Why do youths need to learn mental health education?</p>
@@ -71,33 +71,33 @@
                         </li>
                     </ul>
                 </div>
-
-                <div class="row">
-                    <DataTable
-                        v-if="fetchedArticles"
-                        :value="fetchedArticles"
-                        paginator
-                        :rows="5"
-                        :rowsPerPageOptions="[5, 8, 10, 20]"
-                        tableStyle="min-width: 56rem"
-                    >
-                        <Column class="col-3" field="topic" header="Topic"></Column>
-                        <Column class="col-3" field="author" header="Author"></Column>
-                        <Column class="col-4" field="institute" header="Institute"></Column>
-                        <Column class="col-2" field="code" header="Read">
-                            <template #body="slotProps">
-                                <button
-                                    class="btn btn-primary"
-                                    @click="readArticle(slotProps.data.code)"
-                                >
-                                    Read
-                                </button>
-                            </template>
-                        </Column>
-                    </DataTable>
-                </div>
             </main>
             <aside class="col-3 col-lg-4"></aside>
+            <hr class="border border-primary border-2" />
+            <div class="row">
+                <DataTable
+                    v-if="fetchedArticles"
+                    :value="fetchedArticles"
+                    paginator
+                    :rows="5"
+                    :rowsPerPageOptions="[5, 8, 10, 20]"
+                    tableStyle="min-width: 56rem"
+                >
+                    <Column field="topic" header="Topic"></Column>
+                    <Column field="author" header="Author"></Column>
+                    <Column field="institute" header="Institute"></Column>
+                    <Column field="code" header="Read">
+                        <template #body="slotProps">
+                            <button
+                                class="btn btn-primary"
+                                @click="readArticle(slotProps.data.code)"
+                            >
+                                Read
+                            </button>
+                        </template>
+                    </Column>
+                </DataTable>
+            </div>
         </div>
     </div>
 </template>
@@ -110,14 +110,12 @@ import Column from 'primevue/column';
 import { authStore } from '../stores/user';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../firebase/init';
-import { articleStore } from '../stores/grow';
 import { collection, getDocs } from 'firebase/firestore';
 import { Section, Article } from '../assets/article';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const authState = authStore();
-const articleState = articleStore();
 
 const fetchedArticles = ref([]);
 
