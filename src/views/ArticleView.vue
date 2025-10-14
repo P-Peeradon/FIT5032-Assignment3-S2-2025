@@ -38,7 +38,7 @@ const authState = authStore();
 const articleState = articleStore();
 
 const educationReturn = () => {
-    router.push({ name: education });
+    router.push({ name: 'education' });
 };
 
 onMounted(async () => {
