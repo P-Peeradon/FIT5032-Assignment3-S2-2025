@@ -6,18 +6,13 @@
 
 <script setup>
 import { Article } from '../assets/article';
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 
 import { authStore } from '../stores/user';
+import { articleStore } from '../stores/grow';
 
 const authState = authStore();
-const fetchedArticles = ref([]);
-
-const sortByTitle = () => {
-    fetchedArticles.value.sort((a, b) => a.title.localeCompare(b.title));
-};
-
-watch();
+const articleState = articleStore();
 
 onMounted(() => {
     authState.initAuth();

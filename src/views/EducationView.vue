@@ -74,7 +74,7 @@
 
                 <div class="row">
                     <DataTable
-                        :value="articles"
+                        :value="fetchedArticles"
                         paginator
                         :rows="5"
                         :rowsPerPageOptions="[5, 8, 10, 20]"
@@ -100,20 +100,22 @@ import Column from 'primevue/column';
 import { authStore } from '../stores/user';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase/init';
+import { articleStore } from '../stores/grow';
 
 const authState = authStore();
-const fetchedArticles = ref([]);
+const articleState = articleStore();
+
+const fetchedArticles = ref(articleState.articles);
 
 const sortByTitle = () => {
     fetchedArticles.value.sort((a, b) => a.title.localeCompare(b.title));
 };
 
-const articles = ref([]);
-
 onMounted(() => {
     onAuthStateChanged(auth, (user) => {
         authState.initAuth();
     });
+    articleState.fetchedArticles();
 });
 </script>
 

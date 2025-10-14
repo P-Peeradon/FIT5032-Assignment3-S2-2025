@@ -1,14 +1,14 @@
 export class Article {
     constructor({
         code = 'XXX00000', //City where the institute is established and random five digits
-        title = 'Untitled',
+        topic = 'Untitled',
         purpose = '',
         sections = [new Section()], // Section = subtitle and paragraphs
         author = 'Anonymous',
         institute = '',
     }) {
         this._code = code;
-        this._title = title;
+        this._topic = topic;
         this._purpose = purpose;
         this._sections = sections;
         this._author = author;
