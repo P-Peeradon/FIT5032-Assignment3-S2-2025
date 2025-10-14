@@ -17,6 +17,7 @@ src/firebase/
 firebase.json
 firestore.rules
 .env
+package-lock.json
 
 # Editor directories and files
 .vscode/*
