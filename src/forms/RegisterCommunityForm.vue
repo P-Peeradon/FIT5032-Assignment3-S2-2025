@@ -20,20 +20,30 @@
             </div>
         </div>
         <div class="row mt-2 g-3">
-            <div class="col-9">
+            <div class="col-6">
                 <label for="name" class="form-label">Community Name</label>
                 <input type="text" class="form-control" id="name" />
             </div>
-            <div class="col-3">
+            <div class="col-2">
                 <label for="abbrev" class="form-label">Abbrevation</label>
                 <input type="text" class="form-control" id="abbrev" v-model="abbrev" />
+            </div>
+            <div class="col-4">
+                <label for="abbrev" class="form-label">Community Thumbnail</label>
+                <input
+                    type="file"
+                    id="thumbnail"
+                    ref="thumbnail"
+                    @change="watchFile"
+                    accept="image/*"
+                />
             </div>
         </div>
     </form>
 </template>
 
 <script setup>
-import { auth } from '@/firebase/init';
+import { auth } from '../firebase/init';
 import { ref } from 'vue';
 
 const emit = defineEmits(['register-community']);
@@ -41,10 +51,23 @@ const emit = defineEmits(['register-community']);
 const firstname = ref('');
 const lastname = ref('');
 const name = ref('');
+const abbrev = ref('');
+const thumbnail = ref(null);
+
+const watchFile = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        thumbnail.value = file;
+    } else {
+        thumbnail.value = null;
+    }
+};
 
 const registerClub = () => {
+    const formData = new FormData();
+    formData.append('thumbnail', thumbnail.value, thumbnail.value.name);
+
     emit('register-community', {
-        uid: auth.currentUser.uid ? auth.currentUser.uid : null,
         firstname: firstname.value,
         lastname: lastname.value,
         name: name.value,
