@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { auth } from '../firebase/init';
 import HomeView from '../views/HomeView.vue';
 import RegisterView from '../views/RegisterView.vue';
 import LoginView from '../views/LoginView.vue';
@@ -9,6 +10,7 @@ import EducationView from '../views/EducationView.vue';
 import ReflectPillarView from '../views/ReflectPillarView.vue';
 import GrowPillarView from '../views/GrowPillarView.vue';
 import ArticleView from '../views/ArticleView.vue';
+import CommunityDataView from '../views/CommunityDataView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,6 +39,14 @@ const router = createRouter({
             path: '/connect/community',
             name: 'community',
             component: CommunityView,
+            meta: { requiresAuth: true },
+        },
+        {
+            path: '/connect/community/:cid',
+            name: 'communityData',
+            component: CommunityDataView,
+            params: true,
+            meta: { requiresAuth: true },
         },
         {
             path: '/reflect',
@@ -47,6 +57,7 @@ const router = createRouter({
             path: '/reflect/journal',
             name: 'journal',
             component: JournalView,
+            meta: { requiresAuth: true },
         },
 
         {
@@ -58,12 +69,14 @@ const router = createRouter({
             path: '/grow/education',
             name: 'education',
             component: EducationView,
+            meta: { requiresAuth: true },
         },
         {
             path: '/grow/article/:code',
             name: 'article',
             component: ArticleView,
             params: true,
+            meta: { requiresAuth: true },
         },
     ],
 });

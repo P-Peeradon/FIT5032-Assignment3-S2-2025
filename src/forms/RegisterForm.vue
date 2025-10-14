@@ -72,6 +72,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import axios from 'axios';
 
 const emit = defineEmits(['register']);
 
@@ -81,7 +82,7 @@ const password = ref('');
 const confirmPassword = ref('');
 const role = ref('user');
 
-const register = () => {
+const register = async () => {
     emit('register', {
         email: email.value,
         username: username.value,
@@ -89,7 +90,6 @@ const register = () => {
         confirmPassword: confirmPassword.value,
         role: role.value,
     });
-    console.log('Fire register emit.');
 };
 </script>
 

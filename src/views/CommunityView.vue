@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <h1 class="mt-2 text-align-center">Community</h1>
+        <h1 class="mt-2 text-primary text-align-center">Community</h1>
         <main class="col-9 col-xl-8">
             <div class="row">
                 <p>

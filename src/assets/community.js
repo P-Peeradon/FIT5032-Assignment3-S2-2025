@@ -1,65 +1,61 @@
 export class Community {
-    constructor(name, abbrev, owner, description, location, contact) {
-        this.name = name;
-        this.abbrev = abbrev;
-        this.owner = owner;
-        this.description = description;
-        this.location = location;
-        this.contact = contact;
-        this.organisation = '';
-        this.address = {};
+    constructor({
+        cid,
+        name,
+        abbrev,
+        vision,
+        owner,
+        description,
+        location,
+        contact,
+        organisation,
+        address,
+    }) {
+        this._cid = cid || 'XXX0000'; //City name code follows by 4 digits like.
+        this._name = name || 'Unknown';
+        this._abbrev = abbrev || '';
+        this._owner = owner || 'Anonymous';
+        this._vision = vision || '';
+        this._description = description || [''];
+        this._location = location || '';
+        this._contact = contact || {};
+        this._organisation = organisation || '';
+        this._address = address || {};
     }
 
-    // Pillar => connect, growth, reflect
-
-    getName() {
-        return this.name;
+    get cid() {
+        return this._cid;
     }
 
-    getAbbrev() {
-        return this.abbrev;
+    get name() {
+        return this._name;
     }
 
-    getDescription() {
-        return this.description;
+    get abbrev() {
+        return this._abbrev;
     }
 
-    getLocation() {
-        return this.location;
+    get description() {
+        return this._description;
     }
 
-    getContact() {
-        return this.contact;
+    get vision() {
+        return this._vision;
     }
 
-    getOrganisation() {
-        return this.organisation;
+    get location() {
+        return this._location;
     }
 
-    getAddress() {
-        return this.address;
-    }
-}
-
-// This is weak entity as it depends on two classes, user and community.
-// Deleting user mean deleting all membership state.
-// ON DELETE CASCADE;
-export class Membership {
-    constructor(uid, username, communityName) {
-        this.uid = uid;
-        this.username = username;
-        this.communityName = communityName;
+    get contact() {
+        return this._contact;
     }
 
-    getUID() {
-        return this.uid;
+    get organisation() {
+        return this._organisation;
     }
 
-    getUsername() {
-        return this.username;
-    }
-
-    getCommunityName() {
-        return this.communityName;
+    get address() {
+        return this._address;
     }
 }

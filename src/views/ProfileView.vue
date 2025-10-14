@@ -5,7 +5,9 @@
 </template>
 
 <script setup>
-import { authStore, userStore } from '@/stores/user';
+import { auth } from '../firebase/init';
+import { authStore, userStore } from '../stores/user';
+import { onAuthStateChanged } from 'firebase/auth';
 import { onMounted } from 'vue';
 
 const userState = userStore();
@@ -14,7 +16,9 @@ const authState = authStore();
 const uid = userState.uid; // Use this for authentication
 
 onMounted(() => {
-    authState.initAuth();
+    onAuthStateChanged(auth, async (user) => {
+        await authState.initAuth();
+    });
 });
 </script>
 

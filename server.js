@@ -1,18 +1,12 @@
 import cors from 'cors';
 import express from 'express';
+import axios from 'axios';
 
 import validationRoutes from './server/validation.js';
 import adminRoutes from './server/admin.js';
 import connectRoutes from './server/connect.js';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import admin from 'firebase-admin';
 
-import { auth, db } from './src/firebase/init.js';
-import { addDoc, collection } from 'firebase/firestore';
-//import growRoutes from './server/grow.js';
-//import reflectRoutes from './server/reflect.js';
-
-admin.initializeApp({});
+import { decodeToken } from './server/validation.js';
 
 const app = express();
 
@@ -38,7 +32,7 @@ app.post('/register/auth', async (req, res) => {
     }
 
     try {
-        await admin.auth().createUser({ email: data.email, password: data.password });
+        await axios.post('https://createuser-qbseni5s5q-uc.a.run.app', data);
 
         res.status(201).send({ message: 'Successfully created user.' });
     } catch (error) {
@@ -49,21 +43,18 @@ app.post('/register/auth', async (req, res) => {
 });
 
 // Record new user by contacting firestore.
-app.post('/register/firestore', async (req, res) => {
+app.post('/register/firestore', decodeToken, async (req, res) => {
     const data = req.body;
+    const uid = decodeToken().uid;
     if (!data.username || !data.email || !data.role) {
         res.status(400).send({ msg: 'Please include your username, email and role in your data.' });
         return;
     }
 
     try {
-        const newUserRef = await addDoc(collection(db, 'users'), {
-            username: data.username,
-            email: data.email,
-            role: data.role,
-        });
+        await axios.post('https://recorduser-qbseni5s5q-uc.a.run.app', { uid: uid, ...data });
 
-        return res.status(201).send({ id: newUserRef.id, msg: 'Record new user successfully.' });
+        return res.status(201).send({ msg: 'Record new user successfully.' });
     } catch (error) {
         console.error(`Error in recording new user: ${error}`);
     }
@@ -78,7 +69,7 @@ app.post('/login', async (req, res) => {
     }
 
     try {
-        await signInWithEmailAndPassword(auth, data.email, data.password);
+        await axios.post('https://loginuser-qbseni5s5q-uc.a.run.app', data);
 
         res.status(200).send({ msg: 'Log in successfully.' });
     } catch (error) {

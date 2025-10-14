@@ -9,11 +9,17 @@
 import { useRouter } from 'vue-router';
 import { auth } from '../firebase/init';
 import LoginForm from '../forms/LoginForm.vue';
-import axios from 'axios';
 
 const router = useRouter();
 
 const authorise = async (payload) => {
+    try {
+        await axios.post('http://localhost:3000/validate/login', payload);
+    } catch (error) {
+        console.error(`${error.code}: Validation Error: ${error.message}`);
+        return;
+    }
+
     try {
         await axios.post('http://localhost:3000/login', payload); // Sign in using cloud function
     } catch (error) {

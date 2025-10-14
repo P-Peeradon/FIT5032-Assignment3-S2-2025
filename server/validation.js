@@ -35,7 +35,6 @@ export const decodeToken = async () => {
         const uid = decodedToken.uid;
         const email = decodedToken.email; // The email will be present if the user signed in with email/password or a provider that provides an email.
 
-        next();
         return { uid: uid, email: email };
     } catch (error) {
         console.error(`Error in verifying token: ${error.message}`);
@@ -129,6 +128,15 @@ router.post(
         res.status(204); // Not complete as there is step to perform with firebase auth and firestore.
     }
 );
+
+router.post('/login', [validateEmail, validatePassword], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(400).json({ errors: errors.array() });
+    }
+
+    res.status(204); // Not complete as there is step to perform with firebase auth and firestore.
+});
 
 router.post('/journal', [validateUsername, validateMoods, validateContent], (req, res) => {
     const errors = validationResult(req);
