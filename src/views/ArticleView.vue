@@ -13,7 +13,11 @@
                 </section>
             </div>
         </article>
+        <div class="my-4 d-flex flex-row justify-content-center">
+            <button class="btn btn-info" @click="educationReturn">To Education</button>
+        </div>
     </div>
+
     <div v-else>Currently loading article...</div>
 </template>
 
@@ -23,14 +27,19 @@ import { onMounted } from 'vue';
 import { authStore } from '../stores/user';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase/init';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { articleStore } from '../stores/grow';
 
 const route = useRoute();
+const router = useRouter();
 const code = route.params.code;
 
 const authState = authStore();
 const articleState = articleStore();
+
+const educationReturn = () => {
+    router.push({ name: education });
+};
 
 onMounted(async () => {
     onAuthStateChanged(auth, async (user) => {
