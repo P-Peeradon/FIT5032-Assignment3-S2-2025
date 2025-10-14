@@ -13,11 +13,11 @@
 
 <script setup>
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { userStore } from '../stores/user.js';
-import { ref } from 'vue';
+import { authStore, userStore } from '../stores/user.js';
+import { onMounted } from 'vue';
 import { auth } from '../firebase/init';
 
-const isAuthenticated = ref(false);
+const authState = authStore();
 const userState = userStore();
 
 const logout = async () => {
@@ -28,12 +28,10 @@ const logout = async () => {
     }
 };
 
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        isAuthenticated.value = true;
-    } else {
-        isAuthenticated.value = false;
-    }
+onMounted(() => {
+    onAuthStateChanged(auth, (user) => {
+        authState.initAuth();
+    });
 });
 </script>
 

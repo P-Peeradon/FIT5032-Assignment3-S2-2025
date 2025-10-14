@@ -61,6 +61,8 @@
 import { onMounted } from 'vue';
 import WriteJournalForm from '../forms/WriteJournalForm.vue';
 import { authStore, userStore } from '../stores/user';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebase/init';
 
 const authState = authStore();
 const userState = userStore();
@@ -68,7 +70,9 @@ const userState = userStore();
 const writeJournal = () => {};
 
 onMounted(() => {
-    authState.initAuth();
+    onAuthStateChanged(auth, async (user) => {
+        await authState.initAuth();
+    });
 });
 </script>
 
