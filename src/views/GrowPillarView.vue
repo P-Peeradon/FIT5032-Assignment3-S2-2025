@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <h1 class="mt-2 h1 text-center">GROW Pillar</h1>
+        <h1 class="mt-2 h1 text-center text-primary">GROW Pillar</h1>
 
         <figure class="text-center">
             <blockquote class="blockquote mx-4 px-4">
@@ -19,9 +19,9 @@
         <hr class="border border-primary border-2" />
 
         <!-- All features contain in this application. -->
-        <h2>Features for GROW</h2>
+        <h2 class="my-3 h2 text-secondary">Features for GROW</h2>
 
-        <div v-if="growFeatures" class="d-flex flex-column flex-lg-row">
+        <div v-if="growFeatures" class="d-flex flex-column flex-lg-row justify-content-center">
             <div v-for="feature in growFeatures" :key="feature.title">
                 <FeatureShowcase :feature="feature" />
             </div>

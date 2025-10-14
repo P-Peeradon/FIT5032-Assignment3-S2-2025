@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <h1 class="mt-2 py-2 h1 text-center">CONNECT Pillar</h1>
+        <h1 class="mt-2 py-2 h1 text-center text-primary">CONNECT Pillar</h1>
         <figure class="text-center">
             <blockquote class="blockquote">
                 <q class="mt-3 mx-4 px-4"
@@ -18,8 +18,8 @@
         <hr class="border border-primary border-2" />
 
         <!-- All features contain in this application. -->
-        <h2 class="my-3 h2">Features for CONNECT</h2>
-        <div v-if="connectFeatures" class="d-flex flex-column flex-lg-row">
+        <h2 class="my-3 h2 text-secondary">Features for CONNECT</h2>
+        <div v-if="connectFeatures" class="d-flex flex-column flex-lg-row justify-content-center">
             <div v-for="feature in connectFeatures" :key="feature.title">
                 <FeatureShowcase :feature="feature" />
             </div>

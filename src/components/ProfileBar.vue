@@ -6,19 +6,27 @@
         </div>
         <div v-else class="btn-group">
             <p class="me-3">{{ userState.username }}</p>
-            <button class="btn btn-danger">Logout</button>
+            <button class="btn btn-danger" @click="logout">Logout</button>
         </div>
     </nav>
 </template>
 
 <script setup>
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { userStore } from '../stores/user.js';
 import { ref } from 'vue';
 import { auth } from '../firebase/init';
 
 const isAuthenticated = ref(false);
 const userState = userStore();
+
+const logout = async () => {
+    try {
+        await signOut(auth);
+    } catch (error) {
+        console.error(`Error in logging out: ${error.message}`);
+    }
+};
 
 onAuthStateChanged(auth, (user) => {
     if (user) {

@@ -21,12 +21,4 @@ onAuthStateChanged(auth, () => {
     <footer><WebFooter /></footer>
 </template>
 
-<style>
-h1 {
-    color: blueviolet;
-}
-
-h2 {
-    color: greenyellow;
-}
-</style>
+<style></style>
