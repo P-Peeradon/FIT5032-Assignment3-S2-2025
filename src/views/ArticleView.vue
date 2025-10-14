@@ -2,13 +2,13 @@
     <h1 class="mt-2 h1 text-center text-primary">Article</h1>
     <div v-if="articleState.isLoaded" class="container-fluid">
         <article>
-            <h2>{{ articleState.article.topic }}</h2>
-            <p>{{ articleState.article.purpose }}</p>
-            <div v-for="section in articleState.article.sections" :key="section">
+            <h2 class="mt-2 h2 text-secondary">{{ articleState.article.topic }}</h2>
+            <p class="text-success px-5">{{ articleState.article.purpose }}</p>
+            <div class="mt-2" v-for="section in articleState.article.sections" :key="section">
                 <section>
-                    <h3 class="mt-3 h3">{{ section.subtitle }}</h3>
+                    <h3 class="mt-3 h3 text-info">{{ section.subtitle }}</h3>
                     <div v-for="paragraph in section.paragraphs" :key="paragraph">
-                        <p>{{ paragraph }}</p>
+                        <p class="fs-5">{{ paragraph }}</p>
                     </div>
                 </section>
             </div>
