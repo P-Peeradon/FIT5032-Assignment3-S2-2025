@@ -1,7 +1,7 @@
 <template>
     <nav class="container-fluid bg-info d-flex flex-row pt-2 pb-2 mt-lg-0 justify-content-end">
         <div v-if="!authState.isAuthenticated" class="btn-group me-5" role="group">
-            <router-link class="btn btn-secondary" to="/register"> Register </router-link>
+            <router-link class="btn btn-white-50" to="/register"> Register </router-link>
             <router-link class="btn btn-primary" to="/login">Login</router-link>
         </div>
         <div v-else class="btn-group">

@@ -3,10 +3,11 @@
     <div v-if="articleState.isLoaded" class="container-fluid">
         <article>
             <h2 class="mt-2 h2 text-secondary">{{ articleState.article.topic }}</h2>
-            <p class="text-success px-5">{{ articleState.article.purpose }}</p>
+            <p class="text-success px-5 mt-4 fs-4">{{ articleState.article.purpose }}</p>
             <div class="mt-2" v-for="section in articleState.article.sections" :key="section">
                 <section>
                     <h3 class="mt-3 h3 text-info">{{ section.subtitle }}</h3>
+                    <br v-if="section.subtitle !== ''" />
                     <div v-for="paragraph in section.paragraphs" :key="paragraph">
                         <p class="fs-5 indent">{{ paragraph }}</p>
                     </div>
