@@ -1,11 +1,24 @@
 <template>
     <div class="card border-info">
-        <img src="" alt="" class="img-fluid card-img-top" />
+        <img :src="thumbnailPath" alt="" class="img-fluid card-img-top" />
         <div class="card-body"></div>
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { Community } from '../assets/community';
+
+const props = defineProps({
+    community: {
+        type: Community,
+        required: true,
+    },
+});
+
+const thumbnailPath = ref(
+    `../../public/community/${props.community.abbrev.toLowerCase()}-thumbnail.png`
+);
+</script>
 
 <style scoped>
 .card {

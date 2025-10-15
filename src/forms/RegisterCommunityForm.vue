@@ -26,7 +26,7 @@
         <div class="row mt-2 g-3">
             <div class="col-6">
                 <label for="name" class="form-label">Community Name</label>
-                <input type="text" class="form-control" id="name" />
+                <input type="text" class="form-control" id="name" required />
             </div>
             <div class="col-2">
                 <label for="abbrev" class="form-label">Abbrevation</label>
@@ -54,15 +54,19 @@
                     <option value="Singapore">Singapore</option>
                 </select>
             </div>
-            <div class="col-4">
+            <div class="col-6">
                 <label for="organisation" class="form-label">Organisation</label>
                 <input type="text" class="form-control" id="organisation" v-model="organisation" />
             </div>
+        </div>
+        <div class="row mt-2">
+            <AddressForm :location="location" @send-address="updateAddress" />
         </div>
     </form>
 </template>
 
 <script setup>
+import AddressForm from './AddressForm.vue';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase/init';
 import { onMounted, ref } from 'vue';
@@ -78,7 +82,12 @@ const name = ref('');
 const abbrev = ref('');
 const location = ref('');
 const organisation = ref('');
+const address = ref(null);
 const thumbnail = ref(null);
+
+const updateAddress = (payload) => {
+    address.value = payload;
+};
 
 const watchFile = (event) => {
     const file = event.target.files[0];
@@ -100,11 +109,14 @@ const registerClub = () => {
         abbrev: abbrev.value,
         location: location.value,
         organisation: organisation.value,
+        address: address.value,
     });
 };
 
 onMounted(() => {
-    onAuthStateChanged(auth, (user) => {});
+    onAuthStateChanged(auth, async (user) => {
+        await authState.initAuth();
+    });
 });
 </script>
 

@@ -6,9 +6,22 @@
 </template>
 
 <script setup>
-import RegisterCommunityForm from '@/forms/RegisterCommunityForm.vue';
+import RegisterCommunityForm from '../forms/RegisterCommunityForm.vue';
 
-const addCommunity = () => {};
+const addCommunity = async (payload) => {
+    try {
+        await axios.post('https://localhost:3000/validate/community/register', payload);
+    } catch (error) {
+        console.error(`${error.code}: Validation Error: ${error.message}`);
+        return;
+    }
+
+    try {
+        await axios.post('https://localhost:3000/connect/community/register');
+    } catch (error) {
+        console.error(`${error.code}: Error in register new community: ${error.message}`);
+    }
+};
 </script>
 
 <style></style>

@@ -9,14 +9,14 @@ import connectRoutes from './server/connect.js';
 // import reflectRoutes from './server/reflect.js';
 import growRoutes from './server/grow.js';
 
-import { decodeToken } from './server/validation.js';
+import { decodeToken } from './server/utility.js';
 
 const app = express();
 
 app.use(cors({ origin: true }));
 app.use(express.json()); //Allow parsing request body as JSON
 app.use(express.urlencoded({ extended: true }));
-const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({ storage: multer.memoryStorage(), limit: 100 * (2 ^ 20) });
 
 app.use('/validate', validationRoutes);
 app.use('/admin', adminRoutes);

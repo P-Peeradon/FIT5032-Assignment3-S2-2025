@@ -23,7 +23,7 @@ const prop = defineProps({
 });
 
 const feature = prop.feature;
-const path = `/${feature.getPillar().toLowerCase()}/${feature.getTitle()}`;
+const path = `/${feature.getPillar().toLowerCase()}/${feature.getTitle().toLowerCase()}`;
 const imgURL = `/src/assets/${encodeURIComponent(
     feature.getPillar().toLowerCase()
 )}/${encodeURIComponent(feature.getTitle().toLowerCase())}.jpg`;

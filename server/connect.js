@@ -1,9 +1,13 @@
 import express from 'express';
-import multer from 'multer';
 import mime from 'mime-types';
+import multer from 'multer';
+import fs from 'fs';
+import path from 'path';
+import { bucketCid } from './utility.js';
 
 const router = express.Router();
-const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({ storage: multer.memoryStorage(), limit: 100 * (2 ^ 20) });
+const disk = multer({ storage: multer.diskStorage() });
 
 // Fetch all communities data.
 router.get('/community', async (req, res) => {
@@ -24,6 +28,7 @@ router.get('/community', async (req, res) => {
 });
 
 // For uploading community thumbnail
+// Register new community.
 router.post('/community/register', upload.single('thumbnail'), async (req, res) => {
     if (!req.file) {
         return res.status(400).send('Please upload your file.');
@@ -35,19 +40,44 @@ router.post('/community/register', upload.single('thumbnail'), async (req, res) 
 
     const data = req.body;
     if (!data.role || data.role != 'Social Worker') {
-        return res.status(401).send('You are not allow to edit community data');
+        return res.status(401).send('You are not allow to create new community.');
+    }
+
+    if (!data.name || !data.firstname || !data.lastname || !data.location || !data.organisation) {
+        return res
+            .status(400)
+            .send('Community name, first name, last name and location are all required.');
+    }
+
+    const cid = bucketCid(data.location);
+    try {
+        await axios.post('https://createcommunity-qbseni5s5q-uc.a.run.app', { cid: cid, ...data });
+    } catch (error) {
+        return res.status(500).send(`Error in recording new community: ${error.message}`);
     }
 
     try {
         await axios.post('https://uploadcommunitythumbnail-qbseni5s5q-uc.a.run.app', {
             file: base64File,
-            filename: 'thumbnail' + '.' + mime.extension(mimeType),
+            filename: data.cid + '-thumbnail' + '.' + mime.extension(mimeType),
             mimetype: mimeType,
             ...data,
         });
+
+        const filePath = path.join(
+            '/public/community/',
+            data.cid,
+            '-thumbnail',
+            '.',
+            mime.extension(mimeType)
+        );
+
+        await fs.writeSyncFile(filePath, file);
     } catch (error) {
         return res.status(500).send(`Error in uploading community thumbnail: ${error.message}`);
     }
+
+    return res.status(201).send('Successfully created new community.');
 });
 
 export default router;

@@ -141,7 +141,7 @@ router.post('/login', [validateEmail, validatePassword], (req, res) => {
 
 router.post(
     '/community/register',
-    [validateName, validateCommunityName, validateLocation, validateAbbrev],
+    [validateName, validateCommunityName, validateLocation],
     (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

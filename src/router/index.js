@@ -11,6 +11,7 @@ import ReflectPillarView from '../views/ReflectPillarView.vue';
 import GrowPillarView from '../views/GrowPillarView.vue';
 import ArticleView from '../views/ArticleView.vue';
 import CommunityDataView from '../views/CommunityDataView.vue';
+import RegisterCommunityView from '../views/RegisterCommunityView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,8 +51,8 @@ const router = createRouter({
         },
         {
             path: '/connect/community/register',
-            name: 'community',
-            component: CommunityView,
+            name: 'communityRegister',
+            component: RegisterCommunityView,
             meta: { requiresAuth: true },
         },
         {

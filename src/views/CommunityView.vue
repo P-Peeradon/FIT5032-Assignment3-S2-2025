@@ -47,8 +47,8 @@
                 to filter out the club that might fit with your passion.
             </p>
             <div class="row-cols-2 row-cols-md-3 row-cols-xl-4 g-3">
-                <div v-for="community in displayedCommunity" :key="community">
-                    <!--Card component-->
+                <div v-for="community in displayedCommunity" :key="community.cid">
+                    <CommunityShowcase :community="community" />
                 </div>
             </div>
         </main>
@@ -62,12 +62,21 @@
 <script setup>
 import { Community } from '../assets/community';
 import { authStore } from '../stores/user';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 
 const authState = authStore();
 const query = ref('');
 const location = ref('');
 const communities = ref([]);
+const displayedCommunity = computed(() => {
+    return communities.filter((community) => {
+        return (
+            (communities.name.toLowerCase.includes(query.value.toLowerCase()) ||
+                communities.abbrev.toLowerCase.includes(query.value.toLowerCase())) &&
+            (location.value !== '' ? community.location === location : true)
+        );
+    });
+});
 
 onMounted(async () => {
     onAuthStateChanged(auth, async (user) => {
@@ -76,8 +85,6 @@ onMounted(async () => {
     const response = await axios.get('http://localhost:3000/connect/community');
     communities.value = response.data.map((community) => new Community(community));
 });
-
-watch((query, location), () => {});
 </script>
 
 <style scoped></style>

@@ -72,7 +72,13 @@ export const formatAddress = (req, res, next) => {
 
         case 'Singapore':
             addressString += address.no + ' ' + address.street + '\n';
-            addressString += '#' + address.floor + '-' + address.unit + '\n';
+            addressString +=
+                '#' +
+                address.floor +
+                '-' +
+                address.unit +
+                (address.building ? ' ' + address.building : '') +
+                '\n';
             addressString += 'SINGAPORE' + ' ' + address.postcode;
             break;
 

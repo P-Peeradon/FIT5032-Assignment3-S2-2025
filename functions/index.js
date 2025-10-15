@@ -265,13 +265,17 @@ exports.createCommunity = onRequest((req, res) => {
 
         const frame = { ...req.body };
 
-        if (!frame.name, !frame.organisation, !frame.cid, !frame.aim) {
-            return res.status(400).send('Please include community name, cid, aim and organisation.')
+        if (!frame.cid) {
+            return res.status(400).send('CID Generation process does not complete.');
         }
 
         try {
             const communityRef = firestoreClient.collection('communities');
-            await communityRef.add(frame)
+            await communityRef.add(frame);
+
+            return res.status(201).send('Successfully create new community!');
+        } catch (error) {
+            return res.status(500).send(error);
         }
     });
 });
