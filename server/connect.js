@@ -1,7 +1,6 @@
 import express from 'express';
 import mime from 'mime-types';
 import multer from 'multer';
-import fs from 'fs';
 import path from 'path';
 import { bucketCid, geoCodeAddress, registerGeoFeature } from './utility.js';
 import axios from 'axios';
