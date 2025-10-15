@@ -169,10 +169,6 @@ const displayedArticles = computed(() => {
     });
 });
 
-const sortByTitle = () => {
-    fetchedArticles.value.sort((a, b) => a.title.localeCompare(b.title));
-};
-
 const readArticle = (articleCode) => {
     router.push({ name: 'article', params: { code: articleCode } });
 };
@@ -182,7 +178,7 @@ onMounted(async () => {
         await authState.initAuth();
     });
 
-    const response = await axios.get('https://fetchallarticles-qbseni5s5q-uc.a.run.app');
+    const response = await axios.get('https://chillax-corner.pages.dev/grow/education');
     fetchedArticles.value = response.data.map(
         (article) => new Article({ sections: new Section(article.sections), ...article })
     );

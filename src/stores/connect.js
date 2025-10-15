@@ -12,7 +12,7 @@ const communityStore = defineStore('community', () => {
         return community.value !== null;
     });
 
-    const loadCommunity = async (cid) => {
+    async function loadCommunity(cid) {
         isLoading.value = true;
         try {
             const communitiesRef = collection(db, 'communities');
@@ -32,7 +32,7 @@ const communityStore = defineStore('community', () => {
         } finally {
             isLoading.value = false;
         }
-    };
+    }
 
     return { community, isLoaded, loadCommunity };
 });

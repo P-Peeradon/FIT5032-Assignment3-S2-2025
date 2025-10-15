@@ -108,7 +108,7 @@ onMounted(async () => {
     onAuthStateChanged(auth, async (user) => {
         await authState.initAuth();
     });
-    const response = await axios.get('http://localhost:3000/connect/community');
+    const response = await axios.get('https://chillax-corner.pages.dev/connect/community');
     communities.value = response.data.map((community) => new Community(community));
 });
 </script>

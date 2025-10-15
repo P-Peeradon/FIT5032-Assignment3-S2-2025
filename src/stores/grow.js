@@ -13,7 +13,7 @@ const articleStore = defineStore('article', () => {
         return article.value !== null;
     });
 
-    const loadArticle = async (code) => {
+    async function loadArticle(code) {
         isLoading.value = true;
         try {
             const articlesRef = collection(db, 'articles');
@@ -36,11 +36,11 @@ const articleStore = defineStore('article', () => {
         } finally {
             isLoading.value = false;
         }
-    };
+    }
 
-    const recordView = () => {
+    function recordView() {
         view.value++;
-    };
+    }
 
     return { article, view, isLoaded, loadArticle, recordView };
 });
