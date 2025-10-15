@@ -6,16 +6,19 @@ import { getStorage } from 'firebase/storage';
 import 'dotenv/config';
 
 const API_KEY = import.meta.env.VITE_FIREBASE_API_KEY;
+const AUTH_DOMAIN = import.meta.env.VITE_FIREBASE_AUTH_DOMAIN;
+const APP_ID = import.meta.env.VITE_FIREBASE_APP_ID;
+const MEASUREMENT_ID = import.meta.env.VITE_FIREBASE_MEASUREMENT_ID;
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: API_KEY,
-    authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN,
+    authDomain: AUTH_DOMAIN,
     projectId: 'fit5032-peeradon-assignment3',
     storageBucket: 'fit5032-peeradon-assignment3.firebasestorage.app',
     messagingSenderId: '212250197257',
-    appId: process.env.VITE_FIREBASE_APP_ID,
-    measurementId: process.env.VITE_FIREBASE_MEASUREMENT_ID,
+    appId: APP_ID,
+    measurementId: MEASUREMENT_ID,
 };
 
 // Initialize Firebase
