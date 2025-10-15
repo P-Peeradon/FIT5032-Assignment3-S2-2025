@@ -4,7 +4,11 @@
     {
       "type": "Feature",
       "geometry": { "type": "Point", "coordinates": [144.9595, -37.8009] },
-      "properties": { "name": "Actuarial Students' Society", "type": "community" }
+      "properties": {
+        "name": "Actuarial Students' Society",
+        "category": "community",
+        "organisation": "The University of Melbourne"
+      }
     }
   ]
 }

@@ -3,7 +3,13 @@
         <h1 class="mt-2 py-2 h1 text-center text-primary">Community</h1>
         <div class="row">
             <main class="col-9 col-xl-8">
-                <img src="../assets/connect/community.jpg" alt="community" />
+                <div class="d-flex flex-row justify-content-center px-auto">
+                    <img
+                        src="../assets/connect/community.jpg"
+                        alt="community"
+                        style="width: 48rem; height: 32rem"
+                    />
+                </div>
                 <figure class="text-center">
                     <blockquote class="blockquote">
                         <q class="mt-3 mx-4 px-4"
@@ -23,7 +29,7 @@
                 <!--Side menu (Coming soon)-->
 
                 <!--Map Component-->
-                <MapComponent :layers="['community']" />
+                <MapComponent :layers="['community']" :center="[144.9595, -37.8009]" />
             </aside>
         </div>
 
