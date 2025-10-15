@@ -5,7 +5,7 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 const API_KEY = import.meta.env.VITE_FIREBASE_API_KEY;
-const AUTH_DOMAIN = import.meta.env.VITE_FIREBASE_AUTH_DOMAIN;
+const AUTH_DOMAIN = process.env.VITE_FIREBASE_AUTH_DOMAIN;
 const APP_ID = import.meta.env.VITE_FIREBASE_APP_ID;
 const MEASUREMENT_ID = import.meta.env.VITE_FIREBASE_MEASUREMENT_ID;
 
