@@ -264,6 +264,15 @@ exports.createCommunity = onRequest((req, res) => {
         }
 
         const frame = { ...req.body };
+
+        if (!frame.name, !frame.organisation, !frame.cid, !frame.aim) {
+            return res.status(400).send('Please include community name, cid, aim and organisation.')
+        }
+
+        try {
+            const communityRef = firestoreClient.collection('communities');
+            await communityRef.add(frame)
+        }
     });
 });
 

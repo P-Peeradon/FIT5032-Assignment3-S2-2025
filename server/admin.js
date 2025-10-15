@@ -3,7 +3,7 @@ import { doc, getDocs, collection, getDoc } from 'firebase/firestore';
 
 import express from 'express';
 import { validationResult } from 'express-validator';
-import { firebaseAuthValidation, decodeToken } from './validation.js';
+import { firebaseAuthValidation, decodeToken } from './utility.js';
 
 const router = express.Router();
 
