@@ -103,9 +103,9 @@
                     :rowsPerPageOptions="[5, 8, 10, 20]"
                     tableStyle="min-width: 56rem"
                 >
-                    <Column field="topic" header="Topic"></Column>
+                    <Column field="topic" sortable header="Topic"></Column>
                     <Column field="author" header="Author"></Column>
-                    <Column field="institute" header="Institute"></Column>
+                    <Column field="institute" sortable header="Institute"></Column>
                     <Column field="code" header="Read">
                         <template #body="slotProps">
                             <button
