@@ -18,7 +18,7 @@ firebase.json
 firestore.rules
 .env
 package-lock.json
-./src/components/MapComponent.vue
+MapComponent.vue
 
 # Editor directories and files
 .vscode/*
