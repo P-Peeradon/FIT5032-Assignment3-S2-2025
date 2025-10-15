@@ -2,6 +2,7 @@
     <div class="container-fluid">
         <h1 class="mt-2">Register to Chillax Corner</h1>
         <RegisterForm @register="handleCreateUser" />
+        <div class="btn btn-info text-center" @click="handleGoogleAuth">Sign In with Google</div>
     </div>
 </template>
 
@@ -11,6 +12,14 @@ import RegisterForm from '../forms/RegisterForm.vue';
 
 import { auth } from '../firebase/init';
 import { useRouter } from 'vue-router';
+
+import { authStore } from '../stores/user';
+
+const authState = authStore();
+
+const handleGoogleAuth = async () => {
+    await authState.signInWithGoogle();
+};
 
 const router = useRouter();
 
