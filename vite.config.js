@@ -20,6 +20,6 @@ export default defineConfig(({ mode }) => {
 
     return {
         plugins: [vue()],
-        define: definedEnv,
+        define: { ...definedEnv, 'process.env.NODE_ENV': JSON.stringify(mode) },
     };
 });
