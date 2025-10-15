@@ -8,7 +8,7 @@ const API_KEY = process.env.VITE_FIREBASE_API_KEY;
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    apiKey: API_KEY,
     authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN,
     projectId: 'fit5032-peeradon-assignment3',
     storageBucket: 'fit5032-peeradon-assignment3.firebasestorage.app',
