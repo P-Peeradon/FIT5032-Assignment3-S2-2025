@@ -3,7 +3,7 @@
         <router-link :to="path" style="text-decoration: none; color: black">
             <img :src="imgURL" :alt="feature.title" class="card-img-top" />
             <div class="card-body">
-                <h4 class="card-title text-info text-decoration-underline">
+                <h4 class="card-title h4 text-info text-decoration-underline">
                     {{ feature.title }}
                 </h4>
                 <p class="card-text">{{ feature.description }}</p>

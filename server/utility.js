@@ -1,6 +1,12 @@
 import axios from 'axios';
 import admin from 'firebase-admin';
 import { header } from 'express-validator';
+import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding.js';
+import fs from 'fs';
+import 'dotenv/config';
+
+const mapboxToken = process.env.MAPBOX_TOKEN;
+const geocodingClient = mbxGeocoding({ accessToken: mapboxToken });
 
 // We want to check that client is authorised by Firebase system, as malicious users can send any fake id or any user id by using body.
 export const firebaseAuthValidation = () => {
@@ -42,20 +48,10 @@ export const decodeToken = async () => {
 };
 
 // Send status 202 and tell user that process is not completed.
-export const formatAddress = (req, res, next) => {
-    // Pass
-    const data = req.body;
-
-    if (!data.location || !data.address) {
-        return res
-            .status(400)
-            .send('Please provide the location and address as we are not able to format address');
-    }
-
-    let address = data.address;
+export const formatAddress = (address, location) => {
     let addressString = '';
 
-    switch (data.location) {
+    switch (location) {
         // Australia
         case 'Melbourne':
         case 'Sydney':
@@ -89,12 +85,48 @@ export const formatAddress = (req, res, next) => {
             addressString += data.location + ' ' + address.postcode + '\n';
             addressString += 'NEW ZEALAND';
             break;
+
         default:
-            return res.status(404).send('cannot determine the exact address format.');
+            break;
     }
 
-    next();
-    return res.status(202).send({ message: 'Complete formatting address', address: addressString });
+    return addressString;
+};
+
+export const geoCodeAddress = async (position, layer) => {
+    let feature;
+
+    try {
+        const response = await geocodingClient
+            .forwardGeocode({
+                query: formatAddress(position.address, position.location),
+                limit: 1,
+            })
+            .send();
+
+        if (response.body.features.length > 0) {
+            const coords = response.body.features[0].center;
+            feature = {
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: coords }, // [lng, lat]
+                properties: {
+                    name: item.name,
+                    category: layer,
+                    address: formatAddress(item.address, item.location),
+                },
+            };
+        }
+    } catch (error) {
+        console.error('Error in geocoding', error);
+    }
+
+    fs.appendFileSync(`/src/assets/geojson/${layer}.geojson`, feature);
+};
+
+export const loadGeojson = (filename) => {
+    if (!filename.endsWith('.geojson')) {
+        console.error('Filename must be geojson.');
+    }
 };
 
 export const hotcodeLoc = (location) => {

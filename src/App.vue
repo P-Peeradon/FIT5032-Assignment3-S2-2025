@@ -21,4 +21,8 @@ onAuthStateChanged(auth, () => {
     <footer><WebFooter /></footer>
 </template>
 
-<style></style>
+<style scoped>
+main {
+    height: auto;
+}
+</style>

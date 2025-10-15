@@ -3,11 +3,11 @@ import mime from 'mime-types';
 import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
-import { bucketCid } from './utility.js';
+import { bucketCid, geoCodeAddress } from './utility.js';
+import axios from 'axios';
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage(), limit: 100 * (2 ^ 20) });
-const disk = multer({ storage: multer.diskStorage() });
 
 // Fetch all communities data.
 router.get('/community', async (req, res) => {
@@ -16,8 +16,8 @@ router.get('/community', async (req, res) => {
 
         const communities = [];
 
-        response.data.forEach((d) => {
-            communities.push({ ...d.data() });
+        response.data.forEach((community) => {
+            communities.push({ ...community });
         });
 
         return res.status(200).send(communities);
@@ -43,7 +43,14 @@ router.post('/community/register', upload.single('thumbnail'), async (req, res) 
         return res.status(401).send('You are not allow to create new community.');
     }
 
-    if (!data.name || !data.firstname || !data.lastname || !data.location || !data.organisation) {
+    if (
+        !data.name ||
+        !data.firstname ||
+        !data.lastname ||
+        !data.location ||
+        !data.address ||
+        !data.organisation
+    ) {
         return res
             .status(400)
             .send('Community name, first name, last name and location are all required.');
@@ -73,6 +80,7 @@ router.post('/community/register', upload.single('thumbnail'), async (req, res) 
         );
 
         await fs.writeSyncFile(filePath, file);
+        await geoCodeAddress({ address: data.address, location: data.location }, 'community');
     } catch (error) {
         return res.status(500).send(`Error in uploading community thumbnail: ${error.message}`);
     }
