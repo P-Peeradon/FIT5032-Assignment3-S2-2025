@@ -5,7 +5,7 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import 'dotenv/config';
 
-const API_KEY = process.env.VITE_FIREBASE_API_KEY;
+const API_KEY = import.meta.env.VITE_FIREBASE_API_KEY;
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
