@@ -1,7 +1,11 @@
 <template>
     <!-- This form is accessible only by social worker. -->
     <!-- We have method to check for unauthorised access. -->
-    <form @submit.prevent="registerClub" class="container-fluid my-4 py-3 px-3 px-lg-5">
+    <form
+        @submit.prevent="registerClub"
+        class="container-md my-4 py-3 px-3 px-lg-5"
+        style="background-color: beige"
+    >
         <h2>Register new community</h2>
         <div class="row mt-2 g-3">
             <div class="col-6 col-lg-4">
@@ -39,19 +43,41 @@
                 />
             </div>
         </div>
+        <div class="row mt-2">
+            <div class="col-6">
+                <select id="location" placeholder="Location" v-model="location" class="form-select">
+                    <option value="" default></option>
+                    <option value="Melbourne">Melbourne</option>
+                    <option value="Sydney">Sydney</option>
+                    <option value="Adelaide">Adelaide</option>
+                    <option value="Auckland">Auckland</option>
+                    <option value="Singapore">Singapore</option>
+                </select>
+            </div>
+            <div class="col-4">
+                <label for="organisation" class="form-label">Organisation</label>
+                <input type="text" class="form-control" id="organisation" v-model="organisation" />
+            </div>
+        </div>
     </form>
 </template>
 
 <script setup>
+import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase/init';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { authStore } from '../stores/user';
 
 const emit = defineEmits(['register-community']);
+
+const authState = authStore();
 
 const firstname = ref('');
 const lastname = ref('');
 const name = ref('');
 const abbrev = ref('');
+const location = ref('');
+const organisation = ref('');
 const thumbnail = ref(null);
 
 const watchFile = (event) => {
@@ -72,13 +98,14 @@ const registerClub = () => {
         lastname: lastname.value,
         name: name.value,
         abbrev: abbrev.value,
+        location: location.value,
+        organisation: organisation.value,
     });
 };
+
+onMounted(() => {
+    onAuthStateChanged(auth, (user) => {});
+});
 </script>
 
-<style scoped>
-.container-fluid {
-    width: 65%;
-    background-color: beige;
-}
-</style>
+<style scoped></style>
