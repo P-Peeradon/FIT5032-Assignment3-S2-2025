@@ -3,10 +3,13 @@ import admin from 'firebase-admin';
 import { header } from 'express-validator';
 import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding.js';
 import fs from 'fs';
+import sgMail from '@sendgrid/mail';
 import 'dotenv/config';
 
 const mapboxToken = process.env.MAPBOX_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapboxToken });
+sgMail.setApiKey(process.env.VITE_SENDGRID_API_KEY);
+const mailingAddress = process.env.VITE_SENDGRID_FROM_EMAIL;
 
 // We want to check that client is authorised by Firebase system, as malicious users can send any fake id or any user id by using body.
 export const firebaseAuthValidation = () => {
@@ -57,32 +60,28 @@ export const formatAddress = (address, location) => {
         case 'Sydney':
         case 'Adelaide':
             if (address.floor && address.unit) {
-                addressString += address.floor + '/' + address.unit + '\n';
+                addressString += `${address.floor}/${address.unit}\n`;
             } else if (address.floor) {
-                addressString += 'Level ' + address.floor + '\n';
+                addressString += `Level ${address.floor}\n`;
             }
-            addressString += address.no + ' ' + address.street + '\n';
-            addressString += address.suburb + ' ' + address.state + ' ' + address.postcode + '\n';
+            addressString += `${address.no} ${address.street}\n`;
+            addressString += `${address.suburb} ${address.state} ${address.postcode}\n`;
             addressString += 'AUSTRALIA';
             break;
 
         case 'Singapore':
-            addressString += address.no + ' ' + address.street + '\n';
-            addressString +=
-                '#' +
-                address.floor +
-                '-' +
-                address.unit +
-                (address.building ? ' ' + address.building : '') +
-                '\n';
-            addressString += 'SINGAPORE' + ' ' + address.postcode;
+            addressString += `${address.no} ${address.street}\n`;
+            addressString += `#${address.floor}-${address.unit} ${
+                address.building ? ' ' + address.building : ''
+            }\n`;
+            addressString += `SINGAPORE ${address.postcode}`;
             break;
 
         // New Zealand
         case 'Auckland':
-            addressString += address.no + ' ' + address.street + '\n';
-            addressString += address.suburb + (address.rd ? ' RD' + address.rd : ' ') + '\n';
-            addressString += data.location + ' ' + address.postcode + '\n';
+            addressString += `${address.no} ${address.street}\n`;
+            addressString += `${address.suburb} ${address.rd ? 'RD' + address.rd : ''}\n`;
+            addressString += `${data.location} ${address.postcode}\n`;
             addressString += 'NEW ZEALAND';
             break;
 
@@ -91,6 +90,15 @@ export const formatAddress = (address, location) => {
     }
 
     return addressString;
+};
+
+export const sendEmail = async ({ to, subject, text }) => {
+    try {
+        const mail = { to, from: mailingAddress, subject, text };
+        await sgMail.send(mail);
+    } catch (error) {
+        throw new Error(error.message);
+    }
 };
 
 export const registerGeoFeature = (filePath, feature) => {
