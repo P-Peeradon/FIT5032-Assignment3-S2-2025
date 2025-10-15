@@ -1,21 +1,25 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
-const FIREBASE_API_KEY = process.env.VITE_FIREBASE_API_KEY;
-const FIREBASE_AUTH_DOMAIN = process.env.VITE_FIREBASE_AUTH_DOMAIN;
-const FIREBASE_APP_ID = process.env.VITE_FIREBASE_APP_ID;
-const FIREBASE_MEASUREMENT_ID = process.env.VITE_FIREBASE_MEASUREMENT_ID;
-const MAPBOX_ACCESS_TOKEN = process.env.VITE_MAPBOX_ACCESS_TOKEN;
-
 // https://vite.dev/config/
-export default defineConfig({
-    plugins: [vue()],
-    define: {
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
-        'process.env.VITE_FIREBASE_API_KEY': JSON.stringify(FIREBASE_API_KEY),
-        'process.env.VITE_FIREBASE_AUTH_DOMAIN': JSON.stringify(FIREBASE_AUTH_DOMAIN),
-        'process.env.VITE_FIREBASE_APP_ID': JSON.stringify(FIREBASE_APP_ID),
-        'process.env.VITE_FIREBASE_MEASUREMENT_ID': JSON.stringify(FIREBASE_MEASUREMENT_ID),
-        'process.env.VITE_MAPBOX_ACCESS_TOKEN': JSON.stringify(MAPBOX_ACCESS_TOKEN),
-    },
+export default defineConfig(({ mode }) => {
+    const env = loadEnv(mode, process.cwd(), '');
+
+    // 2. Map the environment variables to the desired 'process.env' keys.
+    const definedEnv = {
+        'process.env.NODE_ENV': JSON.stringify(mode),
+        ...Object.keys(env).reduce((prev, key) => {
+            // We map VITE_FIREBASE_API_KEY to 'process.env.VITE_FIREBASE_API_KEY'
+            // The key is the full string literal you want to replace in your client code.
+            prev[`process.env.${key}`] = JSON.stringify(env[key]);
+            return prev;
+        }, {}),
+    };
+
+    console.log('Vite Define Environment:', definedEnv);
+
+    return {
+        plugins: [vue()],
+        define: definedEnv,
+    };
 });
