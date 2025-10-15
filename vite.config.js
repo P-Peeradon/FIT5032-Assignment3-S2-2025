@@ -5,7 +5,7 @@ const FIREBASE_API_KEY = process.env.VITE_FIREBASE_API_KEY;
 const FIREBASE_AUTH_DOMAIN = process.env.VITE_FIREBASE_AUTH_DOMAIN;
 const FIREBASE_APP_ID = process.env.VITE_FIREBASE_APP_ID;
 const FIREBASE_MEASUREMENT_ID = process.env.VITE_FIREBASE_MEASUREMENT_ID;
-const SENDGRID_API_KEY = process.env.VITE_SENDGRID_API_KEY;
+const MAPBOX_ACCESS_TOKEN = process.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -16,6 +16,6 @@ export default defineConfig({
         'process.env.VITE_FIREBASE_AUTH_DOMAIN': JSON.stringify(FIREBASE_AUTH_DOMAIN),
         'process.env.VITE_FIREBASE_APP_ID': JSON.stringify(FIREBASE_APP_ID),
         'process.env.VITE_FIREBASE_MEASUREMENT_ID': JSON.stringify(FIREBASE_MEASUREMENT_ID),
-        'process.env.SENDGRID_API_KEY': JSON.stringify(SENDGRID_API_KEY),
+        'process.env.VITE_MAPBOX_ACCESS_TOKEN': JSON.stringify(MAPBOX_ACCESS_TOKEN),
     },
 });

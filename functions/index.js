@@ -12,8 +12,9 @@ const { onRequest } = require('firebase-functions/v2/https');
 const logger = require('firebase-functions/logger');
 const admin = require('firebase-admin');
 const cors = require('cors')({ origin: true });
+const serviceAccount = require('/functions/admin-service.json');
 
-admin.initializeApp();
+admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
 
 const authClient = admin.auth();
 const firestoreClient = admin.firestore();
