@@ -49,6 +49,12 @@ const router = createRouter({
             meta: { requiresAuth: true },
         },
         {
+            path: '/connect/community/register',
+            name: 'community',
+            component: CommunityView,
+            meta: { requiresAuth: true },
+        },
+        {
             path: '/reflect',
             name: 'reflect',
             component: ReflectPillarView,

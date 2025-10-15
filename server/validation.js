@@ -91,6 +91,44 @@ const validateRole = () => {
         .withMessage('Role must be one of the predefined role.');
 };
 
+const validateLocation = () => {
+    // App scope right now. Will be added later.
+    return body('location')
+        .isIn(['Melbourne', 'Sydney', 'Adelaide', 'Auckland', 'Singapore'])
+        .withMessage('Location unavailable at the moment');
+};
+
+// Send status 202 and tell user that process is not completed.
+export const formatAddress = (req, res, next) => {
+    // Pass
+    const data = req.body;
+
+    if (!data.location || !data.address) {
+        return res
+            .status(400)
+            .send('Please provide the location and address as we are not able to format address');
+    }
+
+    let address = data.address;
+    let addressString;
+
+    switch (data.location) {
+        case 'Melbourne':
+        case 'Sydney':
+        case 'Adelaide':
+            addressString = address.no + ' ' +
+            break;
+
+        case 'Singapore':
+            break;
+
+        case 'Auckland':
+            break;
+        default:
+            return res.status(404).send('cannot determine the exact address format.');
+    }
+};
+
 const validateMoods = () => {
     return (
         body('moods').isArray({ min: 1 }).withMessage('Please specify your mood.') &&
@@ -111,7 +149,7 @@ const validateMoods = () => {
 };
 
 const validateContent = () => {
-    return body('norndeud');
+    return body('content');
 };
 
 // Validate registration form.

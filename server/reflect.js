@@ -1,16 +1,10 @@
-import { auth, db } from '../src/firebase/init.js';
-import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
+import axios from 'axios';
+import express from 'express';
 
-const express = require('express');
-const cors = require('cors');
-
-const app = express();
-
-app.use(express.json()); // Parse data in request body as JSON.
-app.use(cors);
+const router = express.Router();
 
 // get Journals
-app.get('/reflect/journal', async (req, res) => {
+router.get('/journal', async (req, res) => {
     if (req.method !== 'GET') {
         res.status(405).send('GET Method only.');
         return;
@@ -30,19 +24,12 @@ app.get('/reflect/journal', async (req, res) => {
     }
 
     try {
-        const userRef = doc(collection(db, 'users'), data.userId);
-        const journalSnapshot = await userRef.collection('journals').get();
+        const response = await axios('', data);
 
-        const journals = [];
-
-        journalSnapshot.forEach((doc) => {
-            journals.push({
-                ...doc.data(),
-            });
-        });
-
-        res.status(200).send(journals);
+        return res.status(200).send(response.data);
     } catch (error) {
         res.status(500).send(`Error in getting user journals: ${error.message}`);
     }
 });
+
+export default router;

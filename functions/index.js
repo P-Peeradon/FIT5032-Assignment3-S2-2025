@@ -253,6 +253,20 @@ exports.fetchAllAvatar = onRequest((req, res) => {
     });
 });
 
+exports.createCommunity = onRequest((req, res) => {
+    cors(req, res, async () => {
+        if (req.method !== 'POST') {
+            return res.status(404).send('Allow only POST method.');
+        }
+
+        if (!firestoreClient) {
+            return res.status(500).send('Firestore is currently unavailable.');
+        }
+
+        const frame = { ...req.body };
+    });
+});
+
 exports.uploadCommunityThumbnail = onRequest((req, res) => {
     cors(req, res, async () => {
         if (req.method !== 'POST' || req.method !== 'PATCH') {

@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import mime from 'mime-types'
+import mime from 'mime-types';
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -39,12 +39,12 @@ router.post('/community/register', upload.single('thumbnail'), async (req, res) 
     }
 
     try {
-        await axios.post(, {
+        await axios.post('https://uploadcommunitythumbnail-qbseni5s5q-uc.a.run.app', {
             file: base64File,
             filename: 'thumbnail' + '.' + mime.extension(mimeType),
             mimetype: mimeType,
-            ...data
-        })
+            ...data,
+        });
     } catch (error) {
         return res.status(500).send(`Error in uploading community thumbnail: ${error.message}`);
     }
