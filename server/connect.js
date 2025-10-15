@@ -26,7 +26,6 @@ router.get('/community', async (req, res) => {
     }
 });
 
-// For uploading community thumbnail
 // Register new community.
 router.post('/community/register', upload.single('thumbnail'), async (req, res) => {
     if (!req.file) {
