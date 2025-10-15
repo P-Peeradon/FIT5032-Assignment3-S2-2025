@@ -6,7 +6,7 @@ import { getStorage } from 'firebase/storage';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: process.env.VITE_FIREBASE_API_KEY,
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
     authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN,
     projectId: 'fit5032-peeradon-assignment3',
     storageBucket: 'fit5032-peeradon-assignment3.firebasestorage.app',
