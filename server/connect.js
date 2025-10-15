@@ -3,7 +3,7 @@ import mime from 'mime-types';
 import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
-import { bucketCid, geoCodeAddress } from './utility.js';
+import { bucketCid, geoCodeAddress, registerGeoFeature } from './utility.js';
 import axios from 'axios';
 
 const router = express.Router();
@@ -78,12 +78,16 @@ router.post('/community/register', upload.single('thumbnail'), async (req, res) 
             '.',
             mime.extension(mimeType)
         );
-
-        await fs.writeSyncFile(filePath, file);
-        await geoCodeAddress({ address: data.address, location: data.location }, 'community');
     } catch (error) {
         return res.status(500).send(`Error in uploading community thumbnail: ${error.message}`);
     }
+
+    const geoFeature = geoCodeAddress(
+        { address: data.address, location: data.location },
+        'community'
+    );
+
+    registerGeoFeature('../src/assets/geojson/community.geojson', geoFeature);
 
     return res.status(201).send('Successfully created new community.');
 });

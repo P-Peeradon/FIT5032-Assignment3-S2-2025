@@ -93,6 +93,24 @@ export const formatAddress = (address, location) => {
     return addressString;
 };
 
+export const registerGeoFeature = (filePath, feature) => {
+    try {
+        const geoContent = fs.readFileSync(filePath, 'utf-8');
+        const geojson = JSON.parse(geoContent);
+
+        if (geojson.type !== 'FeatureCollection' || !Array.isArray(geojson.features)) {
+            throw new Error('File is not a valid GeoJSON FeatureCollection.');
+        }
+
+        geojson.features.push(feature);
+        const updatedContent = JSON.stringify(geojson, null, 2);
+
+        fs.writeFileSync(filePath, updatedContent, 'utf-8');
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
 export const geoCodeAddress = async (position, layer) => {
     let feature;
 
@@ -108,7 +126,7 @@ export const geoCodeAddress = async (position, layer) => {
             const coords = response.body.features[0].center;
             feature = {
                 type: 'Feature',
-                geometry: { type: 'Point', coordinates: coords }, // [lng, lat]
+                geometry: { type: 'Point', coordinates: coords }, // [long, lat]
                 properties: {
                     name: item.name,
                     category: layer,
@@ -117,16 +135,10 @@ export const geoCodeAddress = async (position, layer) => {
             };
         }
     } catch (error) {
-        console.error('Error in geocoding', error);
+        throw new Error(error);
     }
 
-    fs.appendFileSync(`/src/assets/geojson/${layer}.geojson`, feature);
-};
-
-export const loadGeojson = (filename) => {
-    if (!filename.endsWith('.geojson')) {
-        console.error('Filename must be geojson.');
-    }
+    return feature;
 };
 
 export const hotcodeLoc = (location) => {
