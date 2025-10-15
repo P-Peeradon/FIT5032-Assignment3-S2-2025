@@ -2,16 +2,19 @@ import cors from 'cors';
 import express from 'express';
 import axios from 'axios';
 import multer from 'multer';
+import 'dotenv/config.js';
 
 import validationRoutes from './server/validation.js';
 import adminRoutes from './server/admin.js';
 import connectRoutes from './server/connect.js';
 // import reflectRoutes from './server/reflect.js';
 import growRoutes from './server/grow.js';
-
 import { decodeToken } from './server/utility.js';
 
 const app = express();
+
+const fire_apiKey = process.env.VITE_FIREBASE_API_KEY;
+const map_apiKey = process.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 app.use(cors({ origin: true }));
 app.use(express.json()); //Allow parsing request body as JSON

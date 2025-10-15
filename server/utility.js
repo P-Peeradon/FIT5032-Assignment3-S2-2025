@@ -4,9 +4,9 @@ import { header } from 'express-validator';
 import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding.js';
 import fs from 'fs';
 import sgMail from '@sendgrid/mail';
-import 'dotenv/config';
+import 'dotenv/config.js';
 
-const mapboxToken = process.env.MAPBOX_TOKEN;
+const mapboxToken = process.env.VITE_MAPBOX_ACCESS_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapboxToken });
 sgMail.setApiKey(process.env.VITE_SENDGRID_API_KEY);
 const mailingAddress = process.env.VITE_SENDGRID_FROM_EMAIL;
