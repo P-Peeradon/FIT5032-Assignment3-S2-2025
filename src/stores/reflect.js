@@ -9,14 +9,23 @@ const saferStore = defineStore('safety-net', () => {
     const isLoaded = ref(false);
     const lastUpdated = ref(new Date());
 
-    async function fetchAllHotline()
+    async function fetchAllHotline() {}
 
     return { allHotlines, isLoaded, lastUpdated };
 });
 
 // Focus on what user did.
 const hotlineStore = defineStore('hotline', () => {
-    const threeLastContact = ref(['', '', '']);
+    const lastContact = ref('');
+    const timeStamp = ref(new Date());
+    const hasCompletedFollowUp = ref(false);
+    const action = ref('');
+    const nextFollowUp = ref(null);
+    const actualFollowUp = ref(new Date());
+
+    function followUp() {}
+
+    return lastContact, action, timeStamp, hasCompletedFollowUp, nextFollowUp;
 });
 
 export { saferStore, hotlineStore };
