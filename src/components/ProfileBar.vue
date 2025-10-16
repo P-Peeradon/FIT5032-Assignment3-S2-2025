@@ -36,7 +36,9 @@ const logout = async () => {
 onMounted(() => {
     onAuthStateChanged(auth, async (user) => {
         await authState.initAuth();
-        await userState.fetchUserData();
+        if (user) {
+            await userState.fetchUserData();
+        }
     });
 });
 </script>
