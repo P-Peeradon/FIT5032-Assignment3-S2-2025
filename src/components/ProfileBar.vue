@@ -1,7 +1,7 @@
 <template>
     <nav class="container-fluid bg-info d-flex flex-row pt-2 pb-2 mt-lg-0 justify-content-end">
         <div v-if="authState.isAuthenticated" class="btn-group">
-            <p class="me-3">{{}}</p>
+            <p class="me-3">{{ userState.username }}</p>
             <button class="btn btn-danger" @click="logout">Logout</button>
         </div>
         <div v-else class="btn-group me-5" role="group">
