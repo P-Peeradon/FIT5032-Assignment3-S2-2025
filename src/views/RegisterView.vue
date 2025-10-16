@@ -31,18 +31,18 @@ const handleGoogleAuth = async (payload) => {
 
 const handleCreateUser = async (payload) => {
     try {
-        await axios.post('/validate/register', payload);
+        await api.post('/validate/register', payload);
     } catch (error) {
         console.error(`${error.code}: Validation Error: ${error.message}`);
         return;
     }
 
     try {
-        await axios.post('/register/auth', payload);
+        await api.post('/register/auth', payload);
 
-        await axios.post('/register/firestore', payload);
+        await api.post('/register/firestore', payload);
 
-        await axios.post('/register/email', payload);
+        await api.post('/register/email', payload);
         router.push('/login');
     } catch (error) {
         console.error(`${error.code}: Error in creating new user: ${error.message}`);

@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { auth, db } from '../firebase/init';
 import { Feature } from '../assets/feature';
 import axios from 'axios';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, signInWithRedirect } from 'firebase/auth';
 import { collection, doc } from 'firebase/firestore';
 
 const authStore = defineStore('auth', () => {
@@ -32,7 +32,7 @@ const authStore = defineStore('auth', () => {
     async function signInWithGoogle(role) {
         try {
             // Run by using Google Auth
-            const googleCredential = await signInWithPopup(auth, googleAuth);
+            const googleCredential = await signInWithRedirect(auth, googleAuth);
 
             // Special case, can access user data in Firestore to check whether that uid exists or not.
             const userRef = doc(collection(db, 'users'), googleCredential.user.uid);
