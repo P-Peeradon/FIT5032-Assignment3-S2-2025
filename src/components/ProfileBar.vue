@@ -37,6 +37,8 @@ onMounted(() => {
     onAuthStateChanged(auth, async (user) => {
         await authState.initAuth();
         if (user) {
+            const token = await user.getIdToken();
+
             await userState.fetchUserData();
         }
     });
