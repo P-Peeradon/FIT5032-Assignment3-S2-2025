@@ -280,6 +280,14 @@ exports.createCommunity = onRequest((req, res) => {
     });
 });
 
+exports.writeJournal = onRequest((req, res) => {
+    if (req.method !== 'POST') {
+        return res.status(404).send('Allow only POST method.');
+    }
+
+    const frame = req.body;
+});
+
 exports.uploadCommunityThumbnail = onRequest((req, res) => {
     cors(req, res, async () => {
         if (req.method !== 'POST' || req.method !== 'PATCH') {

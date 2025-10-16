@@ -6,7 +6,7 @@ import 'dotenv/config.js';
 import validationRoutes from './server/validation.js';
 import adminRoutes from './server/admin.js';
 import connectRoutes from './server/connect.js';
-// import reflectRoutes from './server/reflect.js';
+import reflectRoutes from './server/reflect.js';
 import growRoutes from './server/grow.js';
 import { decodeToken, sendEmail } from './server/utility.js';
 
@@ -47,7 +47,7 @@ app.use('/validate', validationRoutes);
 app.use('/admin', adminRoutes);
 app.use('/connect', connectRoutes);
 app.use('/grow', growRoutes);
-// app.use('/reflect', reflectRoutes);
+app.use('/reflect', reflectRoutes);
 
 const port = process.env.PORT || 3000;
 

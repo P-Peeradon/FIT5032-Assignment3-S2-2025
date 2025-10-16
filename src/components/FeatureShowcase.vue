@@ -24,7 +24,8 @@ const prop = defineProps({
 
 const feature = prop.feature;
 const path = `/${feature.getPillar().toLowerCase()}/${feature.getTitle().toLowerCase()}`;
-const imgURL = `../assets/${feature.getPillar().toLowerCase()}/${feature
+
+const imgURL = `/src/assets/${feature.getPillar().toLowerCase()}/${feature
     .getTitle()
     .toLowerCase()}.jpg`;
 </script>

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import express from 'express';
+import { sendEmail } from './utility.js';
 
 const router = express.Router();
 
@@ -30,6 +31,36 @@ router.get('/journal', async (req, res) => {
     } catch (error) {
         res.status(500).send(`Error in getting user journals: ${error.message}`);
     }
+});
+
+router.post('/journal', async (req, res) => {
+    const data = req.body;
+
+    if (!data.content || !data.topic) {
+        res.status(400).send('Please write your content and your check-in place');
+    }
+
+    try {
+        await axios.post('', data);
+
+        const mail = `
+        \tDear, ${data.username}\n
+
+        \tThank you for sharing your journey to use. I hope that you can process what's on your mind and jot down for us.
+        \tHere is what you have written to us,
+
+        ${data.content}
+        \n
+
+        Take care,
+        Chillax Corner
+
+        `;
+
+        // await sendEmail({to: user.email, msh})
+
+        return res.status(201).send('Successfully writing journal.');
+    } catch (error) {}
 });
 
 export default router;

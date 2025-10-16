@@ -105,7 +105,12 @@ const validateMoods = () => {
 };
 
 const validateContent = () => {
-    return body('content');
+    return body('content')
+        .not()
+        .isEmpty()
+        .withMessage('Content should not empty')
+        .isLength({ max: 150 })
+        .withMessage('Content can contain at most 150 characters');
 };
 
 const validateAbbrev = () => {
@@ -158,7 +163,7 @@ router.post('/journal', [validateUsername, validateMoods, validateContent], (req
         res.status(400).json({ errors: errors.array() });
     }
 
-    res.status(204); // Not complete as there is step to perform with firebase auth and firestore.
+    res.status(204); // Not complete as there is step to perform with firebase firestore.
 });
 
 export default router;
