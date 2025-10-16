@@ -1,5 +1,5 @@
 <template>
-    <form class="container-fluid my-4 py-3 px-lg-5" @submit.prevent="register">
+    <form class="container-fluid my-4 py-3 px-lg-5">
         <h2>Registration Form</h2>
         <div class="row mt-1">
             <div class="col-12 col-lg-6">
@@ -65,7 +65,7 @@
             </div>
         </div>
         <div class="my-3 d-flex flex-row justify-content-center gap-3">
-            <button class="btn btn-primary" type="submit">Register</button>
+            <button class="btn btn-primary text-center" @click="register">Register</button>
             <button class="btn btn-info text-center" @click="triggerGoogle">
                 Sign In with Google
             </button>
