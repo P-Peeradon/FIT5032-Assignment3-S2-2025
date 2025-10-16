@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { browserSessionPersistence, getAuth, setPersistence } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
@@ -23,3 +23,13 @@ export const auth = getAuth(fireApp);
 export const db = getFirestore(fireApp);
 
 export const storage = getStorage(fireApp);
+
+setPersistence(auth, browserSessionPersistence)
+    .then(() => {
+        console.log('Firebase persistence set successfully.');
+        // Initialization is complete, now you can expose 'auth'
+    })
+    .catch((error) => {
+        // Handle error if storage is unavailable (e.g., private browsing)
+        console.error('Could not set default persistence:', error);
+    });
