@@ -14,6 +14,7 @@ const app = express();
 
 const fire_apiKey = process.env.VITE_FIREBASE_API_KEY;
 const map_apiKey = process.env.VITE_MAPBOX_ACCESS_TOKEN;
+const mail_apiKey = process.env.VITE_SENDGRID_API_KEY;
 
 const allowedOrigins = [
     // Your Cloudflare Pages/Workers Subdomain
