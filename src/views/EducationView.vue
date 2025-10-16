@@ -178,7 +178,7 @@ onMounted(async () => {
         await authState.initAuth();
     });
 
-    const response = await axios.get('https://chillax-corner.pages.dev/grow/education');
+    const response = await axios.get('/grow/education');
     fetchedArticles.value = response.data.map(
         (article) => new Article({ sections: new Section(article.sections), ...article })
     );

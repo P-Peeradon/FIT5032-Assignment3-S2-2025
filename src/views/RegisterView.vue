@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import axios from 'axios';
+import api from '../../axios.js';
 import RegisterForm from '../forms/RegisterForm.vue';
 import { useRouter } from 'vue-router';
 import { authStore } from '../stores/user';
@@ -18,7 +18,7 @@ const handleGoogleAuth = async (payload) => {
     try {
         const username = await authState.signInWithGoogle(payload.role);
 
-        await axios.post('https://chillax-corner.pages.dev/register/email', {
+        await api.post('/register/email', {
             username: username,
             email: payload.email,
         });
@@ -31,18 +31,18 @@ const handleGoogleAuth = async (payload) => {
 
 const handleCreateUser = async (payload) => {
     try {
-        await axios.post('http://chillax-corner.pages.dev/validate/register', payload);
+        await axios.post('/validate/register', payload);
     } catch (error) {
         console.error(`${error.code}: Validation Error: ${error.message}`);
         return;
     }
 
     try {
-        await axios.post('https://chillax-corner.pages.dev/register/auth', payload);
+        await axios.post('/register/auth', payload);
 
-        await axios.post('https://chillax-corner.pages.dev/register/firestore', payload);
+        await axios.post('/register/firestore', payload);
 
-        await axios.post('https://chillax-corner.pages.dev/register/email', payload);
+        await axios.post('/register/email', payload);
         router.push('/login');
     } catch (error) {
         console.error(`${error.code}: Error in creating new user: ${error.message}`);

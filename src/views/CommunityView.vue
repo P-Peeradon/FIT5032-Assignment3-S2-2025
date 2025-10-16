@@ -86,7 +86,7 @@ import CommunityShowcase from '../components/CommunityShowcase.vue';
 import MapComponent from '../components/MapComponent.vue';
 import { authStore } from '../stores/user';
 import { auth } from '../firebase/init';
-import axios from 'axios';
+import api from 'axios.js';
 import { onAuthStateChanged } from 'firebase/auth';
 import { onMounted, ref, computed } from 'vue';
 
@@ -108,7 +108,7 @@ onMounted(async () => {
     onAuthStateChanged(auth, async (user) => {
         await authState.initAuth();
     });
-    const response = await axios.get('https://chillax-corner.pages.dev/connect/community');
+    const response = await api.get('/connect/community');
     communities.value = response.data.map((community) => new Community(community));
 });
 </script>
