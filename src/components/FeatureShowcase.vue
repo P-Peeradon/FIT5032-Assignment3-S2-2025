@@ -17,16 +17,16 @@ import { Feature } from '../assets/feature';
 
 const prop = defineProps({
     feature: {
-        type: Feature, // Please replace with class name, as we want to ensure that
+        type: Feature, // Please replace with class name, as we want to ensure that the object is correct instance.
         required: true,
     },
 });
 
 const feature = prop.feature;
 const path = `/${feature.getPillar().toLowerCase()}/${feature.getTitle().toLowerCase()}`;
-const imgURL = `../assets/${encodeURIComponent(
-    feature.getPillar().toLowerCase()
-)}/${encodeURIComponent(feature.getTitle().toLowerCase())}.jpg`;
+const imgURL = `../assets/${feature.getPillar().toLowerCase()}/${feature
+    .getTitle()
+    .toLowerCase()}.jpg`;
 </script>
 
 <style scoped>
