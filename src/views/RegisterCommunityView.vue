@@ -7,7 +7,7 @@
 
 <script setup>
 import RegisterCommunityForm from '../forms/RegisterCommunityForm.vue';
-import api from 'axios.js';
+import api from '../../axios.js';
 
 const addCommunity = async (payload) => {
     try {

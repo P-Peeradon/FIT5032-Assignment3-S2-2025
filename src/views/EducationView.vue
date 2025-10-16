@@ -131,7 +131,7 @@ import { Section, Article } from '../assets/article';
 import { authStore } from '../stores/user';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase/init';
-import axios from 'axios';
+import api from '../../axios.js';
 
 import { useRouter } from 'vue-router';
 
@@ -178,7 +178,7 @@ onMounted(async () => {
         await authState.initAuth();
     });
 
-    const response = await axios.get('/grow/education');
+    const response = await api.get('/grow/education');
     fetchedArticles.value = response.data.map(
         (article) => new Article({ sections: new Section(article.sections), ...article })
     );

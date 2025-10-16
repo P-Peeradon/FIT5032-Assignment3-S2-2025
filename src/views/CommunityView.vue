@@ -86,7 +86,7 @@ import CommunityShowcase from '../components/CommunityShowcase.vue';
 import MapComponent from '../components/MapComponent.vue';
 import { authStore } from '../stores/user';
 import { auth } from '../firebase/init';
-import api from 'axios.js';
+import api from '../../axios.js';
 import { onAuthStateChanged } from 'firebase/auth';
 import { onMounted, ref, computed } from 'vue';
 

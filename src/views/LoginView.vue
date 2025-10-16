@@ -8,7 +8,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { auth } from '../firebase/init';
-import api from 'axios.js';
+import api from '../../axios.js';
 import LoginForm from '../forms/LoginForm.vue';
 
 const router = useRouter();
