@@ -1,8 +1,7 @@
 <template>
     <div class="container-fluid">
         <h1 class="mt-2">Register to Chillax Corner</h1>
-        <RegisterForm @register="handleCreateUser" />
-        <div class="btn btn-info text-center" @click="handleGoogleAuth">Sign In with Google</div>
+        <RegisterForm @register="handleCreateUser" @google-auth="handleGoogleAuth" />
     </div>
 </template>
 
@@ -16,25 +15,30 @@ import { useRouter } from 'vue-router';
 import { authStore } from '../stores/user';
 
 const authState = authStore();
-
-const handleGoogleAuth = async () => {
-    await authState.signInWithGoogle();
-};
-
 const router = useRouter();
+
+const handleGoogleAuth = async (payload) => {
+    try {
+        await authState.signInWithGoogle(payload.role);
+    } catch (error) {
+        console.error(`Google Auth Error ${error.message}`);
+    }
+
+    router.push('/login');
+};
 
 const handleCreateUser = async (payload) => {
     try {
-        await axios.post('http://localhost:3000/validate/register', payload);
+        await axios.post('http://chillax-corner.pages.dev/validate/register', payload);
     } catch (error) {
         console.error(`${error.code}: Validation Error: ${error.message}`);
         return;
     }
 
     try {
-        await axios.post('http://localhost:3000/register/auth', payload);
+        await axios.post('https://chillax-corner.pages.dev/register/auth', payload);
 
-        await axios.post('http://localhost:3000/register/firestore', payload);
+        await axios.post('https://chillax-corner.pages.dev/register/firestore', payload);
 
         alert('Register success');
         console.log(auth.currentUser);

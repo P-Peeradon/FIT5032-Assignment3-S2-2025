@@ -64,8 +64,11 @@
                 </div>
             </div>
         </div>
-        <div class="my-3 d-flex flex-row justify-content-center">
+        <div class="my-3 d-flex flex-row justify-content-center gap-3">
             <button class="btn btn-primary" type="submit">Register</button>
+            <button class="btn btn-info text-center" @click="triggerGoogle">
+                Sign In with Google
+            </button>
         </div>
     </form>
 </template>
@@ -73,7 +76,7 @@
 <script setup>
 import { ref } from 'vue';
 
-const emit = defineEmits(['register']);
+const emit = defineEmits(['register', 'google-auth']);
 
 const email = ref('');
 const username = ref('');
@@ -81,12 +84,18 @@ const password = ref('');
 const confirmPassword = ref('');
 const role = ref('user');
 
-const register = async () => {
+const register = () => {
     emit('register', {
         email: email.value,
         username: username.value,
         password: password.value,
         confirmPassword: confirmPassword.value,
+        role: role.value,
+    });
+};
+
+const triggerGoogle = async () => {
+    emit('google-auth', {
         role: role.value,
     });
 };
