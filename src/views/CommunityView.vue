@@ -110,7 +110,6 @@ onMounted(async () => {
     });
 
     const response = await api.get('/connect/community');
-    console.log('Full response.data content:', response.data);
     communities.value = response.data.map((community) => new Community(community));
 });
 </script>
