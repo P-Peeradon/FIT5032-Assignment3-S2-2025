@@ -5,10 +5,9 @@
 <script setup>
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import MapboxDirections from '@mapbox/mapbox-gl-directions/src/directions';
+import MapboxDirections from '@mapbox/mapbox-gl-directions/directions/dist/mapbox-gl-directions';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { onBeforeUnmount, onMounted, ref } from 'vue';
-import { accessToken } from 'mapbox-gl';
 
 mapboxgl.accessToken = process.env.VITE_MAPBOX_ACCESS_TOKEN;
 const mapContainer = ref(null);
