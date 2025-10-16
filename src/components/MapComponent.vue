@@ -5,8 +5,10 @@
 <script setup>
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import MapboxDirections from '@mapbox/mapbox-gl-directions/src/directions';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { accessToken } from 'mapbox-gl';
 
 mapboxgl.accessToken = process.env.VITE_MAPBOX_ACCESS_TOKEN;
 const mapContainer = ref(null);
@@ -51,7 +53,13 @@ onMounted(() => {
             });
         }
         map.addControl(new mapboxgl.NavigationControl()); // Navigation
-        map.addControl(new mapboxgl.FullscreenControl()); // Ful Screen
+        map.addControl(
+            new MapboxDirections({
+                accessToken: mapboxgl.accessToken,
+                unit: 'metric',
+                profile: 'mapbox/driving',
+            })
+        );
         map.addControl(
             new mapboxgl.GeolocateControl({
                 positionOptions: { enableHighAccuracy: true },
@@ -59,8 +67,6 @@ onMounted(() => {
             })
         ); // User Location
         map.addControl(new mapboxgl.ScaleControl()); // Scale on the map
-
-        map.addControl(new mapboxgl.LogoControl());
 
         map.addControl(
             new MapboxGeocoder({
