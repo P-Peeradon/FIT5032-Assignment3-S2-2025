@@ -8,10 +8,7 @@
 <script setup>
 import axios from 'axios';
 import RegisterForm from '../forms/RegisterForm.vue';
-
-import { auth } from '../firebase/init';
 import { useRouter } from 'vue-router';
-
 import { authStore } from '../stores/user';
 
 const authState = authStore();
@@ -25,11 +22,11 @@ const handleGoogleAuth = async (payload) => {
             username: username,
             email: payload.email,
         });
+
+        router.push('/');
     } catch (error) {
         console.error(`Google Auth Error ${error.message}`);
     }
-
-    router.push('/login');
 };
 
 const handleCreateUser = async (payload) => {
