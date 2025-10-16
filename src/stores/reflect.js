@@ -9,7 +9,7 @@ const saferStore = defineStore('safety-net', () => {
     const isLoaded = ref(false);
     const lastUpdated = ref(new Date());
 
-    async function fetchAllHotline() {}
+    async function fetchAllHotlines() {}
 
     return { allHotlines, isLoaded, lastUpdated };
 });

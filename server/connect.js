@@ -13,11 +13,7 @@ router.get('/community', async (req, res) => {
     try {
         const response = await axios.get('https://fetchallcommunities-qbseni5s5q-uc.a.run.app');
 
-        const communities = [];
-
-        response.data.forEach((community) => {
-            communities.push({ ...community });
-        });
+        const communities = [...response.data];
 
         return res.status(200).send(communities);
     } catch (error) {
