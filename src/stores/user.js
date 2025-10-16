@@ -101,6 +101,13 @@ const userStore = defineStore('user', () => {
         }
     }
 
+    async function clearUserState() {
+        email.value = '';
+        role.value = '';
+        username.value = '';
+        location.value = '';
+    }
+
     async function saveArticle(article) {
         //Add to user state first
         bookmarks.value.push(article);
@@ -126,7 +133,7 @@ const userStore = defineStore('user', () => {
         }
     };
 
-    return { email, role, username, journals, communities, fetchUserData };
+    return { email, role, username, journals, communities, fetchUserData, clearUserState };
 });
 
 export { authStore, userStore, featureStore };

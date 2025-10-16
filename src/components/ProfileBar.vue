@@ -33,13 +33,14 @@ const logout = async () => {
     }
 };
 
-onMounted(() => {
+onMounted(async () => {
     onAuthStateChanged(auth, async (user) => {
         await authState.initAuth();
         if (user) {
-            const token = await user.getIdToken();
-
+            await user.getIdToken();
             await userState.fetchUserData();
+        } else {
+            userState.clearUserState();
         }
     });
 });
