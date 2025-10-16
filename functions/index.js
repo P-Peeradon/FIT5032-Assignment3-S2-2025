@@ -280,12 +280,25 @@ exports.createCommunity = onRequest((req, res) => {
     });
 });
 
-exports.writeJournal = onRequest((req, res) => {
+exports.writeJournal = onRequest(async (req, res) => {
     if (req.method !== 'POST') {
         return res.status(404).send('Allow only POST method.');
     }
 
+    if (!firestoreClient) {
+        return res.status(500).send('Service not ready.');
+    }
+
     const frame = req.body;
+
+    try {
+        const journalsRef = firestoreClient.collection('journals');
+        await journalsRef.add({ ...frame, timestamp: new Date() });
+
+        return res.status(201).send('Successfully write your journal.');
+    } catch (error) {
+        return res.status(500).send(error);
+    }
 });
 
 exports.uploadCommunityThumbnail = onRequest((req, res) => {

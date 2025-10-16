@@ -5,7 +5,6 @@ import { Feature } from '../assets/feature';
 import axios from 'axios';
 import { signInWithPopup } from 'firebase/auth';
 import { collection, doc, getDoc } from 'firebase/firestore';
-import { sendEmail } from '../../server/utility.js';
 
 const authStore = defineStore('auth', () => {
     const currentUser = ref(null);

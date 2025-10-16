@@ -15,6 +15,9 @@
         </div>
         <div class="my-3 mt-3 d-flex flex-row justify-content-center gap-3">
             <button class="btn btn-primary" type="submit">Login</button>
+            <button class="btn btn-info text-center" @click.prevent="triggerGoogle">
+                Sign In with Google
+            </button>
             <button class="btn btn-info">Forgot Password?</button>
         </div>
     </form>
@@ -23,10 +26,16 @@
 <script setup>
 import { ref } from 'vue';
 
-const emit = defineEmits(['login']);
+const emit = defineEmits(['login', 'google-auth']);
 
 const email = ref('');
 const password = ref('');
+
+const triggerGoogle = async () => {
+    emit('google-auth', {
+        role: 'User',
+    });
+};
 
 const login = () => {
     emit('login', {
