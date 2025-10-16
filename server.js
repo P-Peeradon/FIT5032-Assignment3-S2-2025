@@ -1,7 +1,6 @@
 import cors from 'cors';
 import express from 'express';
 import axios from 'axios';
-import multer from 'multer';
 import 'dotenv/config.js';
 
 import validationRoutes from './server/validation.js';
@@ -16,7 +15,30 @@ const app = express();
 const fire_apiKey = process.env.VITE_FIREBASE_API_KEY;
 const map_apiKey = process.env.VITE_MAPBOX_ACCESS_TOKEN;
 
-app.use(cors({ origin: true }));
+const allowedOrigins = [
+    // Your Cloudflare Pages/Workers Subdomain
+    'https://chillax-corner.pages.dev',
+    // Localhost for development (optional)
+    'http://localhost:3000',
+];
+
+const corsOptions = {
+    // 2. Use a function to check the incoming request's Origin header
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        // OR if the origin is in our allowed list
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    // 3. Essential if your client needs to send cookies, session IDs, or Auth headers
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+};
+
+app.use(cors(corsOptions));
 app.use(express.json()); //Allow parsing request body as JSON
 app.use(express.urlencoded({ extended: true }));
 
