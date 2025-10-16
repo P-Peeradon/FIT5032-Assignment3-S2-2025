@@ -21,5 +21,17 @@ export default defineConfig(({ mode }) => {
     return {
         plugins: [vue()],
         define: { ...definedEnv, 'process.env.NODE_ENV': JSON.stringify(mode) },
+        server: {
+            proxy: {
+                '/api': {
+                    target: 'http://localhost:3000',
+                    changeOrigin: true,
+                    secure: false,
+                    // ⚠️ CRITICAL STEP: Rewrite the path to remove the '/api' prefix
+                    // so the backend sees the correct route (/grow/education)
+                    rewrite: (path) => path.replace(/^\/api/, ''),
+                },
+            },
+        },
     };
 });

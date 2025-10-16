@@ -179,8 +179,10 @@ onMounted(async () => {
     });
 
     const response = await api.get('/grow/education');
-    fetchedArticles.value = response.data.map(
-        (article) => new Article({ sections: new Section(article.sections), ...article })
+    response.data.forEach((article) =>
+        fetchedArticles.value.push(
+            new Article({ sections: new Section(article.sections), ...article })
+        )
     );
 });
 </script>

@@ -11,14 +11,14 @@ import api from '../../axios.js';
 
 const addCommunity = async (payload) => {
     try {
-        await api.post('/validate/community/register', payload);
+        await api.post('/api/validate/community/register', payload);
     } catch (error) {
         console.error(`${error.code}: Validation Error: ${error.message}`);
         return;
     }
 
     try {
-        await api.post('/connect/community/register');
+        await api.post('/api/connect/community/register');
     } catch (error) {
         console.error(`${error.code}: Error in register new community: ${error.message}`);
     }

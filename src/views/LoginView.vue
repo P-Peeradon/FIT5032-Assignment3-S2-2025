@@ -27,14 +27,14 @@ const googleSignIn = async (payload) => {
 
 const authorise = async (payload) => {
     try {
-        await api.post('/validate/login', payload);
+        await api.post('/api/validate/login', payload);
     } catch (error) {
         console.error(`${error.code}: Validation Error: ${error.message}`);
         return;
     }
 
     try {
-        await api.post('/login', payload); // Sign in using cloud function
+        await api.post('/api/login', payload); // Sign in using cloud function
 
         console.log(auth.currentUser);
         router.push('/');
