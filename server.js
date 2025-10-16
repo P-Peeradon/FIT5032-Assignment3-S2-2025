@@ -9,7 +9,7 @@ import adminRoutes from './server/admin.js';
 import connectRoutes from './server/connect.js';
 // import reflectRoutes from './server/reflect.js';
 import growRoutes from './server/grow.js';
-import { decodeToken } from './server/utility.js';
+import { decodeToken, sendEmail } from './server/utility.js';
 
 const app = express();
 
@@ -19,7 +19,6 @@ const map_apiKey = process.env.VITE_MAPBOX_ACCESS_TOKEN;
 app.use(cors({ origin: true }));
 app.use(express.json()); //Allow parsing request body as JSON
 app.use(express.urlencoded({ extended: true }));
-const upload = multer({ storage: multer.memoryStorage(), limit: 100 * (2 ^ 20) });
 
 app.use('/validate', validationRoutes);
 app.use('/admin', adminRoutes);
@@ -64,6 +63,35 @@ app.post('/register/firestore', decodeToken, async (req, res) => {
         return res.status(201).send({ msg: 'Record new user successfully.' });
     } catch (error) {
         console.error(`Error in recording new user: ${error}`);
+    }
+});
+
+// Send email by sendgrid.
+app.post('/register/email', async (req, res) => {
+    const data = req.body;
+
+    if (!data.email || !data.username) {
+        return res.status(400).send('Invalid mail recipient.');
+    }
+
+    const message = `Dear ${data.username},\n
+        \tWelcome to Chillax Corner, where youths feel happy and safe. You are welcome to use our inclusive, secure and confidential services. If there is any assistance need, please let me know.\n
+        \tWish you all the best in our community.\n
+
+        Warm Welcome,\n
+        Chillax Corner Team
+    `;
+
+    try {
+        await sendEmail({
+            to: data.email,
+            text: message,
+            subject: 'Welcome to Chillax Corner',
+        });
+
+        return res.status(200).send('Send Email Complete.');
+    } catch (error) {
+        return res.status(500).send(error);
     }
 });
 

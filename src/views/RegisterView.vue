@@ -19,7 +19,12 @@ const router = useRouter();
 
 const handleGoogleAuth = async (payload) => {
     try {
-        await authState.signInWithGoogle(payload.role);
+        const username = await authState.signInWithGoogle(payload.role);
+
+        await axios.post('https://chillax-corner.pages.dev/register/email', {
+            username: username,
+            email: payload.email,
+        });
     } catch (error) {
         console.error(`Google Auth Error ${error.message}`);
     }
@@ -40,8 +45,7 @@ const handleCreateUser = async (payload) => {
 
         await axios.post('https://chillax-corner.pages.dev/register/firestore', payload);
 
-        alert('Register success');
-        console.log(auth.currentUser);
+        await axios.post('https://chillax-corner.pages.dev/register/email', payload);
         router.push('/login');
     } catch (error) {
         console.error(`${error.code}: Error in creating new user: ${error.message}`);

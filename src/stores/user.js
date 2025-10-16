@@ -43,6 +43,8 @@ const authStore = defineStore('auth', () => {
                     role: role,
                 });
             }
+
+            return googleCredential.user.displayName;
         } catch (error) {
             console.error(`Error in Google Sign in: ${error.message}`);
         }
