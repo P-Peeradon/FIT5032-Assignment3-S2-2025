@@ -1,6 +1,11 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import { browserSessionPersistence, getAuth, setPersistence } from 'firebase/auth';
+import {
+    browserSessionPersistence,
+    getAuth,
+    setPersistence,
+    GoogleAuthProvider,
+} from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
@@ -23,6 +28,7 @@ export const auth = getAuth(fireApp);
 export const db = getFirestore(fireApp);
 
 export const storage = getStorage(fireApp);
+export const googleAuth = new GoogleAuthProvider();
 
 setPersistence(auth, browserSessionPersistence)
     .then(() => {
