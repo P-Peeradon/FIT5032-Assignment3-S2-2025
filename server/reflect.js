@@ -25,7 +25,7 @@ router.get('/journal', async (req, res) => {
     }
 
     try {
-        const response = await axios('', data);
+        const response = await axios.post('https://writejournal-qbseni5s5q-uc.a.run.app', data);
 
         return res.status(200).send(response.data);
     } catch (error) {

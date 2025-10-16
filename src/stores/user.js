@@ -3,8 +3,9 @@ import { defineStore } from 'pinia';
 import { auth, db, googleAuth } from '../firebase/init';
 import { Feature } from '../assets/feature';
 import axios from 'axios';
-import { inMemoryPersistence, signInWithPopup } from 'firebase/auth';
+import { signInWithPopup } from 'firebase/auth';
 import { collection, doc, getDoc } from 'firebase/firestore';
+import { sendEmail } from '../../server/utility.js';
 
 const authStore = defineStore('auth', () => {
     const currentUser = ref(null);
@@ -45,7 +46,26 @@ const authStore = defineStore('auth', () => {
                 });
             }
 
-            return googleCredential.user.displayName;
+            const message = `Dear ${data.username},\n
+                \tWelcome to Chillax Corner, where youths feel happy and safe.
+                You are welcome to use our inclusive, secure and confidential services.
+                If there is any assistance need, please let me know.\n
+                \tWish you all the best in our community.\n
+
+                Warm Welcome,\n
+                Chillax Corner Team`;
+
+            try {
+                await sendEmail({
+                    to: data.email,
+                    text: message,
+                    subject: 'Welcome to Chillax Corner',
+                });
+
+                return googleCredential.user.displayName;
+            } catch (error) {
+                console.error('Error in using Google Auth.', error.message);
+            }
         } catch (error) {
             console.error(`Error in Google Sign in: ${error.message}`);
         }
