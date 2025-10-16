@@ -10,6 +10,7 @@ import api from '../../axios.js';
 import RegisterForm from '../forms/RegisterForm.vue';
 import { useRouter } from 'vue-router';
 import { authStore } from '../stores/user';
+import { auth } from '../firebase/init.js';
 
 const authState = authStore();
 const router = useRouter();
@@ -22,6 +23,8 @@ const handleGoogleAuth = async (payload) => {
             username: username,
             email: payload.email,
         });
+
+        console.log(auth.currentUser);
 
         router.push('/');
     } catch (error) {

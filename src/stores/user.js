@@ -38,6 +38,7 @@ const authStore = defineStore('auth', () => {
             const userRef = doc(collection(db, 'users'), googleCredential.user.uid);
             if (!userRef) {
                 axios.post('https://recorduser-qbseni5s5q-uc.a.run.app', {
+                    uid: googleCredential.user.uid,
                     email: googleCredential.user.email,
                     username: googleCredential.user.displayName,
                     role: role,
@@ -89,7 +90,7 @@ const userStore = defineStore('user', () => {
 
     async function fetchUserData() {
         try {
-            const userData = await axios.get('');
+            const userData = await axios.get('https://fetchuserstate-qbseni5s5q-uc.a.run.app');
 
             email.value = userData.email;
             role.value = userData.role;
