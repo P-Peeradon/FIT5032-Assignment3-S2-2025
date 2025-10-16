@@ -33,6 +33,7 @@ const authStore = defineStore('auth', () => {
         try {
             // Run by using Google Auth
             const googleCredential = await signInWithPopup(auth, googleAuth);
+            analytics.logEvent('login_started');
 
             // Special case, can access user data in Firestore to check whether that uid exists or not.
             const userRef = doc(collection(db, 'users'), googleCredential.user.uid);
