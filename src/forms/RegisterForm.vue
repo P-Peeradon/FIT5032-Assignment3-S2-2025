@@ -65,8 +65,8 @@
             </div>
         </div>
         <div class="my-3 d-flex flex-row justify-content-center gap-3">
-            <button class="btn btn-primary text-center" @click="register">Register</button>
-            <button class="btn btn-info text-center" @click="triggerGoogle">
+            <button class="btn btn-primary text-center" @click.prevent="register">Register</button>
+            <button class="btn btn-info text-center" @click.prevent="triggerGoogle">
                 Sign In with Google
             </button>
         </div>
