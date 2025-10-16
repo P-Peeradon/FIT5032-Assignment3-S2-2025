@@ -4,7 +4,7 @@
         <div class="row mt-1">
             <div class="col-12 col-lg-6">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" v-model="email" required />
+                <input type="email" class="form-control" id="email" v-model="email" />
             </div>
 
             <div class="col-12 col-lg-6">
