@@ -148,14 +148,14 @@ const waitForCoordinateClick = (map, geojsonLayerIds) => {
 };
 
 onMounted(() => {
-    mapObj.value = new mapboxgl.Map({
+    const map = new mapboxgl.Map({
         container: mapContainer.value,
         style: 'mapbox://styles/mapbox/streets-v12',
         center: props.center,
         zoom: props.zoom,
     });
 
-    mapObj.value.on('load', () => {
+    map.on('load', () => {
         if (props.layers) {
             props.layers.forEach((layer) => {
                 map.addSource(layer, { type: 'geojson', data: `${geoPath}/${layer}.geojson` });
@@ -178,21 +178,23 @@ onMounted(() => {
                 });
             });
         }
-        mapObj.value.addControl(new mapboxgl.NavigationControl()); // Navigation
+        map.addControl(new mapboxgl.NavigationControl()); // Navigation
 
-        mapObj.value.addControl(
+        map.addControl(
             new mapboxgl.GeolocateControl({
                 positionOptions: { enableHighAccuracy: true },
                 trackUserLocation: true,
             })
         ); // User Location
-        mapObj.value.addControl(new mapboxgl.ScaleControl()); // Scale on the map
+        map.addControl(new mapboxgl.ScaleControl()); // Scale on the map
+        mapObj.value = map;
     });
 });
 
 onBeforeUnmount(() => {
-    if (this.map) {
-        this.map.remove();
+    if (mapObj.value) {
+        mapObj.value.remove();
+        mapObj.value = null;
     }
 });
 </script>
