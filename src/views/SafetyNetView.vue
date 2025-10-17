@@ -1,8 +1,22 @@
 <template>
     <div class="container-fluid">
-        <h1>Safety Net</h1>
+        <h1 class="mt-2 py-3 h1 text-center text-primary">Safety Net</h1>
+        <figure class="text-center">
+            <blockquote class="blockquote mx-4 px-4">
+                <q class="mt-3"
+                    >Mental health is a vital part of our overall wellbeing, and everyone deserves
+                    access to the mental health care and support they need</q
+                >
+            </blockquote>
 
-        <h2>It's OK not to feel OK</h2>
+            <figcaption class="blockquote-footer">
+                <span>Justin Trudeau (1971-Present)</span>
+            </figcaption>
+        </figure>
+
+        <hr class="border border-primary border-2" />
+
+        <h2>It's OK not to be OK</h2>
         <p>
             Sometimes, you may need someone who will understand your thought and ready to assist you
             in case of overwhelming or mentally insecure. But please do not worry, these hotline OK

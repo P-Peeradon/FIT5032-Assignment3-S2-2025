@@ -5,14 +5,13 @@
         <figure class="text-center">
             <blockquote class="blockquote mx-4 px-4">
                 <q class="mt-3"
-                    >Watch your thoughts, for they will become actions. Watch your actions, for
-                    they'll become habits. Watch your habits for they will forge your character.
-                    Watch your character, for it will make your destiny</q
+                    >I can recapture everything when I write, my thoughts, my ideals and my
+                    fantasies.</q
                 >
             </blockquote>
 
             <figcaption class="blockquote-footer">
-                <span>Margaret Thatcher (1925-2013)</span>
+                <span>Anne Frank (1929-1945)</span>
             </figcaption>
         </figure>
 
@@ -75,12 +74,17 @@ import WriteJournalForm from '../forms/WriteJournalForm.vue';
 import { authStore, userStore } from '../stores/user';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase/init';
+import axios from 'axios';
 
 const authState = authStore();
 const userState = userStore();
 
-const writeJournal = () => {
-    await;
+const writeJournal = async (payload) => {
+    try {
+        await axios.post('https://writejournal-qbseni5s5q-uc.a.run.app', payload);
+    } catch (error) {
+        console.error(`Error in writing journal: ${error.message}`);
+    }
 };
 
 onMounted(() => {
