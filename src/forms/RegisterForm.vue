@@ -37,7 +37,7 @@
                         class="form-check-input"
                         id="user"
                         v-model="role"
-                        value="user"
+                        value="User"
                         checked
                     />
                     <label for="user" class="form-check-label">User</label>
@@ -48,7 +48,7 @@
                         class="form-check-input"
                         id="practitioner"
                         v-model="role"
-                        value="practitioner"
+                        value="Practitioner"
                     />
                     <label for="practitioner" class="form-check-label">Practitioner</label>
                 </div>
@@ -58,7 +58,7 @@
                         class="form-check-input"
                         id="social-worker"
                         v-model="role"
-                        value="social worker"
+                        value="Social Worker"
                     />
                     <label for="social-worker" class="form-check-label">Social Worker</label>
                 </div>

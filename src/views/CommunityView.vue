@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <h1 class="mt-2 py-2 h1 text-center text-primary">Community</h1>
         <div class="row">
-            <main class="col-9 col-xl-8">
+            <main class="col-7 col-xl-8">
                 <div class="d-flex flex-row justify-content-center px-auto">
                     <img
                         src="../assets/connect/community.jpg"
@@ -25,7 +25,7 @@
                 </figure>
             </main>
 
-            <aside class="col-3 col-xl-4">
+            <aside class="col-5 col-xl-4">
                 <!--Side menu (Coming soon)-->
 
                 <!--Map Component-->

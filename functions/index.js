@@ -148,7 +148,7 @@ exports.loginUser = onRequest((req, res) => {
 
 // Fetch all features from database.
 // Method: GET
-exports.getAllFeatures = onRequest((req, res) => {
+exports.fetchAllFeatures = onRequest((req, res) => {
     cors(req, res, async () => {
         res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev');
         if (!firestoreClient) {
@@ -388,6 +388,37 @@ exports.writeJournal = onRequest(async (req, res) => {
             await journalsRef.add({ ...frame, timestamp: new Date() });
 
             return res.status(201).send('Successfully write your journal.');
+        } catch (error) {
+            return res.status(500).send(error);
+        }
+    });
+});
+
+exports.writeToDev = onRequest((req, res) => {
+    cors(req, res, async () => {
+        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev');
+        if (req.method !== 'POST') {
+            return res.status(404).send('Allow only POST method.');
+        }
+
+        const frame = req.body;
+
+        if (!frame.email) {
+            return res.status(400).send('Please provide your email.');
+        }
+
+        if (!frame.subject || !frame.text) {
+            return res.status(400).send('Please write the subject and text for your mail');
+        }
+
+        // We cannot do the single sender as this is performed by developer.
+        try {
+            await sgMail.send({
+                to: 'psoo0009@student.monash.edu',
+                from: frame.email,
+                subject: frame.subject,
+                text: frame.text,
+            });
         } catch (error) {
             return res.status(500).send(error);
         }
