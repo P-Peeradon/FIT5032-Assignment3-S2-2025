@@ -10,7 +10,7 @@ const authState = authStore();
 
 const handleSendEmail = async (payload) => {
     try {
-        await axios.post('', payload);
+        await axios.post('https://writetodev-qbseni5s5q-uc.a.run.app', payload);
     } catch (error) {
         console.error(`Error in writing to development team: ${error.message}`);
     }
