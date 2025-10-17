@@ -19,7 +19,7 @@
                             >
                         </RouterLink>
 
-                        <ul v-show="connectPillar" class="dropdown-menu">
+                        <ul v-if="connectPillar" class="dropdown-menu">
                             <li>
                                 <RouterLink class="dropdown-item" to="/connect/community">
                                     Community
@@ -31,18 +31,23 @@
                         <RouterLink to="/reflect">
                             <a
                                 href="#"
-                                @mouseover="toggleConnect"
-                                @mouseleave="toggleConnect"
+                                @mouseover="toggleReflect"
+                                @mouseleave="toggleReflect"
                                 role="button"
                                 class="nav-link dropdown-toggle"
                                 >Reflect</a
                             >
                         </RouterLink>
 
-                        <ul v-show="reflectPillar" class="dropdown-menu">
+                        <ul v-if="reflectPillar" class="dropdown-menu">
                             <li>
                                 <RouterLink class="dropdown-item" to="/reflect/journal">
                                     Journal
+                                </RouterLink>
+                            </li>
+                            <li>
+                                <RouterLink class="dropdown-item" to="/reflect/safetynet">
+                                    Safety Net Hotline
                                 </RouterLink>
                             </li>
                         </ul>
@@ -58,7 +63,7 @@
                             >
                         </RouterLink>
 
-                        <ul v-show="growPillar" class="dropdown-menu">
+                        <ul v-if="growPillar" class="dropdown-menu">
                             <li>
                                 <RouterLink class="drowdown-item" to="/grow/education">
                                     Mental Education

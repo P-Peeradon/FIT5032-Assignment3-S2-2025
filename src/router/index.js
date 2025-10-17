@@ -12,6 +12,7 @@ import GrowPillarView from '../views/GrowPillarView.vue';
 import ArticleView from '../views/ArticleView.vue';
 import CommunityDataView from '../views/CommunityDataView.vue';
 import RegisterCommunityView from '../views/RegisterCommunityView.vue';
+import SafetyNetView from '../views/SafetyNetView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -66,7 +67,11 @@ const router = createRouter({
             component: JournalView,
             meta: { requiresAuth: true },
         },
-
+        {
+            path: '/reflect/safetynet',
+            name: 'journal',
+            component: SafetyNetView,
+        },
         {
             path: '/grow',
             name: 'grow',

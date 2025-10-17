@@ -1,18 +1,35 @@
 <template>
     <div class="container-fluid">
         <h1 class="mt-2 py-3 h1 text-center text-primary">Safety Net</h1>
-        <figure class="text-center">
-            <blockquote class="blockquote mx-4 px-4">
-                <q class="mt-3"
-                    >Mental health is a vital part of our overall wellbeing, and everyone deserves
-                    access to the mental health care and support they need</q
-                >
-            </blockquote>
+        <div class="row">
+            <main class="col-9 col-xl-8">
+                <div class="d-flex flex-row justify-content-center px-auto">
+                    <img
+                        src="../assets/connect/community.jpg"
+                        alt="community"
+                        style="width: 48rem; height: 32rem"
+                    />
+                </div>
+                <figure class="text-center">
+                    <blockquote class="blockquote mx-4 px-4">
+                        <q class="mt-3"
+                            >Mental health is a vital part of our overall wellbeing, and everyone
+                            deserves access to the mental health care and support they need</q
+                        >
+                    </blockquote>
 
-            <figcaption class="blockquote-footer">
-                <span>Justin Trudeau (1971-Present)</span>
-            </figcaption>
-        </figure>
+                    <figcaption class="blockquote-footer">
+                        <span>Justin Trudeau (1971-Present)</span>
+                    </figcaption>
+                </figure>
+            </main>
+            <aside class="col-3 col-xl-4">
+                <!--Side menu (Coming soon)-->
+
+                <!--Map Component-->
+                <div v-if="communities"></div>
+            </aside>
+        </div>
 
         <hr class="border border-primary border-2" />
 
