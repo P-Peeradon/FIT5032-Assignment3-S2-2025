@@ -26,7 +26,7 @@ const community = props.community;
 
 const path = `/connect/community/${community.cid}`;
 
-const thumbnailPath = `../../public/community/${community.abbrev.toLowerCase()}-thumbnail.png`;
+const thumbnailPath = `../../public/community/${community.cid}-thumbnail.png`;
 
 onErrorCaptured((err, instance, info) => {
     console.error('Caught a component error:', err, info);

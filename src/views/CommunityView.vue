@@ -78,7 +78,7 @@
             </p>
             <div
                 v-if="displayedCommunity"
-                class="row-cols-2 row-cols-md-3 row-cols-xl-4 gap-3 d-flex flex-row"
+                class="row row-cols-2 row-cols-md-3 row-cols-xl-4 gap-3 d-flex flex-row"
             >
                 <div v-for="community in displayedCommunity" :key="community.cid">
                     <CommunityShowcase :community="community" />
