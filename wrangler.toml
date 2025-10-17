@@ -9,4 +9,3 @@ compatibility_flags = [
   "enable_nodejs_http_server_modules",
   "experimental" # May be required for newer features
 ]
-main = "server.js" 
