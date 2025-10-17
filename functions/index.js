@@ -58,7 +58,7 @@ exports.createUser = onRequest((req, res) => {
 
 exports.writeWelcomeEmail = onRequest((req, res) => {
     cors(req, res, async () => {
-        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev/');
+        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev');
         const frame = req.body;
 
         if (!frame.email || !frame.username) {
@@ -91,7 +91,7 @@ exports.writeWelcomeEmail = onRequest((req, res) => {
 // Method: POST
 exports.recordUser = onRequest((req, res) => {
     cors(req, res, async () => {
-        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev/');
+        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev');
         if (!authClient || !firestoreClient) {
             res.status(500).send('Services not ready.');
             return;
@@ -122,7 +122,7 @@ exports.recordUser = onRequest((req, res) => {
 // method: POST
 exports.loginUser = onRequest((req, res) => {
     cors(req, res, async () => {
-        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev/');
+        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev');
         if (!authClient || !firestoreClient) {
             res.status(500).send('Services not ready.');
             return;
@@ -150,7 +150,7 @@ exports.loginUser = onRequest((req, res) => {
 // Method: GET
 exports.getAllFeatures = onRequest((req, res) => {
     cors(req, res, async () => {
-        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev/');
+        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev');
         if (!firestoreClient) {
             res.status(500).send('Services not ready.');
             return;
@@ -178,7 +178,7 @@ exports.getAllFeatures = onRequest((req, res) => {
 // method: GET
 exports.fetchUserState = onRequest((req, res) => {
     cors(req, res, async () => {
-        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev/');
+        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev');
         if (!authClient || !firestoreClient) {
             res.status(500).send('Services not ready.');
             return;
@@ -223,7 +223,7 @@ exports.fetchUserState = onRequest((req, res) => {
 // Method: GET
 exports.fetchAllCommunities = onRequest((req, res) => {
     cors(req, res, async () => {
-        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev/');
+        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev');
         if (!firestoreClient) {
             res.status(500).send('Services not ready.');
             return;
@@ -249,7 +249,7 @@ exports.fetchAllCommunities = onRequest((req, res) => {
 
 exports.fetchAllArticles = onRequest((req, res) => {
     cors(req, res, async () => {
-        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev/');
+        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev');
         if (!firestoreClient) {
             res.status(500).send('Services not ready.');
             return;
@@ -273,7 +273,7 @@ exports.fetchAllArticles = onRequest((req, res) => {
 
 exports.fetchAllAvatar = onRequest((req, res) => {
     cors(req, res, async () => {
-        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev/');
+        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev');
         if (!firestoreClient) {
             res.status(500).send('Services not ready.');
             return;
@@ -297,7 +297,7 @@ exports.fetchAllAvatar = onRequest((req, res) => {
 
 exports.createCommunity = onRequest((req, res) => {
     cors(req, res, async () => {
-        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev/');
+        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev');
         if (req.method !== 'POST') {
             return res.status(404).send('Allow only POST method.');
         }
@@ -325,7 +325,7 @@ exports.createCommunity = onRequest((req, res) => {
 
 exports.joinClub = onRequest((req, res) => {
     cors(req, res, async () => {
-        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev/');
+        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev');
         if (req.method !== 'POST') {
             return res.status(404).send('Allow only POST method.');
         }
@@ -340,7 +340,7 @@ exports.joinClub = onRequest((req, res) => {
 
 exports.writeRSVP = onRequest((req, res) => {
     cors(req, res, async () => {
-        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev/');
+        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev');
         const frame = req.body;
 
         if (!frame.email || !frame.username) {
@@ -371,7 +371,7 @@ exports.writeRSVP = onRequest((req, res) => {
 
 exports.writeJournal = onRequest(async (req, res) => {
     cors(req, res, async () => {
-        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev/');
+        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev');
 
         if (req.method !== 'POST') {
             return res.status(404).send('Allow only POST method.');
@@ -396,7 +396,7 @@ exports.writeJournal = onRequest(async (req, res) => {
 
 exports.uploadCommunityThumbnail = onRequest((req, res) => {
     cors(req, res, async () => {
-        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev/');
+        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev');
         if (req.method !== 'POST' || req.method !== 'PATCH') {
             return res.status(404).send('Allow only POST and PATCH method.');
         }

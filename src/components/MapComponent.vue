@@ -3,14 +3,13 @@
     <nav class="d-flex flex-col">
         <div>
             <h3>For routing, please click your origin and destination on the map.</h3>
-            <img :src="{ RouteIcon }" @click="gpsDirection" alt="routing" />
+            <img src="../../public/Route.png" @click="gpsDirection" alt="routing" />
         </div>
     </nav>
 </template>
 
 <script setup>
 import mapboxgl from 'mapbox-gl';
-import RouteIcon from '../../public/Route.png';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 import axios from 'axios';
