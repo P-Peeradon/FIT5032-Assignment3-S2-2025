@@ -111,13 +111,9 @@ onMounted(async () => {
         await authState.initAuth();
     });
 
-    try {
-        const { data } = await api.get('/api/connect/community');
+    const { data } = await api.get('https://fetchallcommunities-qbseni5s5q-uc.a.run.app');
 
-        communities.value = data.map((community) => new Community(community));
-    } catch (error) {
-        console.error('Error in fetching api.');
-    }
+    communities.value = data.map((community) => new Community(community));
 });
 </script>
 

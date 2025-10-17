@@ -55,7 +55,9 @@ router.post('/journal', async (req, res) => {
         // await sendEmail({to: user.email, msh})
 
         return res.status(201).send('Successfully writing journal.');
-    } catch (error) {}
+    } catch (error) {
+        return res.status(500).send(`Error in writing journals: ${error.message}`);
+    }
 });
 
 export default router;

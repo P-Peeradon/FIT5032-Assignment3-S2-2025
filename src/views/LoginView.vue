@@ -34,7 +34,7 @@ const authorise = async (payload) => {
     }
 
     try {
-        await api.post('/api/login', payload); // Sign in using cloud function
+        await api.post('https://loginuser-qbseni5s5q-uc.a.run.app', payload); // Sign in using cloud function
 
         console.log(auth.currentUser);
         router.push('/');

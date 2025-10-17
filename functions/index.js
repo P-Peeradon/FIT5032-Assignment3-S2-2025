@@ -12,6 +12,8 @@ const { onRequest } = require('firebase-functions/v2/https');
 const logger = require('firebase-functions/logger');
 const admin = require('firebase-admin');
 const cors = require('cors')({ origin: true });
+const sgMail = require('@sendgrid/mail');
+const MapboxClient = require('@mapbox/mapbox-sdk/services/geocoding');
 
 admin.initializeApp();
 
@@ -48,6 +50,36 @@ exports.createUser = onRequest((req, res) => {
             await authClient.createUser({ email: frame.email, password: frame.password });
         } catch (error) {
             res.status(500).send(`Error in registering user: ${error.message}`);
+        }
+    });
+});
+
+exports.writeWelcomeEmail = onRequest((req, res) => {
+    cors(req, res, async () => {
+        const frame = req.body;
+
+        if (!frame.email || !frame.username) {
+            return res.status(400).send('Invalid mail recipient.');
+        }
+
+        const message = `Dear ${frame.username},\n
+                \tWelcome to Chillax Corner, where youths feel happy and safe. You are welcome to use our inclusive, secure and confidential services. If there is any assistance need, please let me know.\n
+                \tWish you all the best in our community.\n
+
+                Warm Welcome,\n
+                Chillax Corner Team
+            `;
+
+        try {
+            await sgMail.send({
+                to: data.email,
+                text: message,
+                subject: 'Welcome to Chillax Corner',
+            });
+
+            return res.status(200).send('Send Email Complete.');
+        } catch (error) {
+            return res.status(500).send(error);
         }
     });
 });

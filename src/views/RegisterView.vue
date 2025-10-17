@@ -19,10 +19,10 @@ const handleGoogleAuth = async (payload) => {
     try {
         const user = await authState.signInWithGoogle(payload.role);
 
-        await api.post('/api/register/email', {
+        await api.post('', {
             username: user.displayName,
             email: user.email,
-        });
+        }); //Write email
 
         console.log(auth.currentUser);
 
