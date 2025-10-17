@@ -20,7 +20,7 @@ router.get('/journal', async (req, res) => {
     }
 
     try {
-        const response = await axios.get('', data); //Cloud ffunction to get user journal.
+        const response = await axios.post('', data);
 
         return res.status(200).send(response.data);
     } catch (error) {
@@ -47,15 +47,21 @@ router.post('/journal', async (req, res) => {
         ${data.content}
         \n
 
-        Take care,
+        Take care,\n
         Chillax Corner
 
         `;
 
-        // await sendEmail({to: user.email, msh})
+        try {
+            await sendEmail({ to: user.email, subject: 'Write Journal Success', text: mail });
+        } catch (error) {
+            return res.status(500).send(error);
+        }
 
         return res.status(201).send('Successfully writing journal.');
-    } catch (error) {}
+    } catch (error) {
+        return res.status(500).send(error);
+    }
 });
 
 export default router;

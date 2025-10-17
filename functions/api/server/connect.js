@@ -4,6 +4,7 @@ import multer from 'multer';
 import path from 'path';
 import { bucketCid, geoCodeAddress, registerGeoFeature } from './utility.js';
 import axios from 'axios';
+import fs from 'fs';
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage(), limit: 100 * (2 ^ 20) });

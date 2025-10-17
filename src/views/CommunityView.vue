@@ -111,9 +111,13 @@ onMounted(async () => {
         await authState.initAuth();
     });
 
-    const { data } = await api.get('/api/connect/community');
+    try {
+        const { data } = await api.get('/api/connect/community');
 
-    communities.value = data.map((community) => new Community(community));
+        communities.value = data.map((community) => new Community(community));
+    } catch (error) {
+        console.error('Error in fetching api.');
+    }
 });
 </script>
 
