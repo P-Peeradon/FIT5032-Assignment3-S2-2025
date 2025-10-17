@@ -1,23 +1,24 @@
 <template>
     <div ref="mapContainer" class="map-container" style="width: 24rem; height: 24rem"></div>
-    <div class="mt-2 align-center">
-        <h3>Use routing service</h3>
-        <input type="text" placeholder="origin" v-model="origin" />
-        <input type="text" placeholder="destination" v-model="destination" />
-    </div>
+    <nav>
+        <h3>For routing, please click your origin and destination on the map.</h3>
+        <img :src="{ RouteIcon }" @click="gpsDirection" alt="routing" />
+    </nav>
 </template>
 
 <script setup>
 import mapboxgl from 'mapbox-gl';
-
+import RouteIcon from '../../public/Route.png';
 import '@maplibre/maplibre-gl-directions/dist/maplibre-gl-directions.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
+import axios from 'axios';
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 
 mapboxgl.accessToken = process.env.VITE_MAPBOX_ACCESS_TOKEN;
 const mapContainer = ref(null);
 let map;
+const tempMarkers = []; //Collect origin and destination
 
 const props = defineProps({
     center: { type: Array, default: () => [103.8198, 1.3521] }, // [long, lat] in this case, Singapore
@@ -25,12 +26,116 @@ const props = defineProps({
     layers: { type: Array, default: null },
 });
 
-const geoPath = '../src/assets/geojson';
+const gpsDirection = async (map) => {
+    // 1. Cleanup before starting a new route
+    tempMarkers.forEach((m) => m.remove());
+    tempMarkers.length = 0;
+    if (map.getLayer('route-line')) {
+        map.removeLayer('route-line');
+        map.removeSource('route');
+    }
 
-let originPoint = null;
-let destinationPoint = null;
-const routingPoints = []; // Stores the Marker objects for the UI
-const maxWaypoints = 2; // Origin and Destination
+    console.log('Routing initiated. Please click on the map to set the ORIGIN point.');
+
+    // 2. AWAIT FIRST CLICK (Origin)
+    const origin = await waitForCoordinateClick(map, layerIds);
+    // Add visual marker for Origin
+    const originMarker = new mapboxgl.Marker({ color: '#007cbf' }).setLngLat(origin).addTo(map);
+    temporaryMarkers.push(originMarker);
+
+    console.log('Please click on the map to set the DESTINATION point.');
+
+    // 3. AWAIT SECOND CLICK (Destination)
+    const destination = await waitForCoordinateClick(map, layerIds);
+    console.log(`Destination set at: ${destination.lng}, ${destination.lat}`);
+
+    // Add visual marker for Destination
+    const destMarker = new mapboxgl.Marker({ color: '#ff0000' }).setLngLat(destination).addTo(map);
+    temporaryMarkers.push(destMarker);
+
+    // 4. REQUEST AND DRAW ROUTE
+    const routeGeometry = await getRoute(origin, destination);
+
+    if (routeGeometry) {
+        drawRoute(routeGeometry);
+        console.log('Route successfully calculated and drawn.');
+    } else {
+        console.error('Could not find a valid route.');
+    }
+};
+
+const getRoute = async (origin, destination) => {
+    const profile = 'walking';
+    const coordinates = `${origin.lng},${origin.lat};${destination.lng},${destination.lat}`;
+    const url = `https://api.mapbox.com/directions/v5/mapbox/${profile}/${coordinates}?geometries=geojson&access_token=${mapboxgl.accessToken}`;
+
+    const response = await axios(url);
+    const data = await response.json();
+
+    if (data.routes && data.routes.length > 0) {
+        return data.routes[0].geometry; // Returns the GeoJSON LineString geometry
+    }
+    return null;
+};
+
+const drawRoute = (routeGeoJSON) => {
+    if (!routeGeoJSON) return;
+    const routeSourceId = 'route';
+
+    if (map.getSource(routeSourceId)) {
+        map.getSource(routeSourceId).setData({
+            type: 'Feature',
+            geometry: routeGeoJSON,
+        });
+    } else {
+        map.addSource(routeSourceId, {
+            type: 'geojson',
+            data: {
+                type: 'Feature',
+                geometry: routeGeoJSON,
+            },
+        });
+        map.addLayer({
+            id: 'route-line',
+            type: 'line',
+            source: routeSourceId,
+            paint: { 'line-color': '#FF00ff', 'line-width': 6, 'line-opacity': 0.75 },
+        });
+    }
+};
+
+const waitForCoordinateClick = (map, geojsonLayerIds) => {
+    return new Promise((resolve) => {
+        // Define the click handler function
+        const clickHandler = (e) => {
+            // 1. Query features across the defined GeoJSON layers
+            const features = map.queryRenderedFeatures(e.point, {
+                layers: geojsonLayerIds,
+            });
+
+            let clickedLngLat;
+
+            if (features.length > 0) {
+                // Clicked on a GeoJSON feature
+                const coords = features[0].geometry.coordinates;
+                clickedLngLat = { lng: coords[0], lat: coords[1] };
+            } else {
+                // Clicked on the map background
+                clickedLngLat = e.lngLat;
+            }
+
+            // 2. IMPORTANT: Remove the handler to stop listening after the first click
+            map.off('click', clickHandler);
+
+            // 3. Resolve the promise with the final coordinate
+            resolve(clickedLngLat);
+        };
+        // Attach the temporary click handler
+        map.on('click', clickHandler);
+    });
+};
+
+const geoPath = '../src/assets/geojson';
 
 onMounted(() => {
     map = new mapboxgl.Map({
@@ -70,32 +175,6 @@ onMounted(() => {
             })
         ); // User Location
         map.addControl(new mapboxgl.ScaleControl()); // Scale on the map
-
-        map.on('click', async (e) => {
-            // 1. Query features across ALL defined GeoJSON layers
-            const features = map.queryRenderedFeatures(e.point, {
-                layers: props.layers,
-            });
-
-            let clickedLngLat;
-            let pointName = 'Map Click'; // Default name
-
-            if (features.length > 0) {
-                // User clicked on one of the GeoJSON markers
-                const clickedFeature = features[0];
-                const coords = clickedFeature.geometry.coordinates;
-
-                // Use the feature's coordinates
-                clickedLngLat = { lng: coords[0], lat: coords[1] };
-
-                // Try to get a meaningful name for logging (assuming a 'name' property exists)
-                pointName = clickedFeature.properties.name || 'GeoJSON Point';
-
-                console.log(
-                    `Clicked GeoJSON feature: ${pointName} from layer: ${clickedFeature.layer.id}`
-                );
-            }
-        });
     });
 });
 
