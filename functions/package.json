@@ -14,7 +14,6 @@
   },
   "main": "index.js",
   "dependencies": {
-    "@mapbox/mapbox-gl-directions": "^4.3.1",
     "@mapbox/mapbox-sdk": "^0.16.2",
     "@maplibre/maplibre-gl-directions": "^0.8.0",
     "@maplibre/maplibre-gl-geocoder": "^1.9.1",
