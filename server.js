@@ -1,8 +1,6 @@
 import cors from 'cors';
 import express from 'express';
-
 import 'dotenv/config.js';
-
 import apiRoutes from './server/api.js';
 
 const app = express();
@@ -41,6 +39,10 @@ app.use('/api', apiRoutes); //Use this first before routing to other routes.
 app.use(express.static(path.join(__dirname, 'build')));
 
 const port = process.env.PORT || 3000;
+
+app.get('*', (req, res) => {
+    res.status(200).sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 const server = app.listen(port, () => {
     console.log(`Server is listening at port ${port}`);

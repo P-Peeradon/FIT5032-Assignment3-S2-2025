@@ -29,7 +29,9 @@
                 <!--Side menu (Coming soon)-->
 
                 <!--Map Component-->
-                <MapComponent :layers="['community']" :center="[144.9595, -37.8009]" />
+                <div v-if="communities">
+                    <MapComponent :layers="['community']" :center="[144.9595, -37.8009]" />
+                </div>
             </aside>
         </div>
 
