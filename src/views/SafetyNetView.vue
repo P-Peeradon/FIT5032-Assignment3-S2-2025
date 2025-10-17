@@ -33,7 +33,7 @@
 
         <hr class="border border-primary border-2" />
 
-        <h2>It's OK not to be OK</h2>
+        <h2 class="my-3 h2 text-secondary">It's OK not to be OK</h2>
         <p>
             Sometimes, you may need someone who will understand your thought and ready to assist you
             in case of overwhelming or mentally insecure. But please do not worry, these hotline OK
@@ -41,6 +41,29 @@
             Chillax Corner
         </p>
 
+        <div class="row g-2 mt-2">
+            <div class="col-6 col-lg-8">
+                <label for="nameSearch" class="form-label">Search by name or Abbrevation</label>
+                <input
+                    type="text"
+                    id="nameSearch"
+                    placeholder="Search club by name"
+                    class="form-control"
+                    v-model="query"
+                />
+            </div>
+            <div class="col-6 col-lg-4">
+                <label for="location" class="form-label">Search by Location</label>
+                <select id="location" placeholder="Location" v-model="location" class="form-select">
+                    <option value="" default></option>
+                    <option value="Melbourne">Melbourne</option>
+                    <option value="Sydney">Sydney</option>
+                    <option value="Adelaide">Adelaide</option>
+                    <option value="Auckland">Auckland</option>
+                    <option value="Singapore">Singapore</option>
+                </select>
+            </div>
+        </div>
         <DataTable>
             <Column></Column>
         </DataTable>
@@ -52,19 +75,19 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import { authStore } from '../stores/user';
 import { saferStore } from '../stores/reflect';
-import api from '../../axios.js';
 import { onMounted } from 'vue';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase/init';
 
 const authState = authStore();
-
 const saferState = saferStore();
+const displayedHotlines = ref(saferState.allHotlines);
 
-onMounted(() => {
+onMounted(async () => {
     onAuthStateChanged(auth, async (user) => {
         await authState.initAuth();
     });
+    await saferState.fetchAllHotlines();
 });
 </script>
 

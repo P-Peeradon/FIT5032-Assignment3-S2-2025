@@ -455,3 +455,30 @@ exports.uploadCommunityThumbnail = onRequest((req, res) => {
         }
     });
 });
+
+exports.fetchAllHotlines = onRequest((req, res) => {
+    cors(req, res, async () => {
+        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev');
+        if (req.method !== 'GET') {
+            return res.status(404).send('Allow only GET method.');
+        }
+
+        if (!firestoreClient) {
+            return res.status(500).send('Firestore client does not ready');
+        }
+
+        try {
+            const hotlinesCollection = admin.firestore().collection('hotlines');
+            const snapshot = await hotlinesCollection.get();
+            const hotlines = [];
+
+            snapshot.forEach((doc) => {
+                hotlines.push({ id: doc.id, ...doc.data() });
+            });
+
+            res.status(200).send(hotlines);
+        } catch (error) {
+            res.status(500).send(error);
+        }
+    });
+});

@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { Hotline } from '../assets/hotline.js';
 import { ref } from 'vue';
 
 // Collect all hotline in users' area.
@@ -9,9 +10,16 @@ const saferStore = defineStore('safety-net', () => {
     const isLoaded = ref(false);
     const lastUpdated = ref(new Date());
 
-    async function fetchAllHotlines() {}
+    async function fetchAllHotlines() {
+        try {
+            const response = await axios.get('https://fetchallhotlines-qbseni5s5q-uc.a.run.app');
+            allHotlines.value = response.data.map((hotline) => new Hotline(hotline));
+        } catch (error) {
+            console.error(`Error in fetching hotlines: ${error.message}`);
+        }
+    }
 
-    return { allHotlines, isLoaded, lastUpdated };
+    return { allHotlines, isLoaded, lastUpdated, fetchAllHotlines };
 });
 
 // Focus on what user did.
