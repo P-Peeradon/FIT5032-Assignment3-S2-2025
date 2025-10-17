@@ -5,7 +5,7 @@
 <script setup>
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-
+import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 
@@ -52,7 +52,12 @@ onMounted(() => {
             });
         }
         map.addControl(new mapboxgl.NavigationControl()); // Navigation
-
+        map.addControl(
+            new MapboxDirections(
+                { accessToken: mapboxgl.accessToken, profile: 'mapbox/driving' },
+                'top-left'
+            )
+        );
         map.addControl(
             new mapboxgl.GeolocateControl({
                 positionOptions: { enableHighAccuracy: true },
