@@ -1,6 +1,6 @@
 <template>
     <div ref="mapContainer" class="map-container" style="width: 24rem; height: 24rem"></div>
-    <nav>
+    <nav class="d-flex flex-col">
         <h3>For routing, please click your origin and destination on the map.</h3>
         <img :src="{ RouteIcon }" @click="gpsDirection" alt="routing" />
     </nav>
@@ -9,7 +9,6 @@
 <script setup>
 import mapboxgl from 'mapbox-gl';
 import RouteIcon from '../../public/Route.png';
-import '@maplibre/maplibre-gl-directions/dist/maplibre-gl-directions.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 import axios from 'axios';
@@ -19,6 +18,7 @@ mapboxgl.accessToken = process.env.VITE_MAPBOX_ACCESS_TOKEN;
 const mapContainer = ref(null);
 let map;
 const tempMarkers = []; //Collect origin and destination
+const geoPath = '../src/assets/geojson';
 
 const props = defineProps({
     center: { type: Array, default: () => [103.8198, 1.3521] }, // [long, lat] in this case, Singapore
@@ -135,12 +135,10 @@ const waitForCoordinateClick = (map, geojsonLayerIds) => {
     });
 };
 
-const geoPath = '../src/assets/geojson';
-
 onMounted(() => {
     map = new mapboxgl.Map({
         container: mapContainer.value,
-        style: 'https://demotiles.maplibre.org/style.json',
+        style: 'mapbox://styles/mapbox/streets-v12',
         center: props.center,
         zoom: props.zoom,
     });
@@ -160,6 +158,8 @@ onMounted(() => {
                             ['get', 'category'],
                             'community',
                             '#008080',
+                            'university',
+                            '#C41E3A',
                             '#000000',
                         ],
                     },

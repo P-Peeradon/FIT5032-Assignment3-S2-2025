@@ -8,7 +8,17 @@
         "name": "Actuarial Students' Society",
         "category": "community",
         "organisation": "The University of Melbourne",
-        "address": "131 Barry Street, The University of Melbourne, Carlton 3053"
+        "address": "131 Barry Street, The University of Melbourne, Carlton VIC 3053"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-33.9248, 151.2273] },
+      "properties": {
+        "name": "Chinese Student Association",
+        "category": "community",
+        "organisation": "The University of New South Wales",
+        "address": "High St, Kensington NSW 2052"
       }
     }
   ]

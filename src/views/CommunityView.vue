@@ -30,7 +30,10 @@
 
                 <!--Map Component-->
                 <div v-if="communities">
-                    <MapComponent :layers="['community']" :center="[144.9595, -37.8009]" />
+                    <MapComponent
+                        :layers="['community', 'university']"
+                        :center="[144.9595, -37.8009]"
+                    />
                 </div>
             </aside>
         </div>

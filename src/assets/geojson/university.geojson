@@ -1,0 +1,92 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "abbrev": "UniMelb",
+        "campus": "Parkville",
+        "university": "The University of Melbourne",
+        "location": "Melbourne",
+        "category": "university"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [144.96, -37.799],
+            [144.957, -37.7975],
+            [144.956, -37.795],
+            [144.9575, -37.7925],
+            [144.961, -37.792],
+            [144.964, -37.793],
+            [144.9665, -37.7955],
+            [144.968, -37.798],
+            [144.967, -37.8],
+            [144.964, -37.802],
+            [144.9615, -37.801],
+            [144.96, -37.799]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "abbrev": "Monash",
+        "university": "Monash University",
+        "campus": "Clayton",
+        "city": "Melbourne",
+        "category": "university"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [145.132, -37.91],
+            [145.1275, -37.9075],
+            [145.125, -37.907],
+            [145.122, -37.909],
+            [145.1225, -37.913],
+            [145.1245, -37.9155],
+            [145.127, -37.916],
+            [145.1305, -37.917],
+            [145.134, -37.9155],
+            [145.135, -37.913],
+            [145.1345, -37.911],
+            [145.132, -37.91]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "abbrev": "UNSW",
+        "university": "University of New South Wales",
+        "campus": "Kensington",
+        "location": "Sydney",
+        "category": "university"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [151.228, -33.918],
+            [151.226, -33.9165],
+            [151.224, -33.916],
+            [151.2215, -33.9165],
+            [151.2205, -33.9185],
+            [151.22, -33.921],
+            [151.222, -33.923],
+            [151.225, -33.924],
+            [151.2285, -33.923],
+            [151.23, -33.9215],
+            [151.2305, -33.9195],
+            [151.228, -33.918]
+          ]
+        ]
+      }
+    }
+  ]
+}
