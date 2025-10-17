@@ -95,9 +95,11 @@ const userStore = defineStore('user', () => {
                 return;
             }
 
-            auth.currentUser.getIdToken();
+            const token = await auth.currentUser.getIdToken(/* forceRefresh */ true);
 
-            const userData = await axios.get('https://fetchuserstate-qbseni5s5q-uc.a.run.app');
+            const userData = await axios.get('https://fetchuserstate-qbseni5s5q-uc.a.run.app', {
+                headers: { Authorization: `Bearer: ${token}` },
+            });
 
             email.value = userData.email;
             role.value = userData.role;

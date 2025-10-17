@@ -1,0 +1,3 @@
+# This tells Cloudflare to send all requests starting with /api/ 
+# to your Express function endpoint.
+/api/* /server.js

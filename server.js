@@ -38,6 +38,7 @@ app.use(cors(corsOptions));
 app.use(express.json()); //Allow parsing request body as JSON
 app.use(express.urlencoded({ extended: true }));
 app.use('/api', apiRoutes); //Use this first before routing to other routes.
+app.use(express.static(path.join(__dirname, 'build')));
 
 const port = process.env.PORT || 3000;
 
