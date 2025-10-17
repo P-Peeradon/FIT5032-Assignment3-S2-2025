@@ -1,13 +1,14 @@
 import express from 'express';
 import axios from 'axios';
+import { decodeToken, sendEmail } from './utility.js';
 
 const router = express.Router();
 
-import validationRoutes from './server/validation.js';
-import adminRoutes from './server/admin.js';
-import connectRoutes from './server/connect.js';
-import reflectRoutes from './server/reflect.js';
-import growRoutes from './server/grow.js';
+import validationRoutes from './validation.js';
+import adminRoutes from './admin.js';
+import connectRoutes from './connect.js';
+import reflectRoutes from './reflect.js';
+import growRoutes from './grow.js';
 
 router.use('/validate', validationRoutes);
 router.use('/admin', adminRoutes);

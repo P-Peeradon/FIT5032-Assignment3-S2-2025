@@ -4,7 +4,6 @@ import express from 'express';
 import 'dotenv/config.js';
 
 import apiRoutes from './server/api.js';
-import { decodeToken, sendEmail } from './server/utility.js';
 
 const app = express();
 
