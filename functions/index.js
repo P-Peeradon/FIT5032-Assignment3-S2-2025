@@ -312,6 +312,50 @@ exports.createCommunity = onRequest((req, res) => {
     });
 });
 
+exports.joinClub = onRequest((req, res) => {
+    cors(req, res, async () => {
+        if (req.method !== 'POST') {
+            return res.status(404).send('Allow only POST method.');
+        }
+
+        if (!firestoreClient) {
+            return res.status(500).send('Firestore is currently unavailable.');
+        }
+
+        const frame = req.body;
+    });
+});
+
+exports.writeRSVP = onRequest((req, res) => {
+    cors(req, res, async () => {
+        const frame = req.body;
+
+        if (!frame.email || !frame.username) {
+            return res.status(400).send('Invalid mail recipient.');
+        }
+
+        const message = `Dear ${frame.username},\n
+                \tWelcome to Chillax Corner, where youths feel happy and safe. You are welcome to use our inclusive, secure and confidential services. If there is any assistance need, please let me know.\n
+                \tWish you all the best in our community.\n
+
+                Warm Welcome,\n
+                Chillax Corner Team
+            `;
+
+        try {
+            await sgMail.send({
+                to: data.email,
+                text: message,
+                subject: 'Welcome to Chillax Corner',
+            });
+
+            return res.status(200).send('Send Email Complete.');
+        } catch (error) {
+            return res.status(500).send(error);
+        }
+    });
+});
+
 exports.writeJournal = onRequest(async (req, res) => {
     if (req.method !== 'POST') {
         return res.status(404).send('Allow only POST method.');
@@ -358,7 +402,7 @@ exports.uploadCommunityThumbnail = onRequest((req, res) => {
         try {
             await fileRef.save(buffer, { contentType: frame.mimetype });
         } catch (error) {
-            res.status(500).send('Error in uploading to Firebase Storage.');
+            res.status(500).send(error);
         }
     });
 });
