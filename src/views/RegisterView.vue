@@ -17,11 +17,11 @@ const router = useRouter();
 
 const handleGoogleAuth = async (payload) => {
     try {
-        const username = await authState.signInWithGoogle(payload.role);
+        const user = await authState.signInWithGoogle(payload.role);
 
         await api.post('/api/register/email', {
-            username: username,
-            email: payload.email,
+            username: user.displayName,
+            email: user.email,
         });
 
         console.log(auth.currentUser);

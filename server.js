@@ -136,6 +136,8 @@ app.post('/login', async (req, res) => {
     }
 });
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`Server is listening at port ${port}`);
 });
+
+export default server;

@@ -178,7 +178,7 @@ onMounted(async () => {
         await authState.initAuth();
     });
 
-    const response = await api.get('/grow/education');
+    const response = await api.get('/api/grow/education');
     response.data.forEach((article) =>
         fetchedArticles.value.push(
             new Article({ sections: new Section(article.sections), ...article })

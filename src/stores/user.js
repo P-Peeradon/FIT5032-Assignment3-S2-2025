@@ -45,7 +45,7 @@ const authStore = defineStore('auth', () => {
                 });
             }
 
-            return googleCredential.user.displayName;
+            return googleCredential.user;
         } catch (error) {
             console.error(`Error in Google Sign in: ${error.message}`);
         }
@@ -90,6 +90,13 @@ const userStore = defineStore('user', () => {
 
     async function fetchUserData() {
         try {
+            if (!auth.currentUser) {
+                console.error('You are unauthorised');
+                return;
+            }
+
+            auth.currentUser.getIdToken();
+
             const userData = await axios.get('https://fetchuserstate-qbseni5s5q-uc.a.run.app');
 
             email.value = userData.email;
