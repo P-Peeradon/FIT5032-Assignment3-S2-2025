@@ -1,17 +1,25 @@
 <template>
     <div class="container-fluid">
-        <div class="row mt-2">
-            <h1 class="py-2">Journal</h1>
-        </div>
+        <h1 class="mt-2 py-3 h1 text-center text-primary">Journal</h1>
+
+        <figure class="text-center">
+            <blockquote class="blockquote mx-4 px-4">
+                <q class="mt-3"
+                    >Watch your thoughts, for they will become actions. Watch your actions, for
+                    they'll become habits. Watch your habits for they will forge your character.
+                    Watch your character, for it will make your destiny</q
+                >
+            </blockquote>
+
+            <figcaption class="blockquote-footer">
+                <span>Margaret Thatcher (1925-2013)</span>
+            </figcaption>
+        </figure>
+
+        <hr class="border border-primary border-2" />
 
         <main class="mt-3">
-            <h2>5 Benefits of Writing Journal</h2>
-
-            <blockquote>
-                "Journaling offers numerous benefits for mental health, especially stress reduction,
-                emotional regulation and self-awareness. Your journal is your safe space without
-                relying on anyone else." (Sutton, 2018)<br />
-            </blockquote>
+            <h2 class="my-3 h2 text-secondary">5 Benefits of Writing Journal</h2>
 
             <ol>
                 <li>
@@ -71,7 +79,9 @@ import { auth } from '../firebase/init';
 const authState = authStore();
 const userState = userStore();
 
-const writeJournal = () => {};
+const writeJournal = () => {
+    await;
+};
 
 onMounted(() => {
     onAuthStateChanged(auth, async (user) => {

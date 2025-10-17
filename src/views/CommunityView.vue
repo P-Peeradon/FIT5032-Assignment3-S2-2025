@@ -88,7 +88,7 @@ import CommunityShowcase from '../components/CommunityShowcase.vue';
 import MapComponent from '../components/MapComponent.vue';
 import { authStore } from '../stores/user';
 import { auth } from '../firebase/init';
-import api from '../../axios.js';
+import axios from 'axios';
 import { onAuthStateChanged } from 'firebase/auth';
 import { onMounted, ref, computed } from 'vue';
 
@@ -111,7 +111,7 @@ onMounted(async () => {
         await authState.initAuth();
     });
 
-    const { data } = await api.get('https://fetchallcommunities-qbseni5s5q-uc.a.run.app');
+    const { data } = await axios.get('https://fetchallcommunities-qbseni5s5q-uc.a.run.app');
 
     communities.value = data.map((community) => new Community(community));
 });

@@ -7,18 +7,11 @@
 
 <script setup>
 import RegisterCommunityForm from '../forms/RegisterCommunityForm.vue';
-import api from '../../axios.js';
+import axios from 'axios';
 
 const addCommunity = async (payload) => {
     try {
-        await api.post('/api/validate/community/register', payload);
-    } catch (error) {
-        console.error(`${error.code}: Validation Error: ${error.message}`);
-        return;
-    }
-
-    try {
-        await api.post('/api/connect/community/register');
+        await axios.post('https://createcommunity-qbseni5s5q-uc.a.run.app');
     } catch (error) {
         console.error(`${error.code}: Error in register new community: ${error.message}`);
     }

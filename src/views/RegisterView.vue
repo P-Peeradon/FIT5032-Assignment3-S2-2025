@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import api from '../../axios.js';
+import axios from 'axios';
 import RegisterForm from '../forms/RegisterForm.vue';
 import { useRouter } from 'vue-router';
 import { authStore } from '../stores/user';
@@ -19,7 +19,7 @@ const handleGoogleAuth = async (payload) => {
     try {
         const user = await authState.signInWithGoogle(payload.role);
 
-        await api.post('', {
+        await axios.post('https://writewelcomeemail-qbseni5s5q-uc.a.run.app', {
             username: user.displayName,
             email: user.email,
         }); //Write email
@@ -34,18 +34,11 @@ const handleGoogleAuth = async (payload) => {
 
 const handleCreateUser = async (payload) => {
     try {
-        await api.post('/api/validate/register', payload);
-    } catch (error) {
-        console.error(`${error.code}: Validation Error: ${error.message}`);
-        return;
-    }
+        await axios.post('https://createuser-qbseni5s5q-uc.a.run.app', payload);
 
-    try {
-        await api.post('/api/register/auth', payload);
+        await axios.post('https://recorduser-qbseni5s5q-uc.a.run.app', payload);
 
-        await api.post('/api/register/firestore', payload);
-
-        await api.post('/api/register/email', payload);
+        await axios.post('https://writewelcomeemail-qbseni5s5q-uc.a.run.app', payload);
         router.push('/login');
     } catch (error) {
         console.error(`${error.code}: Error in creating new user: ${error.message}`);
