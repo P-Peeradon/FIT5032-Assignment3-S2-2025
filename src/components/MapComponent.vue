@@ -1,8 +1,10 @@
 <template>
     <div ref="mapContainer" class="map-container" style="width: 24rem; height: 24rem"></div>
     <nav class="d-flex flex-col">
-        <h3>For routing, please click your origin and destination on the map.</h3>
-        <img :src="{ RouteIcon }" @click="gpsDirection" alt="routing" />
+        <div>
+            <h3>For routing, please click your origin and destination on the map.</h3>
+            <img :src="{ RouteIcon }" @click="gpsDirection" alt="routing" />
+        </div>
     </nav>
 </template>
 
