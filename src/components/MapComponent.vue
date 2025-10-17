@@ -1,12 +1,18 @@
 <template>
     <div ref="mapContainer" class="map-container" style="width: 24rem; height: 24rem"></div>
+    <div class="mt-2 align-center">
+        <h3>Use routing service</h3>
+        <input type="text" placeholder="origin" v-model="origin" />
+        <input type="text" placeholder="destination" v-model="destination" />
+    </div>
 </template>
 
 <script setup>
 import mapboxgl from 'mapbox-gl';
-import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
+
+import '@maplibre/maplibre-gl-directions/dist/maplibre-gl-directions.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
+
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 
 mapboxgl.accessToken = process.env.VITE_MAPBOX_ACCESS_TOKEN;
@@ -21,13 +27,17 @@ const props = defineProps({
 
 const geoPath = '../src/assets/geojson';
 
+let originPoint = null;
+let destinationPoint = null;
+const routingPoints = []; // Stores the Marker objects for the UI
+const maxWaypoints = 2; // Origin and Destination
+
 onMounted(() => {
     map = new mapboxgl.Map({
         container: mapContainer.value,
-        style: 'mapbox://styles/mapbox/streets-v12',
+        style: 'https://demotiles.maplibre.org/style.json',
         center: props.center,
         zoom: props.zoom,
-        attributionControl: true,
     });
 
     map.on('load', () => {
@@ -52,12 +62,7 @@ onMounted(() => {
             });
         }
         map.addControl(new mapboxgl.NavigationControl()); // Navigation
-        map.addControl(
-            new MapboxDirections(
-                { accessToken: mapboxgl.accessToken, profile: 'mapbox/driving' },
-                'top-left'
-            )
-        );
+
         map.addControl(
             new mapboxgl.GeolocateControl({
                 positionOptions: { enableHighAccuracy: true },
@@ -66,30 +71,31 @@ onMounted(() => {
         ); // User Location
         map.addControl(new mapboxgl.ScaleControl()); // Scale on the map
 
-        map.addControl(
-            new MapboxGeocoder({
-                accessToken: mapboxgl.accessToken,
-                mapboxgl: mapboxgl,
-            })
-        );
-    });
+        map.on('click', async (e) => {
+            // 1. Query features across ALL defined GeoJSON layers
+            const features = map.queryRenderedFeatures(e.point, {
+                layers: props.layers,
+            });
 
-    map.on('click', 'places-layer', (e) => {
-        const feature = e.features[0];
-        new mapboxgl.Popup()
-            .setLngLat(feature.geometry.coordinates)
-            .setHTML(
-                `<strong>${feature.properties.name}</strong> - <strong>${feature.properties.address}</strong>`
-            )
-            .addTo(map);
-    });
+            let clickedLngLat;
+            let pointName = 'Map Click'; // Default name
 
-    map.on('mouseenter', 'places-layer', (e) => {
-        map.getCanvas().style.cursor = 'pointer';
-    });
+            if (features.length > 0) {
+                // User clicked on one of the GeoJSON markers
+                const clickedFeature = features[0];
+                const coords = clickedFeature.geometry.coordinates;
 
-    map.on('mouseleave', 'places-layer', (e) => {
-        map.getCanvas().style.cursor = '';
+                // Use the feature's coordinates
+                clickedLngLat = { lng: coords[0], lat: coords[1] };
+
+                // Try to get a meaningful name for logging (assuming a 'name' property exists)
+                pointName = clickedFeature.properties.name || 'GeoJSON Point';
+
+                console.log(
+                    `Clicked GeoJSON feature: ${pointName} from layer: ${clickedFeature.layer.id}`
+                );
+            }
+        });
     });
 });
 
