@@ -8,4 +8,8 @@ compatibility_flags = [
   "enable_nodejs_http_modules",
   "enable_nodejs_http_server_modules",
   "experimental" # May be required for newer features
+<<<<<<< HEAD
 ]
+=======
+]
+>>>>>>> 5bc7f4bd81db3756353e6f9a2cd9ace4c8c3ef07
