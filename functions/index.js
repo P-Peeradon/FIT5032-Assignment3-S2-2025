@@ -370,26 +370,28 @@ exports.writeRSVP = onRequest((req, res) => {
 });
 
 exports.writeJournal = onRequest(async (req, res) => {
-    res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev/');
+    cors(req, res, async () => {
+        res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev/');
 
-    if (req.method !== 'POST') {
-        return res.status(404).send('Allow only POST method.');
-    }
+        if (req.method !== 'POST') {
+            return res.status(404).send('Allow only POST method.');
+        }
 
-    if (!firestoreClient) {
-        return res.status(500).send('Service not ready.');
-    }
+        if (!firestoreClient) {
+            return res.status(500).send('Service not ready.');
+        }
 
-    const frame = req.body;
+        const frame = req.body;
 
-    try {
-        const journalsRef = firestoreClient.collection('journals');
-        await journalsRef.add({ ...frame, timestamp: new Date() });
+        try {
+            const journalsRef = firestoreClient.collection('journals');
+            await journalsRef.add({ ...frame, timestamp: new Date() });
 
-        return res.status(201).send('Successfully write your journal.');
-    } catch (error) {
-        return res.status(500).send(error);
-    }
+            return res.status(201).send('Successfully write your journal.');
+        } catch (error) {
+            return res.status(500).send(error);
+        }
+    });
 });
 
 exports.uploadCommunityThumbnail = onRequest((req, res) => {
