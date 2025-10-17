@@ -178,10 +178,8 @@ onMounted(async () => {
         await authState.initAuth();
     });
 
-    const response = await api.get('/api/grow/education');
-    response.data.map(
-        (article) => new Article({ sections: new Section(article.sections), ...article })
-    );
+    const { data } = await api.get('/api/grow/education');
+    data.map((article) => new Article({ sections: new Section(article.sections), ...article }));
 });
 </script>
 

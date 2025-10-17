@@ -109,9 +109,9 @@ onMounted(async () => {
         await authState.initAuth();
     });
 
-    const response = await api.get('/api/connect/community');
-    const array = response.data;
-    communities.value = array.map((community) => new Community(community));
+    const { data } = await api.get('/api/connect/community');
+
+    communities.value = data.map((community) => new Community(community));
 });
 </script>
 
