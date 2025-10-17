@@ -3,7 +3,18 @@
     <nav class="d-flex flex-col">
         <div>
             <h3>For routing, please click your origin and destination on the map.</h3>
-            <img src="../../public/Route.png" @click="gpsDirection" alt="routing" />
+            <img
+                src="../../public/Route.png"
+                @click="gpsDirection"
+                style="
+                    width: 30px;
+                    height: 30px;
+                    :hover {
+                        cursor: pointer;
+                    }
+                "
+                alt="routing"
+            />
         </div>
     </nav>
 </template>

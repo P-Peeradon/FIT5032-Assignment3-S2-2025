@@ -76,7 +76,10 @@
                 You can select the city you prefer, or type in your interests, separated by commas,
                 to filter out the club that might fit with your passion.
             </p>
-            <div v-if="displayedCommunity" class="row-cols-2 row-cols-md-3 row-cols-xl-4 g-3">
+            <div
+                v-if="displayedCommunity"
+                class="row-cols-2 row-cols-md-3 row-cols-xl-4 gap-3 d-flex flex-row"
+            >
                 <div v-for="community in displayedCommunity" :key="community.cid">
                     <CommunityShowcase :community="community" />
                 </div>
