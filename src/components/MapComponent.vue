@@ -5,7 +5,7 @@
             <h3>For routing, please click your origin and destination on the map.</h3>
             <img
                 src="../../public/Route.png"
-                @click="gpsDirection"
+                @click="gpsDirection(map)"
                 style="
                     width: 30px;
                     height: 30px;
@@ -28,7 +28,7 @@ import { onBeforeUnmount, onMounted, ref } from 'vue';
 
 mapboxgl.accessToken = process.env.VITE_MAPBOX_ACCESS_TOKEN;
 const mapContainer = ref(null);
-let map;
+const mapObj = ref(null);
 const tempMarkers = []; //Collect origin and destination
 const geoPath = '../src/assets/geojson';
 
@@ -148,14 +148,14 @@ const waitForCoordinateClick = (map, geojsonLayerIds) => {
 };
 
 onMounted(() => {
-    map = new mapboxgl.Map({
+    mapObj.value = new mapboxgl.Map({
         container: mapContainer.value,
         style: 'mapbox://styles/mapbox/streets-v12',
         center: props.center,
         zoom: props.zoom,
     });
 
-    map.on('load', () => {
+    mapObj.value.on('load', () => {
         if (props.layers) {
             props.layers.forEach((layer) => {
                 map.addSource(layer, { type: 'geojson', data: `${geoPath}/${layer}.geojson` });
@@ -178,15 +178,15 @@ onMounted(() => {
                 });
             });
         }
-        map.addControl(new mapboxgl.NavigationControl()); // Navigation
+        mapObj.value.addControl(new mapboxgl.NavigationControl()); // Navigation
 
-        map.addControl(
+        mapObj.value.addControl(
             new mapboxgl.GeolocateControl({
                 positionOptions: { enableHighAccuracy: true },
                 trackUserLocation: true,
             })
         ); // User Location
-        map.addControl(new mapboxgl.ScaleControl()); // Scale on the map
+        mapObj.value.addControl(new mapboxgl.ScaleControl()); // Scale on the map
     });
 });
 
