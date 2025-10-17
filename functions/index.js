@@ -11,7 +11,7 @@ const { setGlobalOptions } = require('firebase-functions');
 const { onRequest } = require('firebase-functions/v2/https');
 const logger = require('firebase-functions/logger');
 const admin = require('firebase-admin');
-const cors = require('cors')({ origin: true });
+const cors = require('cors')({ origin: ['https://chillax-corner.pages.dev/'] });
 const sgMail = require('@sendgrid/mail');
 const MapboxClient = require('@mapbox/mapbox-sdk/services/geocoding');
 
