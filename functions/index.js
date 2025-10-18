@@ -147,7 +147,7 @@ exports.loginUser = onRequest((req, res) => {
 
 // Fetch all features from database.
 // Method: GET
-exports.fetchAllFeatures = onRequest((req, res) => {
+exports.getAllFeatures = onRequest((req, res) => {
     cors(req, res, async () => {
         res.set('Access-Control-Allow-Origin', 'https://chillax-corner.pages.dev');
         if (!firestoreClient) {

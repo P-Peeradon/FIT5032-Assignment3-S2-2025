@@ -85,7 +85,7 @@ const userStore = defineStore('user', () => {
     const username = ref('');
     const location = ref('');
     const journals = ref([]);
-    const bookmarks = ref([]);
+    // const bookmarks = ref([]);
     const communities = ref([]);
 
     async function fetchUserData() {
@@ -116,7 +116,7 @@ const userStore = defineStore('user', () => {
         username.value = '';
         location.value = '';
     }
-
+    /*
     async function saveArticle(article) {
         //Add to user state first
         bookmarks.value.push(article);
@@ -132,7 +132,7 @@ const userStore = defineStore('user', () => {
         }
     }
 
-    const fetchUserCommunity = async () => {
+    async function fetchUserCommunity () {
         try {
             const userCommunity = await axios.get('', { userId: uid, role: role.value }); // API that get user community
 
@@ -141,8 +141,9 @@ const userStore = defineStore('user', () => {
             console.error(error);
         }
     };
+    */
 
-    return { email, role, username, journals, communities, fetchUserData, clearUserState };
+    return { uid, email, role, username, journals, communities, fetchUserData, clearUserState };
 });
 
 export { authStore, userStore, featureStore };
