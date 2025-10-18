@@ -5,7 +5,7 @@
             <h3>For routing, please click your origin and destination on the map.</h3>
             <img
                 src="../../public/Route.png"
-                @click="gpsDirection(map)"
+                @click="gpsDirection(mapObj)"
                 style="
                     width: 30px;
                     height: 30px;
@@ -27,6 +27,12 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import axios from 'axios';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
+const props = defineProps({
+    center: { type: Array, default: () => [103.8198, 1.3521] }, // [long, lat] in this case, Singapore
+    zoom: { type: Number, default: 10 },
+    layers: { type: Array, default: [] },
+});
+
 mapboxgl.accessToken = process.env.VITE_MAPBOX_ACCESS_TOKEN;
 const mapContainer = ref(null);
 const mapObj = ref(null);
@@ -39,17 +45,13 @@ const geoPath = computed(() => {
 const tempMarkers = []; //Collect origin and destination
 const instruction = ref('');
 
-const props = defineProps({
-    center: { type: Array, default: () => [103.8198, 1.3521] }, // [long, lat] in this case, Singapore
-    zoom: { type: Number, default: 10 },
-    layers: { type: Array, default: [''] },
-});
-
 const gpsDirection = async (map) => {
     // 1. Cleanup before starting a new route
     tempMarkers.forEach((point) => point.remove());
     tempMarkers.length = 0;
     if (map.getLayer('route-line')) {
+        map.removeLayer('route-line');
+        map.removeSource('route');
     }
 
     instruction.value = 'Routing initiated. Please click on the map to set the ORIGIN point.';
@@ -79,6 +81,8 @@ const gpsDirection = async (map) => {
     } else {
         console.error('Could not find a valid route.');
     }
+
+    instruction.value = '';
 };
 
 const getRoute = async (origin, destination) => {
@@ -121,38 +125,7 @@ const drawRoute = (routeGeoJSON) => {
     }
 };
 
-const waitForCoordinateClick = (map, geojsonLayerIds) => {
-    return new Promise((resolve) => {
-        // Define the click handler function
-        const clickHandler = (e) => {
-            // 1. Query features across the defined GeoJSON layers
-            const features = map.queryRenderedFeatures(e.point, {
-                layers: geojsonLayerIds,
-            });
-
-            let clickedLngLat;
-
-            if (features.length > 0) {
-                // Clicked on a GeoJSON feature
-                const coords = features[0].geometry.coordinates;
-                clickedLngLat = { lng: coords[0], lat: coords[1] };
-            } else {
-                // Clicked on the map background
-                clickedLngLat = e.lngLat;
-            }
-
-            // 2. IMPORTANT: Remove the handler to stop listening after the first click
-            map.off('click', clickHandler);
-
-            // 3. Resolve the promise with the final coordinate
-            resolve(clickedLngLat);
-        };
-        // Attach the temporary click handler
-        map.on('click', clickHandler);
-    });
-};
-
-onMounted(() => {
+const initialiseMap = () => {
     const map = new mapboxgl.Map({
         container: mapContainer.value,
         style: 'mapbox://styles/mapbox/streets-v12',
@@ -196,6 +169,41 @@ onMounted(() => {
         map.addControl(new mapboxgl.ScaleControl()); // Scale on the map
         mapObj.value = map;
     });
+};
+
+const waitForCoordinateClick = (map, geojsonLayerIds) => {
+    return new Promise((resolve) => {
+        // Define the click handler function
+        const clickHandler = (e) => {
+            // 1. Query features across the defined GeoJSON layers
+            const features = map.queryRenderedFeatures(e.point, {
+                layers: geojsonLayerIds,
+            });
+
+            let clickedLngLat;
+
+            if (features.length > 0) {
+                // Clicked on a GeoJSON feature
+                const coords = features[0].geometry.coordinates;
+                clickedLngLat = { lng: coords[0], lat: coords[1] };
+            } else {
+                // Clicked on the map background
+                clickedLngLat = e.lngLat;
+            }
+
+            // 2. IMPORTANT: Remove the handler to stop listening after the first click
+            map.off('click', clickHandler);
+
+            // 3. Resolve the promise with the final coordinate
+            resolve(clickedLngLat);
+        };
+        // Attach the temporary click handler
+        map.on('click', clickHandler);
+    });
+};
+
+onMounted(() => {
+    initialiseMap();
 });
 
 onBeforeUnmount(() => {
