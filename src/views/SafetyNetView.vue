@@ -112,7 +112,7 @@ onMounted(async () => {
         await authState.initAuth();
     });
     await saferState.fetchAllHotlines();
-    fetchedHotlines.value = saferState.allHotlines.value;
+    fetchedHotlines.value = [...saferState.allHotlines.value];
 });
 </script>
 
