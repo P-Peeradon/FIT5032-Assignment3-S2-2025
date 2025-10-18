@@ -24,10 +24,10 @@ const props = defineProps({
 
 const community = ref(null);
 
-const path = `/connect/community/${community.cid}`;
+const path = `/connect/community/${community.value.cid}`;
 
 const thumbnailPath = computed(() => {
-    return `/public/community/${community.cid}-thumbnail.png`;
+    return `/public/community/${community.value.cid}-thumbnail.png`;
 });
 
 onMounted(() => {

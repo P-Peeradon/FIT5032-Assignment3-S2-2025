@@ -29,13 +29,11 @@ const prop = defineProps({
 });
 
 const feature = ref(null);
-const path = `/${feature.getPillar().toLowerCase()}/${feature.getTitle().toLowerCase()}`;
+const path = `/${feature.value.pillar.toLowerCase()}/${feature.value.title.toLowerCase()}`;
 
 const imgURL = computed(() => {
     return feature.value
-        ? `/public/${feature.value.getPillar().toLowerCase()}/${feature.value
-              .getTitle()
-              .toLowerCase()}.jpg`
+        ? `/public/${feature.value.pillar.toLowerCase()}/${feature.value.title.toLowerCase()}.jpg`
         : '../assets/WebLogo.png';
 });
 
