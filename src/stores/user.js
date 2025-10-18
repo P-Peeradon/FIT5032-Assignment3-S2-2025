@@ -69,7 +69,20 @@ const featureStore = defineStore('feature', () => {
     async function fetchFeatures() {
         try {
             const { data } = await axios.get('https://getallfeatures-qbseni5s5q-uc.a.run.app');
-            features.value = data.map((feature) => new Feature(feature));
+
+            for (const featureData of data) {
+                try {
+                    const newFeature = new Feature({ ...featureData });
+                    features.value.push(newFeature);
+                } catch (e) {
+                    // Log the exact problematic data item and continue the loop
+                    console.error('Failed to construct Feature for data:', featureData, e);
+                    // You can skip this bad item or push a placeholder
+                    newFeatures.push(
+                        new Feature({ title: 'Error Loading', description: 'Placeholder' })
+                    );
+                }
+            }
         } catch (error) {
             console.error(`${error.code}: Error in fetching features: ${error.message}`);
         }
