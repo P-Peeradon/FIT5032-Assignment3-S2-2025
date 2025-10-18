@@ -18,7 +18,7 @@
         <hr class="border border-primary border-2" />
 
         <main class="mt-3">
-            <img src="/public/grow/education.jpg" alt="education" />
+            <img src="/public/reflect/journal.jpg" alt="journal" />
             <h2 class="my-3 h2 text-secondary">5 Benefits of Writing Journal</h2>
 
             <ol>

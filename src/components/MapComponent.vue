@@ -144,6 +144,8 @@ const initialiseMap = () => {
                 const layer = geoLayers.value[idx];
                 const source = geoPath.value[idx];
 
+                console.log(geoPath.value[idx]);
+
                 map.addSource(geoLayers.value[idx], { type: 'geojson', data: geoPath.value[idx] });
                 map.addLayer({
                     id: layer + ' - point',
