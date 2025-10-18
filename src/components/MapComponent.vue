@@ -39,7 +39,7 @@ const mapObj = ref(null);
 const geoLayers = ref([]);
 const geoPath = computed(() => {
     if (geoLayers.value.length > 0) {
-        return geoLayers.value.map((layer) => `/geojson/${layer}.json`);
+        return geoLayers.value.map((layer) => `/public/geojson/${layer}.json`);
     } else return [];
 });
 const tempMarkers = []; //Collect origin and destination
