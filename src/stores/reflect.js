@@ -13,8 +13,21 @@ const saferStore = defineStore('safety-net', () => {
 
     async function fetchAllHotlines() {
         try {
-            const response = await axios.get('https://fetchallhotlines-qbseni5s5q-uc.a.run.app');
-            allHotlines.value = response.data.map((hotline) => new Hotline(hotline));
+            const { data } = await axios.get('https://fetchallhotlines-qbseni5s5q-uc.a.run.app');
+
+            for (const hotline of data) {
+                try {
+                    const newHotline = new Hotline({ ...hotline });
+                    allHotlines.value.push(newHotline);
+                } catch (e) {
+                    // Log the exact problematic data item and continue the loop
+                    console.error('Failed to construct Hotline for data:', hotline, e);
+                    // You can skip this bad item or push a placeholder
+                    allHotlines.value.push(
+                        new Hotline({ title: 'Error Loading', description: 'Placeholder' })
+                    );
+                }
+            }
         } catch (error) {
             console.error(`Error in fetching hotlines: ${error.message}`);
         }

@@ -472,7 +472,7 @@ exports.fetchAllHotlines = onRequest((req, res) => {
             const hotlines = [];
 
             snapshot.forEach((doc) => {
-                hotlines.push({ id: doc.id, ...doc.data() });
+                hotlines.push({ ...doc.data() });
             });
 
             res.status(200).send(hotlines);

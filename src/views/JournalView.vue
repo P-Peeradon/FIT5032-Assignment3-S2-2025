@@ -72,13 +72,12 @@
 <script setup>
 import { onMounted } from 'vue';
 import WriteJournalForm from '../forms/WriteJournalForm.vue';
-import { authStore, userStore } from '../stores/user';
+import { authStore } from '../stores/user';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase/init';
 import axios from 'axios';
 
 const authState = authStore();
-const userState = userStore();
 
 const writeJournal = async (payload) => {
     try {

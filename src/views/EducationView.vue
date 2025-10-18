@@ -178,7 +178,18 @@ onMounted(async () => {
     });
 
     const { data } = await axios.get('https://fetchallarticles-qbseni5s5q-uc.a.run.app');
-    data.map((article) => new Article({ sections: new Section(article.sections), ...article }));
+
+    for (const article of data) {
+        try {
+            const newArticle = new Article({ sections: new Section(article.sections), ...article });
+            fetchedArticles.value.push(newArticle);
+        } catch (e) {
+            // Log the exact problematic data item and continue the loop
+            console.error('Failed to construct Feature for data:', featureData, e);
+            // You can skip this bad item or push a placeholder
+            fetchedArticles.push(new Article({}));
+        }
+    }
 });
 </script>
 

@@ -119,8 +119,29 @@ onMounted(async () => {
     });
 
     const { data } = await axios.get('https://fetchallcommunities-qbseni5s5q-uc.a.run.app');
-
-    communities.value = data.map((community) => new Community(community));
+    /*
+    for (const community of data) {
+        try {
+            const newArticle = new Community({...community}));
+            communities.value.push(newArticle);
+        } catch (e) {
+            // Log the exact problematic data item and continue the loop
+            console.error('Failed to construct Feature for data:', featureData, e);
+            // You can skip this bad item or push a placeholder
+            communities.push(new Community({}));
+        }
+    */
+    for (const community of data) {
+        try {
+            const newArticle = new Community({ ...community });
+            communities.value.push(newArticle);
+        } catch (e) {
+            // Log the exact problematic data item and continue the loop
+            console.error('Failed to construct Feature for data:', featureData, e);
+            // You can skip this bad item or push a placeholder
+            communities.push(new Community({}));
+        }
+    }
 });
 </script>
 
