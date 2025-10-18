@@ -1,8 +1,8 @@
 export class Feature {
     constructor({ title, pillar, description }) {
-        this._title = title;
-        this._pillar = pillar;
-        this._description = description;
+        this._title = title || 'Untitled';
+        this._pillar = pillar || 'UNKNOWN';
+        this._description = description || '';
     }
 
     // Pillar => connect, grow, reflect
