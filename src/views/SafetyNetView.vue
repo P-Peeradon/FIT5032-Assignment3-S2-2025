@@ -43,11 +43,11 @@
 
         <div class="row g-2 mt-2">
             <div class="col-6 col-lg-8">
-                <label for="nameSearch" class="form-label">Search by name or Abbrevation</label>
+                <label for="purposeSearch" class="form-label">Search by name or purpose</label>
                 <input
                     type="text"
-                    id="nameSearch"
-                    placeholder="Search club by name"
+                    id="purposeSearch"
+                    placeholder="Search hotline by name or purpose"
                     class="form-control"
                     v-model="query"
                 />
@@ -64,30 +64,55 @@
                 </select>
             </div>
         </div>
-        <DataTable>
-            <Column></Column>
+        <DataTable
+            v-if="fetchedHotlines"
+            :value="displayedHotlines"
+            paginator
+            :rows="5"
+            :rowsPerPageOptions="[5, 8, 10, 20]"
+            tableStyle="min-width: 56rem"
+        >
+            <Column field="name" sortable header="Name"></Column>
+            <Column field="location" header="Location">
+                {{ location.join(', ') }}
+            </Column>
+            <Column field="purpose" header="Purpose"></Column>
+            <Column field="contact" header="Contact"></Column>
         </DataTable>
     </div>
 </template>
 
 <script setup>
+// oxlint-disable no-unused-expressions
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import { authStore } from '../stores/user';
 import { saferStore } from '../stores/reflect';
-import { onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase/init';
 
 const authState = authStore();
 const saferState = saferStore();
-const displayedHotlines = ref(saferState.allHotlines);
+
+const query = ref('');
+const location = ref('');
+
+const fetchedHotlines = ref([]);
+const displayedHotlines = computed(() => {
+    return fetchedHotlines.value.filter((hotline) => {
+        (hotline.name.toLowerCase().includes(query.value.toLowerCase()) ||
+            hotline.purpose.toLowerCase().includes(query.value.toLowerCase())) &&
+            (location.value !== '' ? hotline.location.includes(location.value) : true);
+    });
+});
 
 onMounted(async () => {
     onAuthStateChanged(auth, async (user) => {
         await authState.initAuth();
     });
     await saferState.fetchAllHotlines();
+    fetchedHotlines.value = saferState.allHotlines;
 });
 </script>
 
