@@ -39,8 +39,8 @@ const mapObj = ref(null);
 const geoLayers = ref([]);
 const geoPath = computed(() => {
     if (geoLayers.value.length > 0) {
-        return geoLayers.map((layer) => `/public/geojson/${layer}.geojson`);
-    } else return [''];
+        return geoLayers.value.map((layer) => `/public/geojson/${layer}.geojson`);
+    } else return [];
 });
 const tempMarkers = []; //Collect origin and destination
 const instruction = ref('');
@@ -139,11 +139,11 @@ const initialiseMap = () => {
     map.on('load', () => {
         if (geoLayers.value > 0) {
             for (const idx in geoLayers.value) {
-                map.addSource(geoLayers.value[idx], { type: 'geojson', data: geoPath[idx] });
+                map.addSource(geoLayers.value[idx], { type: 'geojson', data: geoPath.value[idx] });
                 map.addLayer({
-                    id: layer - 'point',
+                    id: geoLayers.value[idx],
                     type: 'circle',
-                    source: layer,
+                    source: geoPath.value[idx],
                     filter: ['==', '$type', 'Point'],
                     paint: {
                         'circle-radius': 7,
@@ -160,9 +160,9 @@ const initialiseMap = () => {
                     interactive: true,
                 });
                 map.addLayer({
-                    id: layer - 'point',
-                    type: 'circle',
-                    source: layer,
+                    id: geoLayers.value[idx],
+                    type: 'fill',
+                    source: geoPath.value[idx],
                     filter: ['==', '$type', 'Polygon'],
                     paint: {
                         'fill-opacity': 0.5,
