@@ -93,7 +93,12 @@ const moods = ref([]);
 const content = ref('');
 
 const writeJournal = () => {
-    emit('jot-down', {});
+    emit('jot-down', {
+        topic: topic.value,
+        location: location.value,
+        moods: moods.value,
+        content: content.value,
+    });
 };
 
 const clearForm = () => {
