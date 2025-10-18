@@ -164,7 +164,7 @@ const initialiseMap = () => {
                     },
                     interactive: true,
                 });
-                interactiveLayerIds.push(layer + '- point');
+                interactiveLayersIds.push(layer + '- point');
 
                 map.addLayer({
                     id: source + '- polygon',
@@ -185,13 +185,13 @@ const initialiseMap = () => {
                     },
                     interactive: true,
                 });
-                interactiveLayerIds.push(source + '- polygon');
+                interactiveLayersIds.push(source + '- polygon');
             }
         }
         map.on('mousemove', (e) => {
             // Check for features in the interactive layers at the current mouse point
             const features = map.queryRenderedFeatures(e.point, {
-                layers: interactiveLayerIds,
+                layers: interactiveLayersIds,
             });
 
             // Set the cursor based on whether features were found
