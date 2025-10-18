@@ -42,7 +42,7 @@ const instruction = ref('');
 const props = defineProps({
     center: { type: Array, default: () => [103.8198, 1.3521] }, // [long, lat] in this case, Singapore
     zoom: { type: Number, default: 10 },
-    layers: { type: Array, default: null },
+    layers: { type: Array, default: [''] },
 });
 
 const gpsDirection = async (map) => {
