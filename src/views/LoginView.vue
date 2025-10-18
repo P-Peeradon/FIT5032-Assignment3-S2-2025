@@ -8,9 +8,9 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { auth } from '../firebase/init';
-import api from '../../axios.js';
 import LoginForm from '../forms/LoginForm.vue';
 import { authStore } from '../stores/user';
+import axios from 'axios';
 
 const authState = authStore();
 const router = useRouter();
@@ -27,14 +27,7 @@ const googleSignIn = async (payload) => {
 
 const authorise = async (payload) => {
     try {
-        await api.post('/api/validate/login', payload);
-    } catch (error) {
-        console.error(`${error.code}: Validation Error: ${error.message}`);
-        return;
-    }
-
-    try {
-        await api.post('https://loginuser-qbseni5s5q-uc.a.run.app', payload); // Sign in using cloud function
+        await axios.post('https://loginuser-qbseni5s5q-uc.a.run.app', payload); // Sign in using cloud function
 
         console.log(auth.currentUser);
         router.push('/');
