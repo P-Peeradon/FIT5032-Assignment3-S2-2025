@@ -137,11 +137,16 @@ const initialiseMap = () => {
     geoLayers.value = props.layers;
 
     map.on('load', () => {
-        if (geoLayers.value > 0) {
+        const interactiveLayersIds = [];
+
+        if (geoLayers.value.length > 0) {
             for (const idx in geoLayers.value) {
+                const layer = geoLayers.value[idx];
+                const source = geoPath.value[idx];
+
                 map.addSource(geoLayers.value[idx], { type: 'geojson', data: geoPath.value[idx] });
                 map.addLayer({
-                    id: geoLayers.value[idx],
+                    id: layer + '- point',
                     type: 'circle',
                     source: geoPath.value[idx],
                     filter: ['==', '$type', 'Point'],
@@ -159,8 +164,10 @@ const initialiseMap = () => {
                     },
                     interactive: true,
                 });
+                interactiveLayerIds.push(layer + '- point');
+
                 map.addLayer({
-                    id: geoLayers.value[idx],
+                    id: source + '- polygon',
                     type: 'fill',
                     source: geoPath.value[idx],
                     filter: ['==', '$type', 'Polygon'],
@@ -178,8 +185,25 @@ const initialiseMap = () => {
                     },
                     interactive: true,
                 });
+                interactiveLayerIds.push(source + '- polygon');
             }
         }
+        map.on('mousemove', (e) => {
+            // Check for features in the interactive layers at the current mouse point
+            const features = map.queryRenderedFeatures(e.point, {
+                layers: interactiveLayerIds,
+            });
+
+            // Set the cursor based on whether features were found
+            if (features.length > 0) {
+                // Hand cursor (pointer)
+                map.getCanvas().style.cursor = 'pointer';
+            } else {
+                // Default cursor (arrow)
+                map.getCanvas().style.cursor = '';
+            }
+        });
+
         map.addControl(new mapboxgl.NavigationControl()); // Navigation
 
         map.addControl(
@@ -190,12 +214,6 @@ const initialiseMap = () => {
         ); // User Location
         map.addControl(new mapboxgl.ScaleControl()); // Scale on the map
 
-        map.on('click', (e) => {
-            // e.lngLat contains the longitude and latitude of the clicked point
-            // e.point contains the pixel coordinates of the clicked point
-            console.log('Map clicked at:', e.lngLat);
-            // You can add markers, popups, or other actions here
-        });
         mapObj.value = map;
     });
 };
