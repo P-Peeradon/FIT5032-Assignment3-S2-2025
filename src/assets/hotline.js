@@ -1,5 +1,5 @@
 export class Hotline {
-    constructor({ name, location, purpose, contact, tier }) {
+    constructor({ name, location, purpose, contact, tier } = {}) {
         this._name = name || '';
         // Tier 1: Emergency, related to loss of life and asset.
         // Tier 2: Not emergency but related to mental health issues or target any specialised groups such as for minorities, lgbt+, neurodivergent or loss.

@@ -6,7 +6,7 @@ export class Article {
         sections, // Section = subtitle and paragraphs
         author,
         institute,
-    }) {
+    } = {}) {
         this._code = code || 'XXX00000';
         this._topic = topic || '';
         this._purpose = purpose || '';

@@ -10,7 +10,7 @@ export class Community {
         contact,
         organisation,
         address,
-    }) {
+    } = {}) {
         this._cid = cid || 'XXX0000'; //City name code follows by 4 digits like.
         this._name = name || 'Unknown';
         this._abbrev = abbrev || '';

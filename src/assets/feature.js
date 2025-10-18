@@ -1,5 +1,5 @@
 export class Feature {
-    constructor({ title, pillar, description }) {
+    constructor({ title, pillar, description } = {}) {
         this._title = title || 'Untitled';
         this._pillar = pillar || 'UNKNOWN';
         this._description = description || '';
