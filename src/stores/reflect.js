@@ -36,6 +36,7 @@ const saferStore = defineStore('safety-net', () => {
     return { allHotlines, isLoaded, lastUpdated, fetchAllHotlines };
 });
 
+/*
 // Focus on what user did.
 const hotlineStore = defineStore('hotline', () => {
     const lastContact = ref('');
@@ -49,5 +50,6 @@ const hotlineStore = defineStore('hotline', () => {
 
     return { lastContact, action, timeStamp, hasCompletedFollowUp, nextFollowUp };
 });
+*/
 
-export { saferStore, hotlineStore };
+export { saferStore };

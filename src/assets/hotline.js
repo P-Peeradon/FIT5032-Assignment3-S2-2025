@@ -8,7 +8,7 @@ export class Hotline {
         this._tier = tier || 4;
         this._location = location || [''];
         this._purpose = purpose || 'Unknown';
-        this._contact = contact || { tel: 0 };
+        this._contact = contact || { tel: '0' };
     }
 
     get name() {
