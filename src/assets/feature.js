@@ -8,14 +8,14 @@ export class Feature {
     // Pillar => connect, grow, reflect
 
     get title() {
-        return this.title;
+        return this._title;
     }
 
     get pillar() {
-        return this.pillar;
+        return this._pillar;
     }
 
     get description() {
-        return this.description;
+        return this._description;
     }
 }
