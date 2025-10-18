@@ -29,7 +29,9 @@ const prop = defineProps({
 });
 
 const feature = ref(null);
-const path = `/${feature.value.pillar.toLowerCase()}/${feature.value.title.toLowerCase()}`;
+const path = computed(() => {
+    return `/${feature.value.pillar.toLowerCase()}/${feature.value.title.toLowerCase()}`;
+});
 
 const imgURL = computed(() => {
     return feature.value

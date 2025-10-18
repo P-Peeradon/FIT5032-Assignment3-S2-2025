@@ -24,7 +24,9 @@ const props = defineProps({
 
 const community = ref(null);
 
-const path = `/connect/community/${community.value.cid}`;
+const path = computed(() => {
+    return `/connect/community/${community.value.cid}`;
+});
 
 const thumbnailPath = computed(() => {
     return `/public/community/${community.value.cid}-thumbnail.png`;
