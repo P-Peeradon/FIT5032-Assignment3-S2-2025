@@ -68,7 +68,7 @@ const featureStore = defineStore('feature', () => {
 
     async function fetchFeatures() {
         try {
-            const { data } = await axios.get('https://fetchallfeatures-qbseni5s5q-uc.a.run.app');
+            const { data } = await axios.get('https://getallfeatures-qbseni5s5q-uc.a.run.app');
             features.value = data.map((feature) => new Feature(feature));
         } catch (error) {
             console.error(`${error.code}: Error in fetching features: ${error.message}`);
