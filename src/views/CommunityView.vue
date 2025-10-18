@@ -5,7 +5,7 @@
             <main class="col-7 col-xl-8">
                 <div class="d-flex flex-row justify-content-center px-auto">
                     <img
-                        src="../assets/connect/community.jpg"
+                        src="/public/connect/community.jpg"
                         alt="community"
                         style="width: 48rem; height: 32rem"
                     />

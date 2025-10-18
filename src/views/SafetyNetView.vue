@@ -5,7 +5,7 @@
             <main class="col-9 col-xl-8">
                 <div class="d-flex flex-row justify-content-center px-auto">
                     <img
-                        src="../assets/reflect/safetynet.jpg"
+                        src="/public/reflect/safetynet.jpg"
                         alt="community"
                         style="width: 48rem; height: 32rem"
                     />

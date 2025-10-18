@@ -3,7 +3,7 @@
         <h1 class="mt-2 h1 text-center text-primary">Education</h1>
         <div class="row">
             <main class="col-9 col-lg-8">
-                <img src="../assets/grow/education.jpg" alt="education" />
+                <img src="/public/grow/education.jpg" alt="education" />
                 <h2 class="h2 text-secondary">
                     Why do youths need to learn mental health education?
                 </h2>
