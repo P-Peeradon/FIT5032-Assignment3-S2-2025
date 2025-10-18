@@ -140,18 +140,10 @@ const initialiseMap = () => {
             for (const idx in geoLayers.value) {
                 map.addSource(geoLayers.value[idx], { type: 'geojson', data: geoPath[idx] });
                 map.addLayer({
-                    id: layer,
-                    type: [
-                        'match',
-                        ['geometry-type'],
-                        'Polygon',
-                        'fill',
-                        'Point',
-                        'circle',
-                        'LineString',
-                        'line',
-                    ],
+                    id: layer - 'point',
+                    type: 'circle',
                     source: layer,
+                    filter: ['==', '$type', 'Point'],
                     paint: {
                         'circle-radius': 7,
                         'circle-color': [
@@ -163,6 +155,15 @@ const initialiseMap = () => {
                             '#C41E3A',
                             '#000000',
                         ],
+                    },
+                });
+                map.addLayer({
+                    id: layer - 'point',
+                    type: 'circle',
+                    source: layer,
+                    filter: ['==', '$type', 'Polygon'],
+                    paint: {
+                        'fill-opacity': 0.5,
                         'fill-color': [
                             'match',
                             ['get', 'category'],
@@ -172,7 +173,6 @@ const initialiseMap = () => {
                             '#C41E3A',
                             '#000000',
                         ],
-                        'fill-opacity': 0.5,
                     },
                 });
             }
