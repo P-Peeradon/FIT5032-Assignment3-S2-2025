@@ -141,7 +141,16 @@ const initialiseMap = () => {
                 map.addSource(geoLayers.value[idx], { type: 'geojson', data: geoPath[idx] });
                 map.addLayer({
                     id: layer,
-                    type: 'circle',
+                    type: [
+                        'match',
+                        ['geometry-type'],
+                        'Polygon',
+                        'fill',
+                        'Point',
+                        'circle',
+                        'LineString',
+                        'line',
+                    ],
                     source: layer,
                     paint: {
                         'circle-radius': 7,
@@ -154,6 +163,16 @@ const initialiseMap = () => {
                             '#C41E3A',
                             '#000000',
                         ],
+                        'fill-color': [
+                            'match',
+                            ['get', 'category'],
+                            'community',
+                            '#008080',
+                            'university',
+                            '#C41E3A',
+                            '#000000',
+                        ],
+                        'fill-opacity': 0.5,
                     },
                 });
             }
