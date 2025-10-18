@@ -35,7 +35,7 @@ const path = computed(() => {
 
 const imgURL = computed(() => {
     return feature.value
-        ? `/public/${feature.value.pillar.toLowerCase()}/${feature.value.title.toLowerCase()}.jpg`
+        ? `/${feature.value.pillar.toLowerCase()}/${feature.value.title.toLowerCase()}.jpg`
         : '../assets/WebLogo.png';
 });
 

@@ -29,7 +29,7 @@ const path = computed(() => {
 });
 
 const thumbnailPath = computed(() => {
-    return `/public/community/${community.value.cid}-thumbnail.png`;
+    return `/community/${community.value.cid}-thumbnail.png`;
 });
 
 onMounted(() => {

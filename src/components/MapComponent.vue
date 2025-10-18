@@ -39,7 +39,7 @@ const mapObj = ref(null);
 const geoLayers = ref([]);
 const geoPath = computed(() => {
     if (geoLayers.value.length > 0) {
-        return geoLayers.value.map((layer) => `/public/geojson/${layer}.geojson`);
+        return geoLayers.value.map((layer) => `/geojson/${layer}.geojson`);
     } else return [];
 });
 const tempMarkers = []; //Collect origin and destination
@@ -146,7 +146,7 @@ const initialiseMap = () => {
 
                 map.addSource(geoLayers.value[idx], { type: 'geojson', data: geoPath.value[idx] });
                 map.addLayer({
-                    id: layer + '- point',
+                    id: layer + ' - point',
                     type: 'circle',
                     source: geoPath.value[idx],
                     filter: ['==', '$type', 'Point'],
