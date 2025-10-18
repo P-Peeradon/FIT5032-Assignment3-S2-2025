@@ -2,7 +2,7 @@
     <div class="card" id="feature">
         <router-link :to="path" style="text-decoration: none; color: black">
             <img
-                v-if="feature && feature.getPillar()"
+                v-if="feature && feature.pillar"
                 :src="imgURL"
                 :alt="feature.title"
                 class="card-img-top"
@@ -28,7 +28,7 @@ const prop = defineProps({
     },
 });
 
-const feature = ref(null);
+const feature = ref(new Feature());
 const path = computed(() => {
     return `/${feature.value.pillar.toLowerCase()}/${feature.value.title}`;
 });

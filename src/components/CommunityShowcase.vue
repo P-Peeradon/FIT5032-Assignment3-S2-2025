@@ -22,7 +22,7 @@ const props = defineProps({
     },
 });
 
-const community = ref(null);
+const community = ref(new Community());
 
 const path = computed(() => {
     return `/connect/community/${community.value.cid}`;
