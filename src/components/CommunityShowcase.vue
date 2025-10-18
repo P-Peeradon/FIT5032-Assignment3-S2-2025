@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import { onErrorCaptured } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { Community } from '../assets/community';
 
 const props = defineProps({
@@ -22,16 +22,16 @@ const props = defineProps({
     },
 });
 
-const community = props.community;
+const community = ref(null);
 
 const path = `/connect/community/${community.cid}`;
 
-const thumbnailPath = `/public/community/${community.cid}-thumbnail.png`;
+const thumbnailPath = computed(() => {
+    return `/public/community/${community.cid}-thumbnail.png`;
+});
 
-onErrorCaptured((err, instance, info) => {
-    console.error('Caught a component error:', err, info);
-    // Return false to stop the error from propagating further up
-    return false;
+onMounted(() => {
+    if (props.community) community.value = props.community;
 });
 </script>
 

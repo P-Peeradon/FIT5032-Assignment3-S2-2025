@@ -87,6 +87,93 @@
           ]
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "abbrev": "UniMelb",
+        "university": "The University of Melbourne",
+        "campus": "Southbank",
+        "location": "Melbourne",
+        "category": "university"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [144.966, -37.824],
+            [144.9655, -37.825],
+            [144.965, -37.8255],
+            [144.9645, -37.826],
+            [144.964, -37.8265],
+            [144.9645, -37.827],
+            [144.9655, -37.8275],
+            [144.9665, -37.827],
+            [144.9675, -37.8265],
+            [144.968, -37.8255],
+            [144.967, -37.8245],
+            [144.966, -37.824]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "abbrev": "Monash",
+        "university": "Monash University",
+        "campus": "Caulfield",
+        "location": "Melbourne",
+        "category": "university"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [145.03, -37.8845],
+            [145.0305, -37.8855],
+            [145.03, -37.8865],
+            [145.029, -37.887],
+            [145.028, -37.8875],
+            [145.0275, -37.887],
+            [145.027, -37.886],
+            [145.0275, -37.885],
+            [145.028, -37.884],
+            [145.029, -37.8835],
+            [145.0295, -37.884],
+            [145.03, -37.8845]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "abbrev": "UniAuck",
+        "university": "The University of Auckland",
+        "campus": "City",
+        "location": "Auckland",
+        "category": "university"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [174.767, -36.852],
+            [174.7675, -36.851],
+            [174.768, -36.8505],
+            [174.7685, -36.851],
+            [174.769, -36.8515],
+            [174.7685, -36.8525],
+            [174.768, -36.853],
+            [174.7675, -36.8535],
+            [174.7665, -36.853],
+            [174.766, -36.8525],
+            [174.7665, -36.852],
+            [174.767, -36.852]
+          ]
+        ]
+      }
     }
   ]
 }

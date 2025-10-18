@@ -16,6 +16,7 @@
                 alt="routing"
             />
         </div>
+        <p>{{ instruction }}</p>
     </nav>
 </template>
 
@@ -24,13 +25,19 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 import axios from 'axios';
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
 mapboxgl.accessToken = process.env.VITE_MAPBOX_ACCESS_TOKEN;
 const mapContainer = ref(null);
 const mapObj = ref(null);
+const geoLayers = ref([]);
+const geoPath = computed(() => {
+    if (geoLayers.value.length > 0) {
+        return geoLayers.map((layer) => `/public/geojson/${layer}.geojson`);
+    } else return [''];
+});
 const tempMarkers = []; //Collect origin and destination
-const geoPath = '/public/geojson';
+const instruction = ref('');
 
 const props = defineProps({
     center: { type: Array, default: () => [103.8198, 1.3521] }, // [long, lat] in this case, Singapore
@@ -40,14 +47,12 @@ const props = defineProps({
 
 const gpsDirection = async (map) => {
     // 1. Cleanup before starting a new route
-    tempMarkers.forEach((m) => m.remove());
+    tempMarkers.forEach((point) => point.remove());
     tempMarkers.length = 0;
     if (map.getLayer('route-line')) {
-        map.removeLayer('route-line');
-        map.removeSource('route');
     }
 
-    console.log('Routing initiated. Please click on the map to set the ORIGIN point.');
+    instruction.value = 'Routing initiated. Please click on the map to set the ORIGIN point.';
 
     // 2. AWAIT FIRST CLICK (Origin)
     const origin = await waitForCoordinateClick(map, layerIds);
@@ -55,11 +60,11 @@ const gpsDirection = async (map) => {
     const originMarker = new mapboxgl.Marker({ color: '#007cbf' }).setLngLat(origin).addTo(map);
     temporaryMarkers.push(originMarker);
 
-    console.log('Please click on the map to set the DESTINATION point.');
+    instruction.value = 'Please click on the map to set the DESTINATION point.';
 
     // 3. AWAIT SECOND CLICK (Destination)
     const destination = await waitForCoordinateClick(map, layerIds);
-    console.log(`Destination set at: ${destination.lng}, ${destination.lat}`);
+    instruction.value = `Destination set at: ${destination.lng}, ${destination.lat}`;
 
     // Add visual marker for Destination
     const destMarker = new mapboxgl.Marker({ color: '#ff0000' }).setLngLat(destination).addTo(map);
@@ -81,7 +86,7 @@ const getRoute = async (origin, destination) => {
     const coordinates = `${origin.lng},${origin.lat};${destination.lng},${destination.lat}`;
     const url = `https://api.mapbox.com/directions/v5/mapbox/${profile}/${coordinates}?geometries=geojson&access_token=${mapboxgl.accessToken}`;
 
-    const response = await axios(url);
+    const response = await axios.get(url);
     const data = await response.json();
 
     if (data.routes && data.routes.length > 0) {
@@ -155,10 +160,12 @@ onMounted(() => {
         zoom: props.zoom,
     });
 
+    geoLayers.value = props.layers;
+
     map.on('load', () => {
-        if (props.layers) {
-            props.layers.forEach((layer) => {
-                map.addSource(layer, { type: 'geojson', data: `${geoPath}/${layer}.geojson` });
+        if (geoLayers.value > 0) {
+            for (const idx in geoLayers.value) {
+                map.addSource(geoLayers.value[idx], { type: 'geojson', data: geoPath[idx] });
                 map.addLayer({
                     id: layer,
                     type: 'circle',
@@ -176,7 +183,7 @@ onMounted(() => {
                         ],
                     },
                 });
-            });
+            }
         }
         map.addControl(new mapboxgl.NavigationControl()); // Navigation
 

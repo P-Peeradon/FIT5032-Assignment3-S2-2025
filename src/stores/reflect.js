@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { Hotline } from '../assets/hotline.js';
 import { ref } from 'vue';
+import axios from 'axios';
 
 // Collect all hotline in users' area.
 // Currently, Melbourne, Sydney, Adelaide, Auckland, Singapore
@@ -33,7 +34,7 @@ const hotlineStore = defineStore('hotline', () => {
 
     function followUp() {}
 
-    return lastContact, action, timeStamp, hasCompletedFollowUp, nextFollowUp;
+    return { lastContact, action, timeStamp, hasCompletedFollowUp, nextFollowUp };
 });
 
 export { saferStore, hotlineStore };

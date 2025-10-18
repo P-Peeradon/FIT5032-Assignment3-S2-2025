@@ -1,7 +1,12 @@
 <template>
     <div class="card" id="feature">
         <router-link :to="path" style="text-decoration: none; color: black">
-            <img :src="imgURL" :alt="feature.title" class="card-img-top" />
+            <img
+                v-if="feature && feature.getPillar()"
+                :src="imgURL"
+                :alt="feature.title"
+                class="card-img-top"
+            />
             <div class="card-body">
                 <h4 class="card-title h4 text-info text-decoration-underline">
                     {{ feature.title }}
@@ -13,6 +18,7 @@
 </template>
 
 <script setup>
+import { onMounted, ref, computed } from 'vue';
 import { Feature } from '../assets/feature';
 
 const prop = defineProps({
@@ -22,12 +28,22 @@ const prop = defineProps({
     },
 });
 
-const feature = prop.feature;
+const feature = ref(null);
 const path = `/${feature.getPillar().toLowerCase()}/${feature.getTitle().toLowerCase()}`;
 
-const imgURL = `/public/${feature.getPillar().toLowerCase()}/${feature
-    .getTitle()
-    .toLowerCase()}.jpg`;
+const imgURL = computed(() => {
+    return feature.value
+        ? `/public/${feature.value.getPillar().toLowerCase()}/${feature.value
+              .getTitle()
+              .toLowerCase()}.jpg`
+        : '../assets/WebLogo.png';
+});
+
+onMounted(() => {
+    if (prop.feature) {
+        feature.value = prop.feature;
+    }
+});
 </script>
 
 <style scoped>
