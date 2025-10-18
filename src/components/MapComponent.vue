@@ -131,6 +131,7 @@ const initialiseMap = () => {
         style: 'mapbox://styles/mapbox/streets-v12',
         center: props.center,
         zoom: props.zoom,
+        interactive: true,
     });
 
     geoLayers.value = props.layers;
@@ -156,6 +157,7 @@ const initialiseMap = () => {
                             '#000000',
                         ],
                     },
+                    interactive: true,
                 });
                 map.addLayer({
                     id: layer - 'point',
@@ -174,6 +176,7 @@ const initialiseMap = () => {
                             '#000000',
                         ],
                     },
+                    interactive: true,
                 });
             }
         }
@@ -186,6 +189,13 @@ const initialiseMap = () => {
             })
         ); // User Location
         map.addControl(new mapboxgl.ScaleControl()); // Scale on the map
+
+        map.on('click', (e) => {
+            // e.lngLat contains the longitude and latitude of the clicked point
+            // e.point contains the pixel coordinates of the clicked point
+            console.log('Map clicked at:', e.lngLat);
+            // You can add markers, popups, or other actions here
+        });
         mapObj.value = map;
     });
 };

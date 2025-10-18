@@ -46,7 +46,7 @@ onMounted(async () => {
     onAuthStateChanged(auth, async (user) => {
         await authState.initAuth();
     });
-    if (featureState.features.value.length == 0) await featureState.fetchFeatures();
+    await featureState.fetchFeatures();
 });
 </script>
 

@@ -30,7 +30,7 @@ const prop = defineProps({
 
 const feature = ref(null);
 const path = computed(() => {
-    return `/${feature.value.pillar.toLowerCase()}/${feature.value.title.toLowerCase()}`;
+    return `/${feature.value.pillar.toLowerCase()}/${feature.value.title}`;
 });
 
 const imgURL = computed(() => {
