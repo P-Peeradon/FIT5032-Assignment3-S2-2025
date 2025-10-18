@@ -30,7 +30,7 @@ mapboxgl.accessToken = process.env.VITE_MAPBOX_ACCESS_TOKEN;
 const mapContainer = ref(null);
 const mapObj = ref(null);
 const tempMarkers = []; //Collect origin and destination
-const geoPath = '../src/assets/geojson';
+const geoPath = '/public/geojson';
 
 const props = defineProps({
     center: { type: Array, default: () => [103.8198, 1.3521] }, // [long, lat] in this case, Singapore
