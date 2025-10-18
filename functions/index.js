@@ -9,11 +9,10 @@
 
 const { setGlobalOptions } = require('firebase-functions');
 const { onRequest } = require('firebase-functions/v2/https');
-const logger = require('firebase-functions/logger');
 const admin = require('firebase-admin');
 const cors = require('cors')({ origin: true });
 const sgMail = require('@sendgrid/mail');
-const MapboxClient = require('@mapbox/mapbox-sdk/services/geocoding');
+sgMail.setApiKey(process.env.VITE_SENDGRID_API_KEY);
 
 admin.initializeApp();
 
