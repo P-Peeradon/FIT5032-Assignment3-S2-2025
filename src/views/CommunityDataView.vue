@@ -10,7 +10,7 @@
 <script setup>
 import { auth } from '../firebase/init';
 import { communityStore } from '../stores/connect';
-import { authStore } from '../stores/user';
+import { authStore, userStore } from '../stores/user';
 import { onAuthStateChanged } from 'firebase/auth';
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
@@ -21,13 +21,13 @@ const authState = authStore();
 const userState = userStore();
 const communityState = communityStore();
 
-const cid = route.params.cid;
+const cid = ref(route.params.cid);
 
 onMounted(async () => {
     onAuthStateChanged(auth, async (user) => {
         await authState.initAuth();
     });
-    await communityState.loadCommunity(cid);
+    await communityState.loadCommunity(cid.value);
 });
 </script>
 
