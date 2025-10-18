@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import { auth, db, googleAuth } from '../firebase/init';
-import { Feature } from '../assets/feature';
+import { Feature } from '../assets/feature.js';
 import axios from 'axios';
 import { signInWithPopup } from 'firebase/auth';
 import { collection, doc, getDoc } from 'firebase/firestore';
