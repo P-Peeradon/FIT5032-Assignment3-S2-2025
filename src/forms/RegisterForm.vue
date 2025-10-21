@@ -69,7 +69,7 @@
             <button class="btn btn-info text-center" @click.prevent="triggerGoogle">
                 Sign In with Google
             </button>
-            <button @click="toggleRed">Redman</button>
+            <button class="btn btn-info text-center" @click="toggleRed">Redman</button>
         </div>
     </form>
 </template>
