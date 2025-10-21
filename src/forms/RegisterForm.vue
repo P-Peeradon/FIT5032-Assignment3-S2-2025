@@ -1,6 +1,6 @@
 <template>
     <form class="container-fluid my-4 py-3 px-lg-5">
-        <h2>Registration Form</h2>
+        <h2 :class="{ active: isActive }">Registration Form</h2>
         <div class="row mt-1">
             <div class="col-12 col-lg-6">
                 <label for="email" class="form-label">Email</label>
@@ -69,6 +69,7 @@
             <button class="btn btn-info text-center" @click.prevent="triggerGoogle">
                 Sign In with Google
             </button>
+            <button @click="toggleRed">Redman</button>
         </div>
     </form>
 </template>
@@ -83,6 +84,12 @@ const username = ref('');
 const password = ref('');
 const confirmPassword = ref('');
 const role = ref('user');
+
+const isActive = ref(false);
+
+const toggleRed = () => {
+    isActive.value = !isActive.value;
+};
 
 const register = () => {
     emit('register', {
@@ -105,5 +112,8 @@ const triggerGoogle = async () => {
 .container-fluid {
     width: 65%;
     background-color: beige;
+}
+.active {
+    color: red;
 }
 </style>

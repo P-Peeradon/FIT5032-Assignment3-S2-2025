@@ -47,6 +47,7 @@ exports.createUser = onRequest((req, res) => {
         }
 
         const frame = { ...req.body };
+
         try {
             await authClient.createUser({ email: frame.email, password: frame.password });
         } catch (error) {
