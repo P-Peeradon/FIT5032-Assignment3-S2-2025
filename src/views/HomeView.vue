@@ -16,12 +16,6 @@ const handleSendEmail = async (payload) => {
     }
 };
 
-const isActive = ref(true);
-
-const toggle = () => {
-    return isActive.value = ;
-};
-
 onMounted(() => {
     onAuthStateChanged(auth, async (user) => {
         await authState.initAuth();
